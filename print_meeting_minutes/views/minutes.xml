@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+
+        <record id="meeting_form_view_miniutes" model="ir.ui.view">
+            <field name="name">calendar.event.form.view</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//page[2]" position="after">
+                    <page string="Meeting Additional Info">
+                        <group>
+                            <field name='presenter_id'/>
+                            <field name="facilitator"/>
+                            <field name="note_taker"/>
+                            <field name="time_keeper"/>
+                        </group>
+                        <group>
+                            <field name="agenda_topic"/>
+                            <field name="action_items"/>
+                            <field name="conclusion"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

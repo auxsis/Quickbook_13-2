@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+patho_lab_testunit_public,public_access_patho_lab_testunit,wk_pathology_management.model_patho_lab_testunit,,1,0,0,0
+patho_test_parameters_public,public_access_patho_test_parameters,wk_pathology_management.model_patho_test_parameters,,1,0,0,0
+patho_test_preinfo_public,public_access_patho_test_preinfo,wk_pathology_management.model_patho_test_preinfo,,1,0,0,0
+patho_test_sampletype_public,public_access_patho_test_sampletype,wk_pathology_management.model_patho_test_sampletype,,1,0,0,0
+patho_test_criteria_public,public_patho_test_criteria,wk_pathology_management.model_patho_test_criteria,,1,0,0,0
+patho_lab_centers_public,public_patho_lab_centers,wk_pathology_management.model_patho_lab_centers,,1,0,0,0
+
+
+patho_testrequest_portal,portal_access_patho_testrequest,wk_pathology_management.model_patho_testrequest,base.group_portal,1,1,1,0
+patho_testrequest_lines_portal,portal_access_patho_testrequest_lines,wk_pathology_management.model_patho_testrequest_lines,base.group_portal,1,1,1,0
+account_tax_portal,portal_access_account_tax,account.model_account_tax,base.group_portal,1,0,0,0

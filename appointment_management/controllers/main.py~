@@ -1,0 +1,139 @@
+# -*- coding: utf-8 -*-
+
+import pytz
+from pytz import timezone
+from datetime import datetime
+import time
+from odoo import http, modules, tools
+from odoo import api, fields, models, _
+from odoo.http import request
+from odoo.addons.website.controllers.main import QueryURL
+
+class AppointmentCreate(http.Controller):
+    @http.route(['/page/appointment/'], auth='user', website=True, csrf=True)
+    def get_appointee(self, **kw):
+        partner_obj = http.request.env['res.partner']
+        appointees = partner_obj.sudo().search([('is_available_for_apointment','=',True)])
+        values = {
+            'appointee_ids' : appointees,
+        }
+        return request.render('appointment_management.website_appointment1',values)
+
+    def _convert_to_utc(self, localdatetime=None, appointee_id=None):
+        check_in_date = datetime.strptime(localdatetime, "%Y-%m-%d  %H:%M:%S")
+        
+        timezone_tz = 'utc'
+        user_id = request.env['res.users'].sudo().search([('partner_id', '=', int(appointee_id))])
+        print ("===============",user_id)
+        super_user = request.env['res.users'].sudo().browse(SUPERUSER_ID)
+        if user_id.tz:
+            timezone_tz = user_id.tz
+        elif super_user.tz:
+            timezone_tz = super_user.tz
+        
+        local = pytz.timezone(timezone_tz)#request.env.user.tz
+        local_dt = local.localize(check_in_date, is_dst=None)
+        utc_datetime = local_dt.astimezone(pytz.utc)
+        return utc_datetime
+
+    @http.route(['/appointment_management/appointment_get'], type='http', auth="public", methods=['POST'], website=True)
+    def appointment_get(self, **post):
+        datetime_object = datetime.strptime(post['start_date'], '%Y-%m-%d').strftime('%Y-%m-%d')
+        day = fields.Date.from_string(datetime_object).strftime('%A')
+        slot_obj = http.request.env['meeting.slot']
+        day_match = slot_obj.sudo().search([('day','=', day)])
+        event_obj = request.env['calendar.event']
+        partner_obj = http.request.env['res.partner']
+        appointees = partner_obj.sudo().search([('is_available_for_apointment','=',True)])
+        appointee_id = post.get('appointee_id', False)
+        print ("appoint------------------",appointee_id)
+        date_start = datetime.strptime(post['start_date'], '%Y-%m-%d').strftime('%Y-%m-%d')
+        dict_my = {}
+        for day_m in day_match.slot_line_ids:
+            day_slot = date_start +' '+day_m.time+':00'
+            start_datetime = self._convert_to_utc(day_slot, appointee_id).strftime("%Y-%m-%d %H:%M:%S")
+            book_slots = event_obj.sudo().search([('partner_ids', 'in', [appointee_id]),
+                                                  ('slot','=', tools.ustr(day_m.time)),
+                                                  ('start_datetime', '=', start_datetime)])
+            if book_slots:
+                dict_my[day_m.time] = True
+            else:
+                dict_my[day_m.time] = False
+        slot_values = {
+        'name' : post['customer_id'],
+        'email' : post['email'],
+        'phone' : post['phone'],
+        'purpose' : post['purpose'],
+        'description' : tools.ustr(post['description']),
+        'purpose' : post['purpose'],
+        'date' : post['start_date'],
+        'day':day_match,
+        'dict_my':dict_my,
+        'appointee_ids' : appointees,
+        'appointee_id': int(appointee_id)
+        }
+        return http.request.render('appointment_management.website_appointment1',slot_values)
+
+    @http.route(['/appointment_management/appointment_confirm'], auth="public", type='http',website=True)
+    def confirm(self, **post):
+        time = post['slot']
+        appointee_id = post.get('appointee_id', False)
+        date_start = datetime.strptime(post['start_date'], '%Y-%m-%d').strftime('%Y-%m-%d')
+        day_slot = date_start +' '+time+':00'
+        event_obj = request.env['calendar.event']
+        partner_obj = http.request.env['res.partner']
+
+        start_datetime = self._convert_to_utc(day_slot, appointee_id)
+        start_datetime_strf = start_datetime.strftime("%Y-%m-%d %H:%M:%S")
+        book_slots = event_obj.sudo().search([('partner_ids', 'in', [appointee_id]),
+                                              ('slot','=', tools.ustr(time)),
+                                              ('start_datetime', '=', start_datetime_strf)])
+        if appointee_id:
+            for book_slot in book_slots:
+                partner_match = partner_obj.sudo().search([('is_available_for_apointment','=',True)])
+                for person in book_slot.partner_ids:
+                    for p in partner_match:
+                        if person == p:
+                            return http.request.render('appointment_management.book_slot')
+
+        appointment = http.request.env['calendar.event'].sudo().create({
+                                                    'name': post['purpose'],
+                                                    'customer_name': request.env.user.partner_id.id,
+                                                    'email': post['email'],
+                                                    'phone': post['phone'],
+                                                    'description': post['description'],
+                                                    'partner_ids' : [(6, 0, [appointee_id,request.env.user.partner_id.id])],
+                                                    'start_datetime' : start_datetime,
+                                                    'stop_datetime' : start_datetime,
+                                                    'start': start_datetime,
+                                                    'stop': start_datetime,
+                                                    'slot': tools.ustr(time),
+                                                    'duration':0.0,
+#                                                     'company_name':request.env.user.company_id.name
+                                                     })
+        partner_id = partner_obj.sudo().browse(int(appointee_id))
+        date = fields.Date.from_string(date_start).strftime('%a %b %d, %Y') + ' ' + time
+        user_id = request.env.user.name
+        local_context = http.request.env.context.copy()
+        issue_template = http.request.env.ref('appointment_management.email_template_appointment_book')
+        local_context.update({
+            'partner_email': partner_id.email,
+            'user_id': user_id,
+            'partner_name': partner_id.name,
+            'date': date,
+            'customer_name': appointment.user_id.name,
+            'customer_email': appointment.user_id.partner_id.email,
+            'customer_phone': appointment.user_id.partner_id.phone,
+            'subject': appointment.name,
+            'book_id': appointment.booking_id,
+            'note' : appointment.description,
+        })
+        issue_template.sudo().with_context(local_context).send_mail(request.uid, force_send=True)
+        values = {
+                'appointment':appointment,
+                'company_name':request.env.user.company_id.name,
+            }
+        return request.render('appointment_management.thanks_submit_template', values)
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+

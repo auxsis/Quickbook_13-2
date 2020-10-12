@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_web_timesheet_md" name="website_timesheet_md" inherit_id="website.assets_frontend">
+           <xpath expr="." position="inside">
+             <script type="text/javascript" src="/website_construction_project_page/static/src/js/website_construction.js"></script>
+           </xpath>
+    </template>
+    
+    
+    <template id="project_categ" name="Project Categories" customize_show="False">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Project Categories</t>
+            <div id="wrap" class="js_sale">
+                <div class="oe_structure" />
+                <div class="container oe_website_sale">
+                    <div class="project_categ_title">
+                        <div class="row" style="width: 100%;">
+                            <h2><strong style="color:#337ab7;"><center>Project Categories</center></strong></h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="hidden" id="products_grid_before"></div>
+                        <div class="col-md-12" id="products_grid">
+                            <table width="100%" class="table-bordered">
+                                <tbody>
+                                    <tr t-foreach="bins" t-as="tr_category"> 
+                                        <t t-foreach="tr_category" t-as="td_category">     
+                                            <t t-if="td_category">         
+                                                <t t-set="category" t-value="td_category['category']" />         
+                                                <td  t-att-colspan="td_category['x'] != 1 and td_category['x']" t-att-rowspan="td_category['y'] != 1 and td_category['y']" t-attf-class="oe_product oe_grid oe-height-#{td_category['y']*2}">             
+                                                    <div class="oe_product_cart">                 
+                                                        <t t-set="product_image_big" t-value="td_category['x']+td_category['y'] &gt; 2" />                 <t t-call="website_construction_project_page.project_category_items" />             
+                                                    </div>         
+                                                </td>     
+                                            </t>     
+                                            <td t-if="not td_category" class="oe-height-2" /> 
+                                        </t>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <t t-if="not bins">
+                                <div class="text-center text-muted oe_product">
+                                    <h3 class="css_editable_display">No Categories defined.</h3>
+                                    <p groups="sales_team.group_sale_manager">Click <i>'New'</i> in the top-right corner to create your first Category.</p>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure mb32" />
+            </div>
+        </t>
+    </template>
+
+    <template id="project_category_items" name="Products item">
+        <div class="oe_structure">
+            <form action="" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                    <div class="oe_product_image" style="left:2px;right:2px;top:1px;bottom:1px;" >
+                        <a itemprop="url" t-attf-href="/project/category?{{ keep_query(category_id = category.id) }}">
+                            <img class="image" t-att-src="'data:image/png;base64,%s' % to_text(category.image)" max-height="250" height="250"/>
+                        </a>
+                    </div>
+                    <section>
+                        <h5>
+                            <strong><center><a t-attf-href="/project/category?{{ keep_query(category_id = category.id) }}" t-field="category.name" /></center></strong>
+                        </h5>
+                        <center><span class="text-info">Projects <span class="badge" t-esc="project_count[category.id]"/></span></center>
+                    </section>
+                </div>
+            </form>
+        </div>
+    </template>
+        
+        <template id="project_categary" name="Project Categories">
+            <t t-call="website.layout">
+                <t t-set="additional_title">Projects</t>
+                    <div class="oe_structure mb32" />
+                    <div class="container oe_website_sale">
+                        <div class="row">
+                            <form class="navbar-form" role="search" t-attf-action="/project/category" method="get">
+                                <div class="input-group">
+                                    <input type="text" class="o_hidden" name="category_id" t-att-value="currnet_category_id.id"/>
+                                    <input type="text" name="search" class="search-query form-control oe_search_box" placeholder="Search..." t-att-value="search" />
+                                    <span class="input-group-append">
+                                       <button type="submit" class="btn btn-default oe_search_button"><i class="fa fa-search"/></button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="clearfix"/>
+                        <div class="col-12 text-center">
+                            <strong><h2>Project Details</h2></strong>
+                        </div>
+                        <div class="clearfix"/>
+                        <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-12">
+<!--                                nav nav-pills flex-column mt16-->
+                                <ul class="nav nav-pills flex-column mt16">
+                                    <t t-foreach="category_ids" t-as="categ_id"> <li class="nav-item" >     <a itemprop="url" t-attf-href="/project/category?{{ keep_query(category_id = categ_id.id) }}" t-attf-class="nav-link#{' active' if categ_id == currnet_category_id else ''} o_not_editable"><span t-field="categ_id.name"/></a> </li>
+                                    </t>
+                                </ul>
+                            </div>
+                            <div class="col-md-9 col-sm-9">
+                                <table width="100%" class="table-bordered">
+                                    <tbody> <tr t-foreach="project_ids" t-as="project">         <td class="oe_product oe_grid">             <div class="row col-12">                 <div class="col-3">                         <!--span itemprop="image"                             t-field="project.image1"                             t-field-options="{&quot;widget&quot;: &quot;image&quot;,}"                             class="img-responsive img-rounded" style="left:0px;right:0px;"/-->                     <span itemprop="image" t-attf-content="{{request.httprequest.url_root}}web/image/project.project/{{project.id}}/image" t-field="project.image1" t-options="{'widget': 'image', 'resize': None if product_image_big else '300x300', 'zoom': 'image'}" t-att-alt="project.name" />                 </div>                 <div class="col-9 mt32" contenteditable="false">                     <h5>                         <strong>                             <a t-attf-href="/project/details?{{ keep_query(project_id = project.id) }}">                             <span t-field="project.name"/><t t-if="project.partner_id"> - <span t-field="project.partner_id.name"/></t>                             </a>                         </strong>                     </h5>                 </div>             </div>         </td> </tr>
+                                    </tbody>
+                                </table>
+                                <t t-if="not project_ids">
+                                <div class="text-center text-muted oe_product">
+                                    <h3 class="css_editable_display">No Projects For <span t-esc="currnet_category_id.name"/></h3>
+                                    <p groups="sales_team.group_sale_manager">Click <i>'New'</i> in the top-right corner to create your first Category.</p>
+                                </div>
+                            </t>
+                            </div>
+                        </div>
+                    <div class="oe_structure mb32" />
+                </div>
+            </t>
+        </template>
+        
+        <template id="project_details" name="Project Details" >
+            <t t-call="website.layout">
+                <t t-set="additional_title">Project</t>
+                <div itemscope="itemscope" itemtype="http://schema.org/Event" class="container">
+                    <h2 class="text-center"><strong style="color:#337ab7;" itemprop="name"  t-field="project_id.name"></strong></h2>
+                    <div class="row mt32 mb32">
+                        <t t-raw="0"/>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="project_description_full">
+            <t t-call="website_construction_project_page.project_details">
+            <div class="clearfix"/>
+<!--                Carousel-->
+                <div id="project_carousel" class="s_carousel s_carousel_default carousel slide mb32 col-md-12"  data-ride="carousel" data-interval="10000" style="height: 400px;">
+
+                    <ol class="carousel-indicators">
+                        <t t-foreach="len(project_id.project_image_ids)" t-as="project_image">
+<!--                            <span t-esc="project_image"/>-->
+                            <t t-if="project_image == 0">
+                                <li data-target="#project_carousel" data-slide-to="project_image" class="active"></li>
+                            </t>
+                            <t t-if="project_image != 0">
+                                <li data-target="#project_carousel" data-slide-to="project_image"></li>
+                            </t>
+                        </t>
+                    </ol>
+
+                    <t t-set="cnt" t-value="0"/>
+                    <div class="carousel-inner">
+                    
+                            <t t-foreach="project_id.project_image_ids" t-as="project_image">
+                            
+                                <t t-if="cnt == 0">
+                                    <div class="carousel-item oe_img_bg active bg-alpha">
+                                        <div class="container">
+                                            <div class="row content">
+                                                <div class="carousel-content col-md-4 col-md-offset-1 mt128 mb96 ml64">             
+                                                    <h2>
+                                                        <span t-field="project_id.project_category_id.name"/>/<span t-field="project_id.name"/>
+                                                    </h2>
+                                                    
+                                                    <h4>
+                                                        <span t-esc="project_id.project_image_ids[cnt].name"/>
+                                                    </h4> 
+                                                    <p>
+                                                        <a href="/contactus" class="btn btn-warning btn-large" target="new">Enquiry Now</a>
+                                                    </p>
+                                                </div>
+                                                <div class="mt8 mb16">
+                                                     <img class="image-responsive rounded" t-att-src="'data:image/png;base64,%s' % to_text(project_id.project_image_ids[cnt].image)" style="border:auto;" data-target="#project_carousel" width="500" height="500"/>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                    </div>
+                                </t>
+                                
+                                <t t-if="cnt != 0">
+                                    <div class="carousel-item oe_img_bg bg-alpha">
+                                        <div class="container">
+                                            <div class="row content">
+                                                 <div class="carousel-content col-md-4 col-md-offset-1 mt128 mb96 ml64">
+                                                    <h2>
+                                                        <span t-field="project_id.project_category_id.name"/>/<span t-field="project_id.name"/>
+                                                    </h2>
+                                                    <h4>
+                                                        <span t-esc="project_id.project_image_ids[cnt].name"/>
+                                                    </h4>
+                                                    <p>
+                                                        <a href="/contactus" class="btn btn-warning btn-large" target="new">Enquiry Now</a>
+                                                    </p>
+                                                 </div>
+                                                <div class="mt8 mb64">
+                                                     <img class="image-responsive rounded" t-att-src="'data:image/png;base64,%s' % to_text(project_id.project_image_ids[cnt].image)" style="border:auto;" data-target="#project_carousel" width="500" height="500"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                                
+                                <t t-set="cnt" t-value="cnt+1"/>
+                            
+                            </t>
+                            
+                            <div class="carousel-control-prev" data-target="#project_carousel" data-slide="prev" role="img" aria-label="Previous" title="Previous">
+                                <span class="carousel-control-prev-icon"/>
+                                <span class="sr-only">Previous</span>
+                            </div>
+                            <div class="carousel-control-next" data-target="#project_carousel" data-slide="next" role="img" aria-label="Next" title="Next">
+                                <span class="carousel-control-next-icon"/>
+                                <span class="sr-only">Next</span>
+                            </div>
+                            
+<!--                            <div class="carousel-control left ml8" data-target="#project_carousel" data-slide="prev" style="width: 10%">-->
+<!--                                <i class="fa fa-chevron-left"></i>-->
+<!--                            </div>-->
+<!--                            <div class="carousel-control right mr8" data-target="#project_carousel" data-slide="next" style="width: 10%">-->
+<!--                                <i class="fa fa-chevron-right"></i>-->
+<!--                            </div>-->
+                    </div>
+                </div>
+                
+                
+                
+                
+                
+<!--                Carousel End-->
+                <div class="col-md-8">
+<!--                    Project Details-->
+                    <div itemscope="itemscope" itemprop="offers" itemtype="http://schema.org/AggregateOffer" >
+                        <form id="project_description_form" class="card panel-default">
+                            <div class="card-header">
+                                <span t-field="project_id.name"/>
+                            </div>
+                            <div class="card-body text-info">
+                                <span t-field="project_id.description"/>
+                            </div>
+                        </form>
+                    </div>
+<!--                    Project Details-->
+                </div>
+                
+                <div class="col-md-4 css_noprint">
+                <div class="clearfix"/>
+                    <div class="card panel-default">
+                        <div class="card-header">
+                            <h4>Location</h4>
+                        </div>
+                        <div class="card-body">
+                            <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+                                <div t-field="project_id.partner_id" t-options='{ "widget": "contact", "fields": ["name", "address", "phone", "mobile", "fax", "email"]}'/>
+                            </address>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+<!--                SPECIFICATIONS UL-->
+
+                <section class="s_tabs mt32">
+                    <div class="col-12" contenteditable="false">
+                        <div class="card">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs mt16" role="tablist">
+                                    <li class="nav-item">
+<!--                                        <a href="#features" role="tab" data-toggle="tab">Project Features and Amenties</a>-->
+                                        <a class="nav-link active" id="nav_tabs_features_1" data-toggle="tab" href="#nav_tabs_feature_content_1" role="tab" aria-controls="nav_tabs_feature_content_1" aria-selected="true">Project Features and Amenties</a>
+                                    </li>
+                                    <li class="nav-item">
+<!--                                        <a href="#specification" role="tab" data-toggle="tab">Specification</a>-->
+                                        <a class="nav-link" id="nav_tabs_specification_1" href="#nav_tabs_specification_content_1" role="tab" aria-controls="nav_tabs_specification_content_1" data-toggle="tab" aria-selected="false">Specification</a>
+                                    </li>
+                                    <li class="nav-item">
+<!--                                        <a href="#gallary" role="tab" data-toggle="tab">Gallery</a>-->
+                                        <a class="nav-link" id="nav_tabs_gallary_1" href="#nav_tabs_gallary_content_1" role="tab" aria-controls="nav_tabs_gallary_content_1" data-toggle="tab" aria-selected="false">Gallery</a>
+                                    </li>
+                                    
+                                    <li class="nav-item">
+<!--                                        <a href="#brochure" role="tab" data-toggle="tab">Brochure</a>-->
+                                        <a class="nav-link" id="nav_tabs_brochure_1" href="#nav_tabs_brochure_content_1" role="tab" aria-controls="nav_tabs_brochure_content_1" data-toggle="tab" aria-selected="false">Brochure</a>
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="nav-link" id="nav_tabs_floor_plan_1" href="#nav_tabs_floor_plan_content_1" role="tab" aria-controls="nav_tabs_floor_plan_content_1" data-toggle="tab" aria-selected="false">Floor Plan</a>
+<!--                                        <a href="#floor_plan" role="tab" data-toggle="tab">Floor Plan</a>-->
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="nav-link" id="nav_tabs_location_plan_1" href="#nav_tabs_location_plan_content_1" role="tab" aria-controls="nav_tabs_location_plan_content_1" data-toggle="tab" aria-selected="false">Location Plan</a>
+<!--                                        <a href="#location_plan" role="tab" data-toggle="tab">Location Plan</a>-->
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="nav-link" id="nav_tabs_google_maps_1" href="#nav_tabs_google_maps_content_1" role="tab" aria-controls="nav_tabs_google_maps_content_1" data-toggle="tab" aria-selected="false">Project Location</a>
+<!--                                        <a href="#google_maps" role="tab" data-toggle="tab">Project Location</a>-->
+                                    </li>
+                                    
+                                    <li>
+                                        <a class="nav-link" id="nav_tabs_contact_us_1" href="#nav_tabs_contact_us_content_1" role="tab" aria-controls="nav_tabs_contact_us_content_1" data-toggle="tab" aria-selected="false">Contact Us</a>
+<!--                                        <a href="#contact_us" role="tab" data-toggle="tab">Contact Us</a>-->
+                                    </li>
+                                    
+                                    
+                                </ul>
+                            </div>
+                            <div class="card-body tab-content">
+                                <div class="tab-pane fade show active"
+                                    id="nav_tabs_feature_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_features_1">
+                                    
+                                    <span t-field="project_id.html_content_one"/>
+                                </div>
+                                
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_specification_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_specification_1">
+                                    
+                                    <span t-field="project_id.html_content_two"/>
+                                </div>
+                                
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_gallary_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_gallary_1">
+                                    
+                                    <div class="oe_structure" />
+                                    <div class="col-md-12">
+                                        <table width="100%" class="table-bordered">
+                                            <tbody>
+                                                <tr t-foreach="bins" t-as="tr_gallary">
+                                                    <t t-foreach="tr_gallary" t-as="td_gallary">
+                                                        <t t-if="td_gallary">
+                                                            <t t-set="gallary" t-value="td_gallary['category']" />
+                                                            <td class="oe_product oe_grid ">
+                                                                <div itemscope="itemscope" itemtype="http://schema.org/Product">
+                                                                    <div >
+                                                                        <a href="#" class="pop">
+                                                                        <img class="image" t-att-src="'data:image/png;base64,%s' % to_text(gallary.image)" style="border:auto;padding: 2px;2px;2px;2px;" width="250" height="200" alt="Gallary Image"/></a>
+                                                                    </div>
+                                                                    <section>
+                                                                        <h5>
+                                                                            <strong><center><a href="#" t-field="gallary.name" /></center></strong>
+                                                                        </h5>
+                                                                    </section>
+                                                                </div>
+                                                                <div class="modal fade" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                                  <div class="modal-dialog">
+                                                                    <div class="modal-content">
+                                                                      <div class="modal-body">
+                                                                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+                                                                        <img src="" class="imagepreview" style="width: 100%;" />
+                                                                      </div>
+                                                                    </div>
+                                                                  </div>
+                                                                </div>
+                                                                
+                                                            </td>
+                                                        </t>
+                                                        <td t-if="not td_category" class="oe-height-2" />
+                                                    </t>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_brochure_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_brochure_1">
+                                    
+                                    <table width="100%" class="table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <td t-foreach="project_id.project_brochure_ids" t-as="brochure_id" class="oe-height-2 oe_grid">
+                                                    <div class="text-center mb16">
+                                                        <div class="o_image_box">
+                                                            <div class="o_image_box">
+                                                                <img src="/website_construction_project_page/static/description/document.svg" alt="Document"/>
+                                                                <div class="o_image_overlay o_attachment_view"  t-att-data-id="brochure_id.id">
+                                                                    <a t-attf-href="/web/content/#{brochure_id.id}?download=true" target="_blank">
+                                                                    <span t-esc="brochure_id.name"/><br/>
+                                                                    <i class="fa fa-arrow-circle-o-down" title="Download this Attachement" aria-hidden="true"></i>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <section>
+                                                        <h5>
+                                                            <center><span class="text-info" t-field="brochure_id.description"/></center>
+                                                        </h5>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_floor_plan_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_floor_plan_1">
+                                    
+                                    <table width="100%" class="table-bordered">
+                                        <tbody>
+                                            <tr t-foreach="project_id.project_floor_plan_ids" t-as="floor_plan">
+                                                <td t-attf-class="oe_product oe_grid" >
+                                                    <div class="text-center mb16 mt16">
+                                                        <a href="#" id="floor_plan_ref">
+                                                            <img class="image" t-att-src="'data:image/png;base64,%s' % to_text(floor_plan.image)" style="border:auto;padding: 2px;2px;2px;2px;" width="250" height="200" alt="Floor Plan"/>
+                                                        </a>
+                                                        <div class="modal fade" id="fp_imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                              <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                  <div class="modal-body">
+                                                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+                                                                    <img src="" class="imagepreview" style="width: 100%;" />
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                            </div>
+                                                    </div>
+                                                    <section>
+                                                        <h5>
+                                                            <center><span class="text-info" t-field="floor_plan.name"/></center>
+                                                        </h5>
+                                                    </section>
+                                                    
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                                
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_location_plan_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_location_plan_1">
+                                    
+                                    <table width="100%" class="table-bordered">
+                                        <tbody>
+                                            <tr t-foreach="project_id.project_location_plan_ids" t-as="location_plan">
+                                                <td t-attf-class="oe_product oe_grid" >
+                                                    <div class="text-center mb16 mt16">
+                                                        <a href="#" id="location_plan_ref">
+                                                            <img class="image" t-att-src="'data:image/png;base64,%s' % to_text(location_plan.image)" style="border:auto;padding: 2px;2px;2px;2px;" width="250" height="200" alt="Location Plan"/>
+                                                        </a>
+    <!--                                                    <span itemprop="image" t-field="location_plan.image" t-options="{'widget': 'image','resize':'200x200', 'class': 'shadow'}" style="position: relative; display: inline-block;"/-->
+                                                        <div class="modal fade" id="lp_imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                                          <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                              <div class="modal-body">
+                                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true"></span><span class="sr-only">Close</span></button>
+                                                                <img src="" class="imagepreview" style="width: 100%;" />
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                    <section>
+                                                        <h5>
+                                                            <center><span class="text-info" t-field="location_plan.name"/></center>
+                                                        </h5>
+                                                    </section>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                                
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_google_maps_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_google_maps_1">
+                                    
+                                    <div class="col-md-6">
+                                        <address itemscope="itemscope" itemtype="http://schema.org/Organization">
+                                            <div t-field="project_id.partner_id" t-options='{
+                                                    "widget": "contact",
+                                                    "fields": ["name", "address", "phone", "mobile", "fax", "email"]}'/>
+                                            <t t-if="not project_id.google_map_img()">
+                                                <span class="fa fa-map-marker fa-fw mt16"/> <a t-att-href="project_id.google_map_link()" target="_BLANK"> Google Maps</a>
+                                            </t>
+                                        </address>
+                                    </div>
+                                    <div class="col-md-6" t-if="project_id.google_map_img()">
+                                        <a t-att-href="project_id.google_map_link()" target="_BLANK">
+                                           <img class="thumbnail img-responsive" t-att-src="project_id.google_map_img()" />
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="tab-pane fade"
+                                    id="nav_tabs_contact_us_content_1"
+                                    role="tabpanel"
+                                    aria-labelledby="nav_tabs_contact_us_1">
+                                    
+                                    <div class="text-info">
+                                        <span t-field="project_id.html_content_three"/>
+                                    </div>
+                                    <p><a href="/contactus" class="btn btn-warning btn-large" target="new">Enquiry Now</a></p>
+                                </div>
+                                
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </t>
+        </template>
+</odoo>

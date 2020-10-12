@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="job_order_inspection_form_view">
+            <field name="name">Job Order Inspection Form View</field>
+            <field name="model">job.order.inspection</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="set_to_draft" string="Set to Draft" type="object" class="oe_highlight" states="complet,cancel"/>
+                        <button name="set_to_confirm" string="Confirm" type="object" class="oe_highlight" states="draft" groups="job_inspection.group_inspection_user"/>
+                        <button name="set_to_processed" string="Process" type="object" class="oe_highlight" states="confirm" groups="job_inspection.group_inspection_manager"/>
+                        <button name="set_to_done" string="Complete" type="object" class="oe_highlight" states="process" groups="job_inspection.group_inspection_manager"/>
+                        <button name="set_to_cancel" string="Cancel" type="object"  states="confirm,draft"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirm,process,complet" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/><br/>
+                                <field name="subject" placeholder="Inspection subject..." attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="project_id" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="analytic_account_id" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="task_id" domain="[('project_id', '=', project_id)]" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="costsheet_id" domain="[('project_id', '=', project_id), ('task_id', '=', task_id),('analytic_id', '=', analytic_account_id), ('state', '!=', 'complet')]" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="costsheet_line_id" domain="[('direct_id', '=', costsheet_id)]" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                            </group>
+                            <group>
+                                <field name="create_date" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="inspection_location" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="inspector_id" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="subcontractor_id" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="reference" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                            </group>
+                            
+                            <group>
+                                <field name="inspection_type_id" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="inspection_start" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="user_id" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                            </group>
+                            <group>
+                                <field name="inspection_result" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="inspection_end" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                <field name="company_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="inspection_line" string="Inspection Lines">
+                                <group>
+                                    <field name="inspection_line" nolabel="1" attrs="{'readonly': [['state', 'in', ['complet']]]}">
+                                        <tree editable='bottom'>
+                                            <field name="inspection_record"/>
+                                            <field name="inspection_result"/>
+                                            <field name="description"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page name="other_info" string="Other Info">
+                                <group>
+                                    <group>
+                                        <field name="confirm_by_id"/>
+                                        <field name="process_by_id"/>
+                                        <field name="done_by_id"/>
+                                        <field name="cancel_by_id"/>
+                                    </group>
+                                    <group>
+                                        <field name="confirm_date"/>
+                                        <field name="process_date"/>
+                                        <field name="done_date"/>
+                                        <field name="cancel_date"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page name="internalnote" string="Internal Note">
+                                    <field name="internal_note" nolable="1" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                            </page>
+                            <page name="result description" string="Result Description">
+                                    <field name="result_description" nolable="1" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                            </page>
+                            <page name="image" string="Inspection Photos">
+                                <group>
+                                    <group>
+                                        <field name="image1" widget="image" class="oe_avatar" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="image2" widget="image" class="oe_avatar" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="image3" widget="image" class="oe_avatar" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                        <field name="image5" widget="image"  class="oe_avatar" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                    </group>
+                                    <group>
+                                        <field name="image4" widget="image" class="oe_avatar" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                        <field name="reference_drawing" widget="image" class="oe_avatar" attrs="{'readonly': [['state', 'in', ['complet']]]}"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="job_order_inspection_tree_view">
+            <field name="name">job.order.inspection.tree.view</field>
+            <field name="model">job.order.inspection</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="name"/>
+                     <field name="subject"/>
+                     <field name="project_id"/>
+                     <field name="task_id"/>
+                     <field name="user_id"/>
+                     <field name="create_date"/>
+                     <field name="inspection_result"/>
+                     <field name="inspection_type_id"/>
+                     <field name="company_id"/>
+                     <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="job_order_inspection_search_view">
+            <field name="name">job.order.inspection.search</field>
+            <field name="model">job.order.inspection</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="project_id"/>
+                     <field name="task_id"/>
+                     <field name="costsheet_id"/>
+                     <field name="costsheet_line_id"/>
+                     <field name="user_id"/>
+                     <field name="company_id"/>
+                     <field name="subcontractor_id"/>
+                     <field name="inspection_start"/>
+                     <field name="inspection_end"/>
+                     <field name="inspection_type_id"/>
+                     <field name="inspection_result"/>
+                     <group expand="0" string="Group By">
+                        <filter string="Project" name="project" context="{'group_by':'project_id'}"/>
+                        <filter string="Job Order" name="job_order" context="{'group_by':'task_id'}"/>
+                        <filter string="Cost Sheet" name="cost_sheet" context="{'group_by':'costsheet_id'}"/>
+                        <filter string="Cost Sheet Line" name="cost_sheet_line" context="{'group_by':'costsheet_line_id'}"/>
+                        <filter string="Responsible User" name="reponsible_user" context="{'group_by':'user_id'}"/>
+                        <filter string="Subcontractor" name="subcontractor" context="{'group_by':'subcontractor_id'}"/>
+                        <filter string="Create Date" name="create_date" context="{'group_by':'create_date'}"/>
+                        <filter string="Inspection Start Date" name="inspection_start_date" context="{'group_by':'inspection_start'}"/>
+                        <filter string="Inspection End Date" name="inspection_date_end" context="{'group_by':'inspection_end'}"/>
+                        <filter string="Inspection Type" name="inspection_type" context="{'group_by':'inspection_type_id'}"/>
+                        <filter string="Inspection Result" name="inspection_result" context="{'group_by':'inspection_result'}"/>
+                        <filter string="State" name="state" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_job_order_inspection" model="ir.actions.act_window">
+            <field name="name">Job Inspections</field>
+            <field name="res_model">job.order.inspection</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Job Order Inspection Tree.</field>
+        </record>
+
+        <!--menuitem name="Job Inspection" id="main_job_inspection"/-->
+        <menuitem name="Inspections" id="sub_main_menu_job_inspection" parent="odoo_job_costing_management.menu_job_managmt" sequence="1"/>
+        <menuitem name="Job Inspections" id="sub_menu_job_inspection" parent="sub_main_menu_job_inspection"  action="action_job_order_inspection"/>
+
+    </data>
+</odoo>

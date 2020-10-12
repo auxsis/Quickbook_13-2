@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+    
+        <record id="view_task_form2_inherit_construction_issue_button" model="ir.ui.view">
+            <field name="name">Project Task form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button class="oe_stat_button" icon="fa-ticket" type="object" name="action_open_construction_task_ticket" string="Issues"/>
+                </xpath>
+                <xpath expr = "//field[@name='partner_id']" position="after">
+                    <field name="price_rate"/>
+                    <field name="product_id_construction"/>
+                </xpath>
+            </field>
+          </record>
+          
+    </data>
+ </odoo>
+ 

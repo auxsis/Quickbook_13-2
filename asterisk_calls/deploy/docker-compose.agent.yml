@@ -1,0 +1,37 @@
+version: '3'
+services:
+  agent:
+    image: odooist/asterisk_calls_agent:12.0
+    restart: unless-stopped    
+    environment:
+      - AGENT_UID=asterisk_calls
+      - DEBUG=0
+      # Uncomment to enable Agent HTTPS communication interface instead of Odoo bus.
+      #- DISABLE_ODOO_BUS_POLL=1
+      #- AGENT_ADDRESS=agent
+      #- AGENT_PORT=40000
+      #- AGENT_TIMEOUT=5      
+      - ODOO_SCHEME=http
+      - ODOO_HOST=odoo
+      - ODOO_PORT=8069
+      - ODOO_POLLING_PORT=8072
+      - ODOO_DB=astcalls
+      - ODOO_LOGIN=asterisk_agent
+      - ODOO_PASSWORD=service
+      - VERIFY_CERT=0 # Set to 1 if nginx has a public certificate.
+      - ODOO_RECONNECT_TIMEOUT=1      
+      - RECORDING_KEEP_FAILED_UPLOAD=0 # Set to 1 if you want to keep recording failed to get uploaded
+      - RECORDING_KEEP_AFTER_UPLOAD=0
+      - RECORDING_UPLOAD_ENABLED=1
+      - RECORDING_UPLOAD_DELAY=5
+      - QOS_UPDATE_DELAY=4
+      - ASTERISK_HOST=asterisk
+      - MANAGER_LOGIN=odoo
+      - MANAGER_PASSWORD=odoo
+      - MANAGER_PORT=5038
+      - PING_EXPECT_TIMEOUT_MINUTES=2
+    # Override in docker-compose.override.yml if you enabled agent's HTTPS communication channel.
+    #ports:
+    #  - 40000:40000
+      
+

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data>
+        <template id="website_pathology_assets_frontend" inherit_id="website.assets_frontend" name="Website Pathology Management">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/website_pathology/static/src/css/website_patho.css"/>
+                <script type="text/javascript" src="/website_pathology/static/src/js/website_pathology_mgmt.js"/>
+                <!-- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+                <script type="text/javascript" src="/website_appointment/static/src/js/bootbox.min.js"></script>
+            </xpath>
+        </template>
+    </data>
+</odoo>

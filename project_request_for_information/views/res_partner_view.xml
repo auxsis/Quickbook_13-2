@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record id="request_information_partner_form_prize" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//notebook/page[3]/group[last()]" position="after">
+                    <group>
+                        <field name="rfi_price_rate"/>
+                        <field name="rfi_product_id"/>
+                    </group>
+                </xpath>
+
+                <xpath expr = "//page[4]" position="after">
+                    <page string="Helpdesk Tickets">
+                         <field name="rfi_request_information_ids"/>
+                    </page>
+                </xpath> 
+
+                <xpath expr = "//div[@name = 'button_box']" position="inside">
+                    <button context="{'default_partner_id': active_id}" class="oe_stat_button" type="object"  name="show_ticket"  icon="fa-tasks">
+                            <field name="rfi_ticket_count"  string="Tickets" widget="statinfo"/>
+                        </button>
+                </xpath>
+                <xpath expr = "//div[hasclass('oe_button_box')]" position="inside">
+                    <button name="action_view_rfi_request" type="object" class="oe_stat_button" string="Requests Information" icon="fa-pencil-square"/>
+                </xpath>
+            </field>
+          </record>
+
+    </data>
+ </odoo>
+ 

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+        <report
+            id="joborder_report"
+            model="project.task"
+            menu="False"
+            report_type="qweb-pdf"
+            string="Task Report"
+            name="job_workorder_website_request.joborder_report_id" 
+            file="job_workorder_website_request.joborder_report_id"
+         />
+        
+        <template id="joborder_report_id">
+          <t t-foreach="docs.sudo()" t-as="doc">
+            <t t-call="web.html_container">
+              <t t-call="web.internal_layout">
+                 <div class="page">
+                         <h3>
+                             <strong><span t-field="doc.name"/></strong> 
+                         </h3>
+                         <table class="table table-responsive">
+                            <tr>
+                                <th>Project </th>
+                                <th>Customer </th>
+                                <th>Assigned To </th>
+                                <th>Assigning Date </th>
+                                <th>Job Order Category</th>
+                                <th>Job Number</th>
+                                <th>Deadline</th>
+                            </tr>
+                            <tr>
+                                <td><span t-field="doc.project_id.name"/></td>
+                                <td><span t-field="doc.job_partner_name"/></td>
+                                <td><span t-field="doc.user_id.name"/></td>
+                                <td><span t-field="doc.date_assign"/></td>
+                                <td><span t-field="doc.job_category"/></td>
+                                <td><span t-field="doc.job_number"/></td>
+                                <td><span t-field="doc.date_deadline"/></td>
+                            </tr>
+                         </table>
+                         <div class="row">
+                             <div class="col-8 text-left">
+                                Signature:____________________
+                             </div>
+                         </div>
+                </div>
+              </t>
+            </t>
+          </t>
+        </template>
+        
+    </data>
+</openerp>

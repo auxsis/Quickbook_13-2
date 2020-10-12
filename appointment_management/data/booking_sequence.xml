@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="booking_seq" model="ir.sequence">
+            <field name="name">calendar.event</field>
+            <field name="code">calendar.event</field>
+            <field name="prefix">BID:</field>
+            <field name="padding">5</field>
+            <field name="gr_number" eval="False"/>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="inspection_report"
+            model="job.order.inspection"
+            report_type="qweb-pdf"
+            string="Inspection"
+            name="job_inspection.inspection_print"
+            file="job_inspection.inspection_print"
+         />
+
+        <template id="inspection_print">
+             <t t-foreach="docs" t-as="doc">
+               <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <h3 class="text-center">
+                        <span>Job Inspection: </span> - <span t-field="doc.subject"/> - <span t-field="doc.name"/>
+                    </h3>
+                    <table class="table table-condensed">
+                            <tr>
+                               <td><strong>Project</strong></td><td> <span t-field="doc.project_id.name"/></td>
+                               <td><strong>Create Date</strong></td><td> <span t-field="doc.create_date"/></td>
+                           </tr>
+                            <tr>
+                               <td><strong>Analytic Account</strong></td><td> <span t-field="doc.analytic_account_id.name"/></td>
+                               <td><strong>Inspection Location</strong></td><td> <span t-field="doc.inspection_location"/></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Job Order</strong></td><td> <span t-field="doc.task_id.name"/></td>
+                               <td><strong>Inspection Responsible</strong></td><td> <span t-field="doc.inspector_id.name"/></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Job Cost Sheet</strong></td><td> <span t-field="doc.costsheet_id.name"/></td>
+                               <td><strong>Subcontractor</strong></td><td> <span t-field="doc.subcontractor_id.name"/></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Job Cost Sheet Line</strong> </td><td> <span t-field="doc.costsheet_line_id.description"/></td>
+                               <td><strong>Reference Specification</strong></td><td> <span t-field="doc.reference"/></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Inspection Type</strong></td><td><span t-field="doc.inspection_type_id.name"/></td>
+                               <td><strong>Inspection Result</strong></td><td><span t-field="doc.inspection_result.name"/></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Inspection Start Date</strong></td><td> <span t-field="doc.inspection_start"/></td>
+                               <td><strong>Inspection End Date</strong></td><td> <span t-field="doc.inspection_end"/></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Responsible User</strong></td><td> <span t-field="doc.user_id.name"/></td>
+                               <td><strong>Company</strong></td><td> <span t-field="doc.company_id.name"/></td>
+                           </tr>
+                    </table>
+                    <h3>Inspection Lines</h3>
+                    <table class="table table-condensed">
+                            <tr>
+                               <td><strong>Inspection</strong></td><td><strong>Inspection Result</strong></td><td><strong>Description</strong></td>
+                           </tr>
+                       <t t-foreach="doc.inspection_line" t-as="line">
+                           <tr>
+                               <td><span t-field="line.inspection_record.name"/></td><td><span t-field="line.inspection_result.name"/></td><td> <span t-field="line.description"/></td>
+                           </tr>
+                       </t>
+                    </table>
+                    <h3>Result Description</h3>
+                    <table class="table table-condensed">
+                            <tr>
+                               <td><span t-field="doc.result_description"/></td>
+                           </tr>
+                    </table>
+                    <h3>Other Information</h3>
+                    <table class="table table-condensed">
+                           <tr t-if="doc.confirm_by_id.name">
+                                <td><strong>Confirmed By</strong></td><td> <span t-field="doc.confirm_by_id.name"/></td>
+                                <td><strong>Confirmed Date</strong></td><td> <span t-field="doc.confirm_date"/></td>
+                           </tr>
+                           <tr t-if="doc.process_by_id.name">
+                                <td><strong>Processed By</strong></td><td> <span t-field="doc.process_by_id.name"/></td>
+                                <td><strong>Processed Date</strong></td><td> <span t-field="doc.process_date"/></td>
+                           </tr>
+                           <tr t-if="doc.done_by_id.name">
+                                <td><strong>Completed By</strong></td><td> <span t-field="doc.done_by_id.name"/></td>
+                                <td><strong>Completed Date</strong></td><td> <span t-field="doc.done_date"/></td>
+                           </tr>
+                           <tr t-if="doc.cancel_by_id.name">
+                                <td><strong>Cancelled By</strong></td><td> <span t-field="doc.cancel_by_id.name"/></td>
+                                <td><strong>Cancelled Date</strong></td><td> <span t-field="doc.done_date"/></td>
+                           </tr>
+                    </table>
+                    <h3>Inspection Photos</h3>
+                    <table class="table table-condensed">
+                            <tr>
+                                <td t-if="doc.image1"><img alt="set company logo" style="width:80px;height:80px;" t-attf-src="data:image/gif;base64, #{doc.image1}"/></td>
+                                <td t-if="doc.image2"><img alt="set company logo" style="width:80px;height:80px;" t-attf-src="data:image/gif;base64, #{doc.image2}"/></td>
+                           </tr>
+                           <tr>
+                                <td t-if="doc.image3"><img alt="set company logo" style="width:80px;height:80px;" t-attf-src="data:image/gif;base64, #{doc.image3}"/></td>
+                                <td t-if="doc.image4"><img alt="set company logo" style="width:80px;height:80px;" t-attf-src="data:image/gif;base64, #{doc.image4}"/></td>
+                           </tr>
+                           <tr>
+                                <td t-if="doc.image5"><img alt="set company logo" style="width:80px;height:80px;" t-attf-src="data:image/gif;base64, #{doc.image5}"/></td>
+                                <td t-if="doc.reference_drawing"><img alt="set company logo" style="width:80px;height:80px;" t-attf-src="data:image/gif;base64, #{doc.reference_drawing}"/></td>
+                           </tr>
+                    </table>
+                    <div class="row mt32 mb32">
+                         <div class="col-6 text-left">
+                            <strong></strong>
+                         </div>
+                         <div class="col-6 text-right">
+                            <strong></strong>
+                         </div>
+                     </div>
+                     <div class="row mt32 mb32">
+                         <div class="col-6 text-left">
+                            <strong style="padding-left:5px;">Inspector's Signature:____________________</strong>
+                         </div>
+                         <div class="col-6 text-right">
+                            <strong style="padding-left:5px;">Authorised's Signature:____________________</strong>
+                         </div>
+                     </div>
+                     <div class="row mt32 mb32">
+                         <div class="col-6 text-left">
+                            <strong style="padding-left:5px;">Date:____________________</strong>
+                         </div>
+                         <div class="col-6 text-right">
+                            <strong>Date:____________________</strong>
+                         </div>
+                     </div>
+                </div>
+              </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

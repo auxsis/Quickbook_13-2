@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="portal_my_construction_ticket" name="Portal Your Issues: project entries" inherit_id="portal.portal_my_home" priority="28">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside"><!-- odoo11 -->
+                <a t-if="issue_count" class="list-group-item list-group-item-action d-flex align-items-center justify-content-between" href="/your/issue_tickets" title="Your Issues">Your Issues
+                    <span class="badge badge-secondary badge-pill" t-esc="issue_count"/>   
+                </a>
+            </xpath>
+        </template>
+        
+        <template id="display_issue_tickets" name="Display Your Issues">
+            <t t-call="portal.portal_layout"><!-- odoo11 -->
+            <h3>Your Project Issues
+                <t t-call="portal.portal_searchbar"/>
+            </h3>
+                <table class="table table-hover o_my_status_table">
+                    <thead>
+                      <tr class="active">
+                        <th>Issue No</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Priority</th>
+                        <th>Stage</th>
+                      </tr>
+                    </thead>
+                    <t t-foreach="issue_tickets" t-as="issue">
+                        <tr>
+                            <td>
+                                <a t-attf-href="/your/issue_ticket/#{issue.id}?{{ keep_query() }}"><span t-field="issue.name"/></a>
+                            </td>
+                            <td>
+                                <span t-field="issue.subject"/>
+                            </td>
+                            <td>
+                                <span t-field="issue.request_date"/>
+                            </td>
+                            <td>
+                                <span t-field="issue.priority"/>
+                            </td>
+                             <td>
+                                <span t-field="issue.stage_type"/>
+                            </td>
+                        </tr>
+                    </t>
+                </table>
+                <div t-if="pager" class="o_portal_pager text-center">
+                    <t t-call="portal.pager"/>
+                </div>
+             </t>
+        </template>
+        
+        
+        <template id="display_issue_ticket" name="display your issue">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+                        <div class="oe_structure">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <ol class="breadcrumb mt8">
+                                        <li><a href="/my/home"><i class="fa fa-home"/></a></li>
+                                        <li><a t-attf-href="/your/issue_tickets?#{keep_query()}">Your Issues</a></li>
+                                        <li><span t-field="issue.name"/></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h4>
+                                                <span t-field="issue.name"/> - <span t-field="issue.subject"/>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class='row'>
+                                        <div class="col-md-6">
+                                            <div class="mb8">
+                                                <strong>Assigned to :</strong> <span t-field="issue.user_id"/>
+                                            </div>
+                                             <div class="mb8">
+                                                <strong>Email :</strong> <span t-field="issue.email"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Issue Team :</strong> <span t-field="issue.team_id"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Department  :</strong> <span t-field="issue.department_id"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Project:</strong> <span t-field="issue.project_id"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Create Date:</strong> <span t-field="issue.request_date"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Is Issue Closed?:</strong> <span t-field="issue.is_close"/>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb8">
+                                                <strong>Customer:</strong> <span t-field="issue.partner_id"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Phone :</strong> <span t-field="issue.phone"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Team Leader :</strong> <span t-field="issue.team_leader_id"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Analytic Account  :</strong> <span t-field="issue.analytic_account_id"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Priority:</strong> <span t-field="issue.priority"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Close Date:</strong> <span t-field="issue.close_date"/>
+                                            </div>
+                                            <div class="mb8">
+                                                <strong>Total Hours Spent:</strong> <span t-field="issue.total_spend_hours"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="container" t-if="issue.description">
+                                        <p t-field="issue.description" />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div data-role="header" data-theme="b">
+                                    <p align="left" style="color:#483D8B"><strong>Send Message and Attachments</strong></p>
+                                </div>
+                                <form  method="post" enctype="multipart/form-data" >
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/><br/>
+                                    <textarea name="ticket_comment" value="" line="3" type="text" rows="4" cols="100" placeholder="Add a comment..." class="form-control"/>
+                                    <input type="file" class="oe_inline" multiple="multiple" name="attachment"/><span>
+                                    <input type="submit" value="Send Now" class="btn btn-info" name="send"/></span>
+                                </form>
+                            
+                            <div class="row mt32 " >
+                                <div class="col-md-12">
+                                    <h4><strong>Message and communication history</strong></h4>
+                                </div>
+                                <div class="col-md-10 col-md-offset-1 mt16">
+    <!--                                <t t-call="website_mail.message_thread"-->
+                                    <t t-call="construction_contracting_issue_tracking.construction_message_thread_ticket">
+                                        <t t-set="object" t-value="issue"/>
+                                        <t t-set="chatter_mode" t-value="'json'"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+        
+        
+    </data>
+</odoo>

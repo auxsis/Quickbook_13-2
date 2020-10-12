@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_employee_custom_worktype,employee_custom_worktype,model_contract_worktype,base.group_user,1,0,0,0
+access_hr_manager_custom_worktype,hr_manager_custom_worktype,model_contract_worktype,hr.group_hr_manager,1,1,1,1
+access_employee_payslip_totalhour,employee_payslip_totalhour,model_payslip_totalhour,base.group_user,1,0,0,0
+access_hr_manager_payslip_totalhour,hr_manager_payslip_totalhour,model_payslip_totalhour,hr.group_hr_manager,1,1,1,1

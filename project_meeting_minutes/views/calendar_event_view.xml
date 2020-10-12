@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+
+        <record id="job_cost_meeting_form_view" model="ir.ui.view">
+            <field name="name">calendar.event.form.view</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//field[@name='partner_ids']" position="after">
+                    <group>
+                        <field name="project_id"/>
+                        <field name='analytic_id'/>
+                        <field name="task_id" domain="([('project_id', '=', project_id)])"/>
+                        <field name="costsheet_id" domain="([('analytic_id', '=', analytic_id), ('project_id', '=', project_id), ('task_id', '=', task_id)])"/>
+                        <field name="costsheet_line_id" domain="([('direct_id', '=', costsheet_id)])"/>
+                    </group>
+                </xpath>
+                <xpath expr = "//page[3]" position="after">
+                    <page name="timesheet" string="Timesheets">
+                            <group>
+                                <field name="timesheet_ids" context="{'default_project_id': project_id, 'default_task_id': task_id, 'default_job_cost_id': costsheet_id, 'default_job_cost_line_id': costsheet_line_id}" nolabel="1">
+                                <tree editable='bottom'>
+                                    <field name="date"/>
+                                    <field name="name"/>
+                                    <field name="project_id"/>
+                                    <field name="task_id"/>
+                                    <!--field name="company_id"/-->
+                                    <!--field name="amount"/-->
+                                    <field name="unit_amount"/>
+                                    <field name="start_time"/>
+                                    <field name="end_time"/>
+                                    <field name="job_cost_id"/>
+                                    <field name="job_cost_line_id"/>
+                                </tree>
+                                </field>
+                            </group>
+                        </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="job_cost_meeting_search_view" model="ir.ui.view">
+            <field name="name">calendar.event.form.view</field>
+            <field name="model">calendar.event</field>
+            <field name="inherit_id" ref="calendar.view_calendar_event_search"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//search" position="inside">
+                    <field name="project_id"/>
+                    <field name='analytic_id'/>
+                    <field name="task_id"/>
+                    <field name="costsheet_id"/>
+                    <field name="costsheet_line_id"/>
+                     <filter name="Project" domain="[]" context="{'group_by':'project_id'}"/>
+                     <filter name="Analytic Accout" domain="[]" context="{'group_by':'analytic_id'}"/>
+                     <filter name="Job Order" domain="[]" context="{'group_by':'task_id'}"/>
+                     <filter name="Job Cost Sheet" domain="[]" context="{'group_by':'costsheet_id'}"/>
+                     <filter name="Job Cost Sheet Line" domain="[]" context="{'group_by':'costsheet_line_id'}"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

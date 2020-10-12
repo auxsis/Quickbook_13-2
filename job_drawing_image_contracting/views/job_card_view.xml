@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_task_form2_inherit_job_drawing_img" model="ir.ui.view">
+        <field name="name">Project Task From Inherit Job Drawing Img</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="contracting_drawing" string="Contract Drawing">
+                    <field name="contracting_drawing_ids" mode="tree">
+                        <form string="Drawings">
+                            <group>
+                                <group>
+                                    <field name="image" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;image_medium&quot;}"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="name"/>
+                                </group>
+                                <group>
+                                    <field name="description"/>
+                                </group>
+                            </group>
+                        </form>
+                        <tree string="Contracting Drawing Document">
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="image"/>
+                            <button name="open_drawing_document" string="Open" type="object" class="oe_highlight"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

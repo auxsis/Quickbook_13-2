@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="is_paid_form_view" model="ir.ui.view">
+            <field name="name">account.analytic.line.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                        <field name="is_payroll_paid"/>
+                        <field name="custom_payslip_id"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="is_paid_form_search_view" model="ir.ui.view">
+            <field name="name">account.analytic.line.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                        <field name="custom_payslip_id"/>
+                        <filter name="custom_payslip_id" string="Employee Payslip" domain="[]" context="{'group_by':'custom_payslip_id'}"/>
+                        <filter name="Is Paid" string="Paid Payslip" domain="[('custom_payslip_id.state', '=', 'paid')]" help="Paid Timesheet"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="is_paid_form_tree_view" model="ir.ui.view">
+            <field name="name">account.analytic.line.form</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='is_paid']" position="after">
+                        <field name="is_payroll_paid"/>
+                        <field name="custom_payslip_id"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record model="ir.actions.act_window" id="action_analytic_line_custom">
+            <field name="name">Paid Timesheet Lines</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+    </data>
+</odoo>

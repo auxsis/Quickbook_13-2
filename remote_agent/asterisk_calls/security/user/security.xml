@@ -1,0 +1,83 @@
+<odoo>
+
+    <record model="res.groups" id="group_asterisk_calls_user">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_asterisk_calls_category"/>
+        <field name="implied_ids" eval="[(4, ref('remote_agent.group_agent_user'))]"/>
+    </record>
+
+    <record id="asterisk_calls_call_user_rule" model="ir.rule">
+        <field name="name">Asterisk call call rule</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>                
+        <field name="model_id" ref="model_asterisk_calls_call"/>
+        <field name="groups" eval="[(4, ref('group_asterisk_calls_user'))]"/>
+        <field name="domain_force">['|', '|', 
+                                ('src_user','=', user.id),
+                                ('dst_user', '=', user.id),
+                                ('message_follower_ids.partner_id', 'in', [user.partner_id.id])
+                            ]</field>
+    </record>
+
+    <record id="asterisk_calls_call_library_user_rule" model="ir.rule">
+        <field name="name">Asterisk call call library / partners rule</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_write" eval="0"/>
+        <field name="perm_unlink" eval="0"/>                
+        <field name="model_id" ref="model_asterisk_calls_call"/>
+        <field name="groups" eval="[(4, ref('group_asterisk_calls_user'))]"/>
+        <field name="domain_force">[('is_private','=', False), '|', 
+                ('in_library','=', True), ('partner','!=',False)]</field>
+    </record>
+
+    <record id="asterisk_calls_call_library_user2_rule" model="ir.rule">
+        <field name="name">Asterisk call call library 2 rule</field>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="0"/>                
+        <field name="model_id" ref="model_asterisk_calls_call"/>
+        <field name="groups" eval="[(4, ref('group_asterisk_calls_user'))]"/>
+        <field name="domain_force">[('in_library','=', True), '|', 
+                ('src_user','=',user.id),('dst_user','=',user.id)]</field>
+    </record>
+
+    <record id="asterisk_calls_user_user_rule" model="ir.rule">
+        <field name="name">Asterisk call user rule</field>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="0"/>                
+        <field name="model_id" ref="model_asterisk_calls_user"/>
+        <field name="groups" eval="[(4, ref('group_asterisk_calls_user'))]"/>
+        <field name="domain_force">[('user','=',user.id)]</field>
+    </record>
+
+    <record id="asterisk_calls_tag_user_rule" model="ir.rule">
+        <field name="name">Asterisk call tag user rule</field>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>                
+        <field name="model_id" ref="model_asterisk_calls_tag"/>
+        <field name="groups" eval="[(4, ref('group_asterisk_calls_user'))]"/>
+        <field name="domain_force">[('create_uid','=',user.id)]</field>
+    </record>
+
+    <record id="asterisk_calls_channel_rule" model="ir.rule">
+        <field name="name">Asterisk call channel rule</field>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_unlink" eval="1"/>                
+        <field name="model_id" ref="model_asterisk_calls_channel"/>
+        <field name="groups" eval="[(4, ref('group_asterisk_calls_user'))]"/>
+        <field name="domain_force">['|', ('src_user','=', user.id),
+                                ('dst_user', '=', user.id)]</field>
+    </record>
+
+
+</odoo>

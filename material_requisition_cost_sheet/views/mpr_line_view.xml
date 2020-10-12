@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="material_purchase_requisition_line_form_view" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.line.form.view</field>
+            <field name="model">material.purchase.requisition.line</field>
+            <field name="arch" type="xml">
+                <form>
+                     <group>
+                        <group>
+                            <field name="requisition_type"/>
+                            <field name="product_id"/>
+                            <field name="description"/>
+                            <field name="qty"/>
+                            <field name="uom"/>
+                            <field name="partner_id"/>
+                        </group>
+                     </group>
+                </form>
+            </field>
+        </record>
+        
+        <record id="material_purchase_requisition_line_tree_view" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.line.tree</field>
+            <field name="model">material.purchase.requisition.line</field>
+            <field name="arch" type="xml">
+                 <tree>
+                    <field name="requisition_type"/>
+                    <field name="product_id"/>
+                    <field name="description"/>
+                    <field name="qty"/>
+                    <field name="uom"/>
+                    <field name="partner_id"/>
+                 </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_material_purchase_requisition_lines">
+            <field name="name">Material Purchase Requisition Lines</field>
+            <field name="res_model">material.purchase.requisition.line</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+    </data>
+</odoo>

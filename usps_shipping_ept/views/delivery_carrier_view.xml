@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="view_delivery_carrier_usps_form_view_ept" model="ir.ui.view">
+		<field name="name">delivery.carrier.USPS.form.view.ept</field>
+		<field name="model">delivery.carrier</field>
+		<field name="inherit_id" ref="delivery.view_delivery_carrier_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//page[@name='destination']" position='before'>
+				<page string="Configuration" name="USPS_configuration"
+					attrs="{'invisible': [('delivery_type', '!=', 'usps_ept')]}">
+						<p class="alert alert-danger" attrs="{'invisible' : [('delivery_type', '!=', 'usps_ept')]}" >
+                    	Note : Weight UOM must be select LB(Pound) in USPS provider.
+                    </p>
+					<group>
+						<field name="usps_evsapi_use"/>
+						<field name="usps_service_type"
+							attrs="{'required': [('delivery_type', '=', 'usps_ept')]}" />
+
+						<field name="usps_delivery_nature"
+							attrs="{'required': [('delivery_type', '=', 'usps_ept')]}" />
+
+						<field name="usps_mail_type"
+							attrs="{'invisible': [('usps_delivery_nature', '=', 'domestic')],'required': [('usps_delivery_nature', '!=', 'domestic')]}" />
+
+						<field name="usps_firstclass_mail_type"
+							attrs="{'invisible': [('usps_service_type', '!=', 'First Class')],'required': [('delivery_type', '=', 'usps_ept'),('usps_service_type', '=', 'First Class')]}" />
+
+						<field name="usps_container_size" invisible="1" />
+
+						<field name="usps_container"
+							attrs="{'required': [('delivery_type', '=', 'usps_ept')]}" />
+						<field name="usps_content_type"
+							attrs="{'required': [('delivery_type', '=', 'usps_ept')]}" />
+						<field name="usps_default_product_packaging_id" domain="[('package_carrier_type', '=', 'usps_ept')]"
+							context="{'default_package_carrier_type':'usps_ept'}" attrs="{'required': [('delivery_type', '=', 'usps_ept')]}"/>
+
+						<field name="usps_label_type"
+							attrs="{'required': [('delivery_type', '=', 'usps_ept')]}" />
+						<field name="usps_label_size"/>
+						<field name="usps_machinable" />
+					</group>
+				</page>
+			</xpath>
+		</field>
+	</record>
+</odoo>

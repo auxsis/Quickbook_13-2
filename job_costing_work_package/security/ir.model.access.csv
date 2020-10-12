@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_job_costing_work_package,access_project_work,job_costing_work_package.model_project_work_package,project.group_project_manager,1,1,1,1
+access_job_costing_work_project,access_work_project_work,job_costing_work_package.model_project_work_package,project.group_project_user,1,1,1,1
+access_job_costing_work_employee,access_work_project_employee,job_costing_work_package.model_project_work_package,base.group_user,1,0,0,0

@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+    
+    <record id="job_costing_form_view_inherit_documents" model="ir.ui.view">
+        <field name="name">job.costing.form</field>
+        <field name="model">job.costing</field>
+        <field name="inherit_id" ref="odoo_job_costing_management.job_costing_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                 <button class="oe_stat_button" string="Documents" name="attachment_tree_view" type="object" icon="fa-files-o">
+                </button>
+           </xpath>
+        </field>
+    </record>
+    
+    </data>
+</odoo>

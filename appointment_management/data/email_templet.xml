@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<openerp>
+   <data noupdate="1">
+       <record id="email_template_appointment_book" model="mail.template">
+           <field name="name">Appointment Book Mail</field>
+           <field name="model_id" ref="base.model_res_users"/>
+           <field name="auto_delete" eval="True"/>
+           <field name="email_from">${user.email}</field>
+           <field name="email_to">${'partner_email' in ctx and ctx['partner_email']}</field>
+           <field name="subject">Appointment Scheduled on ${'date' in ctx and ctx['date']} with ${object.name}.</field>
+           <field name="body_html"><![CDATA[
+                <p><h2>New Appointment</h2></p>
+                <p>Dear ${'partner_name' in ctx and ctx['partner_name']}</p>
+                <p><b>You have an appointment scheduled</b>.</p><br/>
+                
+                <p><b>When :</b>${'date' in ctx and ctx['date']}</p>
+                <p><b>Provider :</b>${'partner_name' in ctx and ctx['partner_name']}</p><br/>
+                
+                <p><b>Customer :</b>${'customer_name' in ctx and ctx['customer_name']}</p>
+                <p><b>Email :</b>${'customer_email' in ctx and ctx['customer_email']}</p>
+                <p><b>Phone :</b>${'customer_phone' in ctx and ctx['customer_phone']}</p>
+                <p><b>Subject :</b>${'subject' in ctx and ctx['subject']}</p>
+                <p><b>Notes :</b>${'note' in ctx and ctx['note']}</p>
+                <p><b>Booked From :</b>${'book_id' in ctx and ctx['book_id']}</p>
+                
+             <div style="width: 347px; margin: 0px; padding: 5px 14px; line-height: 16px; background-color: #F2F2F2;">
+               <span style="color: #222; margin-bottom: 5px; display: block; ">
+                   ${object.company_id.partner_id.sudo().with_context(show_address=True, html_format=True).name_get()[0][1] | safe}
+               </span>
+               % if object.company_id.phone:
+                   <div style="margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; ">
+                       Phone:&nbsp; ${object.company_id.phone}
+                   </div>
+               % endif
+               % if object.company_id.website:
+                   <div>
+                       Web :&nbsp;<a href="${object.company_id.website}">${object.company_id.website}</a>
+                   </div>
+               %endif
+               <p></p>
+   
+               ]]>
+           </field>
+       </record>
+
+   </data>
+</openerp>

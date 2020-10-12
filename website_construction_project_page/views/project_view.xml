@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="construction_project_inherit_form_view" model="ir.ui.view">
+            <field name="name">project.project.inherit</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='oe_title']" position="before">
+                    <field name="image1" widget="image" class="oe_avatar"/>
+                </xpath>
+                <xpath expr="//field[@name='sequence']" position="before">
+                    <field name="project_category_id"/>
+                </xpath>
+                <xpath expr="//notebook/page" position="after">
+                    <page name="project_description" string="Description">
+                        <field name="description"/>
+                    </page>
+                    <page name="project_brochure" string="Brochures">
+                        <field name="project_brochure_ids"/>
+                    </page>
+                </xpath>
+                <xpath expr="//notebook/page[last()]" position="after">
+                    <page name="more_images" string="More Project Images">
+                        <field name="project_image_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="image"/>
+<!--                                <field name="image" widget="image" class="oe_avatar" options='{"preview_image": "image_thumb","size": [90, 90]}'/>-->
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="gallary_images" string="Gallery Images">
+                        <field name="project_gallary_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="image"/>
+<!--                                <field name="image" widget="image" class="oe_avatar" options='{"preview_image": "image_thumb","size": [90, 90]}'/>-->
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="html_content_one" string="Project Features And Amenties">
+                        <field name="html_content_one"/>
+                    </page>
+                    <page name="html_content_two" string="Specification">
+                        <field name="html_content_two"/>
+                    </page>
+                    <page name="html_content_three" string="Contact Us">
+                        <field name="html_content_three"/>
+                    </page>
+                    <page name="html_content_four" invisible="1" string="Four Html Content">
+                        <field name="html_content_four"/>
+                    </page>
+                    <page name="html_content_five" invisible="1" string="Five Html Content">
+                        <field name="html_content_five"/>
+                    </page>
+                    <page name="project_floor_plan_page" string="Project Floor Plan">
+                        <field name="project_floor_plan_ids"/>
+                    </page>
+                    <page name="project_location_plan" string="Project Location Plan">
+                        <field name="project_location_plan_ids"/>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id='asterisk_calls_partner_action' model='ir.actions.act_window'>
+        <field name='name'>Partner calls</field>
+        <field name='res_model'>asterisk_calls.call</field>
+        <field name='view_mode'>tree,form</field>
+        <field name="domain">['|', '&amp;',
+            ('partner','=', active_id), ('partner.is_company', '=', False),
+            '&amp;',
+            ('partner.is_company', '=', False),
+            ('partner.parent_id','=', active_id)]</field>
+    </record>
+
+    <!-- First view for adding asterisk_extension field -->
+    <record id="view_partner_form_1" model="ir.ui.view">
+        <field name="name">asterisk_calls.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority">51</field>
+        <field name="arch" type="xml">
+            <field name="phone" position="after">
+                <field name="phone_extension" widget="originate_extension"
+                    attrs="{'invisible': [('phone', '=', False)]}"/>
+            </field>
+            <field name="email" position="before">
+                <field name="asterisk_extension" widget="originate_call"
+                    attrs="{'invisible': [('asterisk_extension', '=', False)]}"/>
+            </field>
+            <button name="toggle_active" position="before">
+                <button name="%(asterisk_calls.asterisk_calls_partner_action)d" type="action"
+                    class="oe_stat_button" icon="fa-phone"> 
+                    <field name="asterisk_calls_count" string="Calls" widget="statinfo"/>
+                </button>
+            </button>
+        </field>
+    </record>
+
+    <!-- The 2-nd form is for overwriting widget after sms form view will apply its changes. -->
+    <record id="view_partner_form_2" model="ir.ui.view">
+        <field name="name">asterisk_calls.res.partner.form</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="priority">52</field>
+        <field name="arch" type="xml">
+            <field name="phone" position="attributes">
+                <attribute name="widget">originate_call</attribute>
+            </field>
+
+            <field name="mobile" position="attributes">
+                <attribute name="widget">originate_call</attribute>
+            </field>
+
+            <xpath expr="//div[hasclass('oe_kanban_details')]//field[@name='phone']" position="attributes">
+                <attribute name="widget">originate_call</attribute>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_kanban_details')]//field[@name='mobile']" position="attributes">
+                <attribute name="widget">originate_call</attribute>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_kanban_details')]//field[@name='name']" position="after">
+                <a type="action" name="%(asterisk_calls.asterisk_calls_partner_action)d">
+                    <span class="fa fa-phone oe_right">
+                        <field name="asterisk_calls_count"/>
+                    </span>
+                </a>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="search_partner_calls" model="ir.ui.view">
+        <field name="name">asterisk_calls.res.partner.search</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="phone"/>
+                <field name="mobile"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

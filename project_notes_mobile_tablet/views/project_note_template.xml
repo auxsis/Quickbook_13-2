@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="assets_frontend_inherit_project" inherit_id="web.assets_frontend" name="Forum Assets Project notes">
+            <xpath expr="." position="inside">
+                <link rel='stylesheet' href='/project_notes_mobile_tablet/static/src/css/project_note.css'/>
+                <script type="text/javascript" src="/project_notes_mobile_tablet/static/src/js/notes_forum.js"/>
+                <script type="text/javascript" src="/project_notes_mobile_tablet/static/src/js/project_notes.js"/>
+            </xpath>
+        </template>
+
+        <template id="portal_my_note" name="Portal My notes: project entries" inherit_id="portal.portal_my_home" priority="30">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <!-- <li class="list-group-item">
+                    <span class="badge" t-esc="notes_count"/>
+                    <a href="/my/notes">Notes</a>
+                </li> -->
+                <t t-if="notes_count" t-call="portal.portal_docs_entry">
+                    <t t-set="title">Notes</t>
+                    <t t-set="url" t-value="'/my/notes'"/>
+                    <t t-set="count" t-value="notes_count"/>
+                </t>
+            </xpath>
+        </template>
+
+        <template id="display_notes" name="Display notes">
+            <t t-call="portal.portal_layout">
+    <style>
+div.notes {
+    white-space: nowrap;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>
+                    <h3 class="page-header">
+                        Your Notes
+                        <t t-call="portal.portal_searchbar"/>
+                    </h3>
+                    <div class="row" style='background-color: #d3d3d3'>
+                        <div class="form-group">
+                            <div class="col-sm-6">
+                                <a t-attf-href="/my/add_notes" alt="Add new note" class="btn btn-default btn-primary pull-left mb32">
+                                    Add Note
+                                </a>
+                            </div>
+                            <div class="dropdown pull-right mr8 col-sm-6">
+                                <ul class="dropdown-menu" aria-labelledby="sortby">
+                                    <li t-foreach="sortings" t-as="option" t-attf-class="#{sortby == option and 'active'}">
+                                        <a t-att-href="default_url + '?' + keep_query('date_begin', 'date_end', sortby=option)"><span t-esc="sortings.get(option).get('label')"/></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table id="note_table" class="table table-hover" width="100%">
+                        <thead>
+                            <tr class="active">
+                                <th>Note</th>
+                                <th>Tags</th>
+                                <th>Project</th>
+                                <th>Task</th>
+                            </tr>
+                        </thead>
+                        <t t-foreach="notes" t-as="note">
+                            <tr>
+                                <td>
+                                    <div class="notes">
+                                        <a t-attf-href="/my/note/{{note.id}}?{{keep_query()}}">
+                                            <span t-field="note.memo"/>
+                                         </a>
+                                     </div>
+                                </td>
+                                <td>
+                                    <a t-attf-href="/my/note/{{note.id}}?{{keep_query()}}">
+                                        <t t-foreach="note.tag_ids" t-as="t">
+                                            <span t-esc="t.name"/>
+                                        </t>
+                                    </a>
+                                </td>
+                                <td>
+                                    <!--a t-attf-href="/my/note/{{note.id}}?{{keep_query()}}"-->
+                                        <span t-field="note.project_id.name"/>
+                                    <!--/a-->
+                                </td>
+                                <td>
+                                     <span t-field="note.task_id.name"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </table>
+                    <div t-if="pager" class="o_portal_pager text-center">
+                        <t t-call="portal.pager"/>
+                    </div>
+
+            </t>
+        </template>
+
+    <template id="add_new_notes" name="New User">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+                        <div class="oe_structure">
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <ol class="breadcrumb mt8">
+                                        <li>
+                                            <a href="/my/home">
+                                                <i class="fa fa-home"/>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a t-attf-href="/my/notes">My Notes</a>
+                                        </li>
+                                        <li>
+                                            <t>New Notes</t>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+
+                            <form action="/my/create_new_note" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="row o_website_portal_details">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="form-group  col-xl-6" id="project">
+                                                <label class="control-label" for="project_id">Project</label>
+                                                    <select name="project_id" required="required" class="form-control">
+                                                        <option value="">Select Project...</option>
+                                                        <t t-foreach="project_ids or []" t-as="project">
+                                                            <option t-att-value="project.id" t-att-selected="project.id == projects and 'selected' or null">
+                                                                <t t-esc="project.name" />
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                            </div>
+                                            <div class="form-group  col-xl-6" id="task">
+                                                <label class="control-label" for="task_id">Task</label>
+                                                <select name="task_id" class="form-control">
+                                                    <option value="">Select Task...</option>
+                                                    <t t-foreach="task_ids or []" t-as="task">
+                                                        <option t-att-value="task.id" t-att-data-project_id="task.project_id.id" t-att-selected="task.id == tasks and 'selected' or null">
+                                                            <t t-esc="task.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                            </div>
+                                            <div class="clearfix"/>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="description">Notes</label>
+                                                <textarea name="content" required="True" id="content" placeholder="Your Answer..." class="form-control load_editor">
+                                                </textarea>
+                                            </div>
+                                            <input type="hidden" name="redirect" t-att-value="redirect"/>
+                                            <button type="submit" class="btn btn-default btn-primary mb32 col-sm-3">
+                                                Save <span class="fa fa-long-arrow-right"/>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="user_thanks_note">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure oe_empty">
+                        <div class="container text-success oe_subdescription">
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="alert alert-success">
+                                        <i class="fa fa-thumbs-o-up fa-2x">
+                                        </i>
+                                        Your record has been created successfully.
+                                    </div>
+                                    <div>
+                                        <a t-attf-href="/my/notes" class="btn btn-default btn-primary">
+                                            Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="edit_note" name="New User">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+                        <div class="oe_structure">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <ol class="breadcrumb mt8">
+                                        <li>
+                                            <a href="/my/home">
+                                                <i class="fa fa-home"/>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a t-attf-href="/my/notes">My Notes</a>
+                                        </li>
+                                        <li>
+                                            <t>Edit Note</t>
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <form action="/my/update_note" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="row o_website_portal_details">
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="form-group  col-xl-6" id="project">
+                                                <label class="control-label" for="project_id">Project</label>
+                                                <select name="project_id" disabled="disabled" required="required" class="form-control">
+                                                            <option t-att-value="note.project_id.id" t-att-selected="note.project_id.id or null">
+                                                                <t t-esc="note.project_id.name"/>
+                                                            </option>
+                                                    </select>
+                                            </div>
+                                            <div class="form-group  col-xl-6" id="task">
+                                                <label class="control-label" for="task_id">Task</label>
+                                                    <select name="task_id1" disabled="disabled" class="form-control">
+                                                            <option value="note.task_id.id" t-att-selected="note.task_id.id or null">
+                                                                <t t-esc="note.task_id.name"/>
+                                                            </option>
+                                                    </select>
+                                            </div>
+                                            <div class="clearfix"/>
+                                            <div class="form-group col-md-12">
+                                                <label class="control-label" for="description">Notes</label>
+                                                <textarea name="content" required="True" id="content" placeholder="Your Answer..." class="form-control load_editor">
+                                                <t t-esc="note.memo"/>
+                                                </textarea>
+                                                 <input type="hidden" name="note_id" t-att-value="note.id"/>
+                                            </div>
+                                            <!-- <label class="control-label" for="description">Notes</label>
+                                            <textarea name="content" required="True" id="content" placeholder="Your Answer..." class="form-control load_editor">
+                                            <t t-esc="note.memo"/>
+                                            </textarea>
+                                            <input type="hidden" name="note_id" t-att-value="note.id"/> -->
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-8 mb32" style="text-align: center;">
+                                        <button type="submit" class="btn btn-default btn-primary btn-md">
+                                            Save
+                                        </button>
+                                        <a t-attf-href="/my/note/delete/{{note.id}}?{{keep_query()}}" class="btn btn-default btn-danger btn-md">
+                                            Delete
+                                        </a>
+                                        <a t-attf-href="/my/notes" class="btn btn-primary btn-md">
+                                            Back
+                                        </a>
+                                    </div>
+                                    
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    <template id="update_successfully_note" name="Contact us">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container text-success oe_subdescription">
+                    <hr />
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="alert alert-success">
+                                    <i class="fa fa-thumbs-o-up fa-2x">
+                                    </i>
+                                    <h4>Your record has been Updated successfully!</h4>
+                                </div>
+                                <div>
+                                    <a t-attf-href="/my/notes" class="btn btn-default btn-primary">
+                                    Back
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="delet_successfully_note" name="Contact us">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container text-success oe_subdescription">
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="alert alert-success">
+                                    <i class="fa fa-thumbs-o-up fa-2x">
+                                    </i>
+                                    <h4>Your record has been delete successfully!</h4>
+                                </div>
+                                <div>
+                                    <a t-attf-href="/my/notes" class="btn btn-default btn-primary">
+                                    Back
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+        <template id="not_allowed_note" name="Access Denied">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container">
+                        <h1>You are not Allowed This Document</h1>
+                        <div>
+                            <a t-attf-href="/my/home" class="btn btn-lg btn-primary">
+                                    Back
+                                </a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

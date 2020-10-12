@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="project_package_work_sequence" model="ir.sequence">
+            <field name="name">Project Work Sequence</field>
+            <field name="code">project.work.sequence</field>
+            <field name="prefix">JOB/PACKAGE/</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</odoo>

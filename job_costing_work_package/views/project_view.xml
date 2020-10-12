@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="edit_project_inherit_work_packages" model="ir.ui.view">
+            <field name="name">Project.Work.Packages</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <data>
+                   <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                        <button class="oe_stat_button" type="object" name="action_project_package" 
+                            icon="fa-files-o" string="Packages" >
+                        </button>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+        <record id="view_task_form2_inherit_work_packages" model="ir.ui.view">
+            <field name="name">Project.Work.Packages</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="priority" eval="20"/>
+            <field name="arch" type="xml">
+                <data>
+                   <xpath expr="//form/sheet/div[@name='button_box']" position="inside">
+                        <button class="oe_stat_button" type="object" name="action_task_package" 
+                            icon="fa-files-o" string="Packages">
+                        </button>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+    </data>
+</odoo>    

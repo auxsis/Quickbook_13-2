@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_construction_waste_projectuser,construction.waste.management.project.user,model_construction_waste_management,project.group_project_user,1,1,1,1
+access_construction_waste_nogroup,construction.waste.management.no_group,model_construction_waste_management,,1,0,0,0

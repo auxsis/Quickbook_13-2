@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+	<data>
+		<!-- Sequence for appointment -->
+		<record model="ir.sequence" id="appoint_mgmt_appointment_seq">
+			<field name="name">Appointment Sequence</field>
+			<field name="code">appointment</field>
+			<field name="prefix">APT/%(range_year)s/</field>
+			<field name="padding">4</field>
+		</record>
+	</data>
+</odoo>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    
+        <report
+            id="print_request_information" 
+            model="request.information"
+            report_type="qweb-pdf"
+            string="Request for Information"
+            name="project_request_for_information.request_information_report"
+            file="project_request_for_information.request_information_report"
+         />
+         
+        <template id="request_information_report">
+             <t t-foreach="docs" t-as="doc">
+               <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="row">
+                        <div name="request_information_address" class="text-left">
+                            <address t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                            <div t-if="doc.partner_id.vat" ><t t-esc="doc.company_id.country_id.vat_label or 'TIN'"/>: <span t-field="doc.partner_id.vat"/></div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                         <h3>
+                            <strong><span t-field="doc.name"/> - <span t-field="doc.subject"/> [<span t-field="doc.stage_type"/>]</strong>
+                         </h3>
+                    </div>
+                    <div class="row mt32 mb32">
+                        <div class="col-4">
+                            <strong>Type:</strong>
+                            <p t-field="doc.type_ticket_id"/>
+                        </div>
+                        <div class="col-4">
+                            <strong>Subject:</strong>
+                            <p t-field="doc.subject_type_id"/>
+                        </div>
+                        <div class="col-4">
+                            <strong>Assigned To:</strong>
+                            <p t-field="doc.user_id"/>
+                        </div>
+                        <div class="col-4">
+                            <strong>Company:</strong>
+                            <p t-field="doc.company_id"/>
+                        </div>
+                        <div class="col-4">
+                            <strong>RFI Team:</strong>
+                            <p t-field="doc.team_id"/>
+                        </div>
+                        <div class="col-4">
+                            <strong>Team Leader:</strong>
+                            <p t-field="doc.team_leader_id"/>
+                        </div>
+                        <div class="col-4">
+                            <strong>Create Date:</strong>
+                            <p t-field="doc.request_date"/>
+                        </div>
+                        <div class="col-4">
+                            <strong>Closed Date:</strong>
+                            <p t-field="doc.close_date"/>
+                        </div>
+                    </div>
+                    
+                    <table class="table table-condensed mt32">
+                        <tbody>
+                            <tr>
+                                <td><strong>Project</strong></td>
+                                <td><span t-field="doc.project_id"/></td>
+                                <td><strong>Job Order:</strong></td>
+                                <td colspan="3"><span t-field="doc.task_id"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Job Cost Sheet</strong></td>
+                                <td><span t-field="doc.job_cost_id"/></td>
+                                <td><strong>Job Cost Line:</strong></td>
+                                <td colspan="3"><span t-field="doc.job_cost_line_id"/></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div name="timesheet" class="mt32 mb32">
+                        <t t-if="doc.timesheet_line_ids">
+                            <strong><h3>Timesheets</h3></strong>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <th>Name</th>
+                                    <th>Request for Information</th>
+                                    <th>Billable</th>
+                                    <th>Description</th>
+                                    <th>Hours</th>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach ="doc.timesheet_line_ids" t-as="li">
+                                        <td><span t-field="li.date"/></td>
+                                        <td><span t-field="li.rfi_request_information_id"/></td>
+                                        <td><span t-field="li.rfi_billable"/></td>
+                                        <td><span t-field="li.name"/></td>
+                                        <td><span t-esc="time.strftime('%H:%M', time.gmtime(li.unit_amount*60*60))"/></td>
+                                    </tr>
+                               </tbody>
+                            </table>
+                        </t>
+                    </div>
+                </div>
+                <div class="row mt32">
+                    <div name="rfi_description" class="col-6">
+                        <h3>Description</h3><span t-field="doc.description"/>
+                    </div>
+                    <div name="rfi_answer" class="col-6">
+                        <h3>RFI Answer</h3><span t-field="doc.rfi_request_answer"/>
+                    </div>
+                </div>
+              </t>
+            </t>
+        </template>
+        
+    </data>
+</odoo>

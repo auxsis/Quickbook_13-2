@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <report 
+            id="report_work_package"
+            string="Work Package"
+            model="project.work.package" 
+            report_type="qweb-pdf"
+            file="job_costing_work_package.report_project_work_template" 
+            name="job_costing_work_package.report_project_work_template"
+            attachment="((object.name or '')+'.pdf')"  
+            print_report_name="'Work Package - %s' % (object.name)" 
+        />
+        
+    </data>
+</odoo>

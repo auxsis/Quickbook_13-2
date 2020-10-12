@@ -1,0 +1,100 @@
+# -*- coding: utf-8 -*-
+
+# Part of Probuse Consulting Service Pvt Ltd. See LICENSE file for full copyright and licensing details.
+
+{
+    'name': "Website Appointment Customer Management and Integration with Calendar",
+    'price': 89.0,
+    'currency': 'EUR',
+    'license': 'Other proprietary',
+    'summary': """This module allow your customer/vendor to book appoinment from website and it will integrated with calendar meetings in backend.""",
+    'description': """
+        This module is use to manage your appointment.
+Website Customer Appointment Management and Integration with Calendar
+This module allow your customer/vendor to book appoinment from website and it will integrated with calendar meetings in backend.
+
+Appointment Calendar
+appointment_calendar
+Book Team Member
+Book Service
+Book Team Partner
+probuse
+odoo expert
+odoo developer
+odoo customization
+Appointment book
+Appointment booking
+website Appointment
+website Appointment book
+website Appointment booking
+customer Appointment
+client Appointment
+vendor Appointment
+calendar
+meetings
+customer meetings
+client meetings
+client meeting
+online booking
+online Appointment
+event of Appointment
+event Appointment
+Appointment event
+client Appointment
+employee Appointment
+staff Appointment
+manager Appointment
+doctor Appointment
+nurse Appointment
+hospital Appointment
+health Appointment
+time slot
+book time
+booking time
+booking meeting
+book slot time
+Website Customer Appointment Management and Integration with Calendar
+This module allow your customer/vendor to book appoinment from website and it will integrated with calendar meetings in backend.
+* INHERIT calendar.event.form.view (form)
+* INHERIT calendar.event.search.inherit (search)
+* INHERIT website_date_info_assets (qweb)
+Appointment Booked (qweb)
+Appointment Management (qweb)
+Book Slot (qweb)
+meeting slot (form)
+meeting.slot (search)
+odoo
+slot list (tree)
+Sales/Configuration/Meeting Slots
+Meeting Slots
+    """,
+    'author': "Probuse Consulting Service Pvt. Ltd.",
+    'website': "http://www.probuse.com",
+    'support': 'contact@probuse.com',
+    'images': ['static/description/img1.jpg'],
+    'version': '1.2.3',
+    'category' : 'Website',
+    'live_test_url': 'https://youtu.be/NcYR-9w3xpc',
+    'depends': [
+#         'crm',
+        'calendar',
+        'website',
+        'sales_team',
+        'sale_management',
+    ],
+    'data':[
+        'security/ir.model.access.csv',
+        'views/appointment_template.xml',
+        'views/meeting_slot_view.xml',
+        'views/calendar_view.xml',
+        'views/template_bookslot.xml',
+        'views/partner_view.xml',
+        'data/booking_sequence.xml',
+        'data/email_templet.xml',
+    ],
+    'installable' : True,
+    'application' : False,
+    'auto_install' : False,
+}
+
+# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="hr_rule_regular" model="hr.salary.rule">
+            <field name="name">Regular Salary</field>
+            <field name="sequence" eval="18"/>
+            <field name="code">REG</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee._get_work_type_salary('RGL', payslip.id)</field>
+        </record>
+        <record id="hr_rule_overtime" model="hr.salary.rule">
+            <field name="name">Overtime Salary</field>
+            <field name="sequence" eval="19"/>
+            <field name="code">OT</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee._get_work_type_salary('OT', payslip.id)</field>
+        </record>
+        <record id="hr_rule_overnight" model="hr.salary.rule">
+            <field name="name">Overnight Salary</field>
+            <field name="sequence" eval="20"/>
+            <field name="code">ON</field>
+            <field name="category_id" ref="hr_payroll.ALW"/>
+            <field name="condition_select">none</field>
+            <field name="amount_select">code</field>
+            <field name="amount_python_compute">result = employee._get_work_type_salary('OVRN', payslip.id)</field>
+        </record>
+       
+
+    </data>
+</odoo>

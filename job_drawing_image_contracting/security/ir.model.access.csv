@@ -1,0 +1,3 @@
+"id","name","model_id/id","group_id/id","perm_read","perm_write","perm_create","perm_unlink"
+"access_contracting_drawing_employee","contracting.drawing.employee","model_contracting_drawing","base.group_user",1,0,0,0
+"access_contracting_drawing_project_user","contracting.drawing.project_user","model_contracting_drawing","project.group_project_user",1,1,1,1

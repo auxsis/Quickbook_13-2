@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="asterisk_calls_settings_form" model="ir.ui.view">
+    <field name="name">Asterisk Calls Configuration</field>
+    <field name="model">res.config.settings</field>
+    <field name="priority" eval="100"/>
+    <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[hasclass('settings')]" position="inside">
+        <div class="app_settings_block" data-string="Calls" string="Calls"
+             data-key="asterisk_calls" groups="asterisk_calls.group_asterisk_calls_admin">
+          <h2>Agent</h2>
+
+          <div class="row mt16 o_settings_container">
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                <div class="col-md-6 col-xs-6">
+                  <a class="btn btn-primary" icon="fa-download" role="button"
+                     href="/asterisk_calls/download/agent">Download Asterisk Agent</a>
+                  <div class="text-muted">
+                    Copy this archive to your Asterisk server and run
+                    <pre>pip install -r requirements.txt</pre>
+                    Adjust your settings in start_agent.sh and run it.
+                  </div>
+                </div>
+                <div class="col-md-6 col-xs-6">
+                  <button name="restart_asterisk_agent" string="Restart Asterisk Agent"
+                          class="btn btn-danger" type="object" icon="fa-gears"/>
+                  <div class="text-muted">
+                    You should get a notification from Agent that it was started again.
+                  </div>
+                </div>
+            </div>
+          </div>
+
+          <h2>Calls</h2>
+          <div class="mt16 o_settings_container" id="call_settings">
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                <div class="col-md-6 col-xs-12">
+                  <label for="originate_context" string="Originate Context" class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="originate_context" class="oe_inline" required="1"/>
+                  <div class="text-muted">
+                    Check your asterisk context for users and set it here.
+                  </div>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                    <label for="calls_keep_days" string="Store calls (days)" class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="calls_keep_days" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                        Calls older then specified value are deleted (on daily cron job).
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                <div class="col-md-6 col-xs-12">
+                  <label for="originate_timeout" string="Originate Timeout" class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="originate_timeout" class="oe_inline" required="1"/>
+                  <div class="text-muted">
+                      Dial timeout on originated calls (seconds).
+                  </div>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <label for="auto_reload_channels" string="Auto refresh active calls" class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="auto_reload_channels" class="oe_inline" required="1"/>
+                  <div class="text-muted">
+                      You may need to disable automatic refresh on high calls load.
+                  </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                <div class="col-md-6 col-xs-12">
+                  <label for="originate_strip_plus" string="Strip plus" class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="originate_strip_plus" class="oe_inline"/>
+                  <div class="text-muted">
+                      Strip + before sending to Asterisk, e.g. +1234567890 -> 1234567890
+                  </div>
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <label for="recording_storage" string="Recordings storage" class="col-xs-6 col-md-6 o_light_label"/>
+                  <field name="recording_storage" class="oe_inline"/>
+                  <button name="sync_recording_storage" type="object" string="Sync"
+                    class="btn btn-primary btn-sm" icon="fa-refresh"/>                  
+                  <div class="text-muted">
+                      Store calls in database or as attachments in Odoo's filestore folder.
+                  </div>
+                </div>
+            </div>            
+          </div>
+
+          <h2>Website Callback</h2>
+          <div class="row mt16 o_settings_container" id="callback_settings">
+            <label string="Originate settings" for="callback_settings"/>
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                  <div class="col-md-6 col-xs-12">
+                    <label for="callback_order" string="Callback order"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="callback_order" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      Who is dialed first - customer or queue.
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <label for="callback_queue" string="Callback queue"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="callback_queue" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      Queue name from your Asterisk for website callback.
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <label for="queue_exten" string="Queue extension"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="queue_exten" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      Extension of this queue to be dialed from originate context.
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <label for="callback_context" string="Callback context"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="callback_context" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      Originate context for website callback calls where customer numbers
+                      can be dialed out.
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <label for="callback_days" string="Callback days"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="callback_days" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      How many days try to complete a website callback request.
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <label for="callback_daily_attempts" string="Callback daily attempts"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="callback_daily_attempts" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      How many times per day try to dial out for callback requests.
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <label for="callback_interval_minutes" string="Callback interval minutes"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="callback_interval_minutes" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      How long is the interval between dial out attempts.
+                    </div>
+                  </div>
+            </div>
+            <label string="ReCaptcha settings" for="callback_settings"/>
+            <div class="col-xs-12 col-md-12 o_setting_box">
+                  <div class="col-md-6 col-xs-12">
+                    <label for="recaptcha_enabled" string="ReCaptcha enabled"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="recaptcha_enabled" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      Enable Google ReCaptacha for website callback form.
+                    </div>
+                  </div>
+              </div>
+              <div class="col-xs-12 col-md-12 o_setting_box">
+                  <div class="col-md-6 col-xs-12" attrs="{'invisible': [('recaptcha_enabled','=',False)]}">
+                    <label for="recaptcha_key" string="ReCaptcha enabled"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="recaptcha_key" class="oe_inline"
+                           attrs="{'required': [('recaptcha_enabled','!=',False)]}"/>
+                  </div>
+                  <div class="col-md-6 col-xs-12" attrs="{'invisible': [('recaptcha_enabled','=',False)]}">
+                    <label for="recaptcha_secret" string="ReCaptcha enabled"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="recaptcha_secret" class="oe_inline"
+                           attrs="{'required': [('recaptcha_enabled','!=',False)]}"/>
+                  </div>
+                </div>
+              </div>
+
+          <h2>CallerID name</h2>
+          <div class="row mt16 o_settings_container" id="callerid_settings">
+            <div class="col-xs-12 col-md-12 o_setting_box row">
+                  <div class="col-md-6 col-xs-12">
+                    <label for="set_caller_name_type" string="Set CallerID type"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="set_caller_name_type" class="oe_inline" required="1"/>
+                    <div class="text-muted">
+                      See <a href="https://apps.odoo.com/apps/modules/12.0/asterisk_calls/#asterisk">documentation</a> for
+                      dialplan configuration options.
+                    </div>
+                  </div>
+                  <div class="col-md-6 col-xs-12">
+                    <label for="asterisk_ip_addresses" string="Asterisk IP address"
+                      class="col-xs-6 col-md-6 o_light_label"/>
+                    <field name="asterisk_ip_addresses" class="oe_inline"/>
+                    <div class="text-muted">
+                      Comma separated list of IP address of your Asterisk servers that use
+                      CURL func to get callerid name. 
+                    </div>
+                  </div>
+            </div>
+          </div>
+
+        </div>
+      </xpath>
+    </field>
+  </record>
+
+ <record id="asterisk_calls_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Calls Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="asterisk_calls_settings_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'asterisk_calls'}</field>
+  </record>
+
+  <menuitem id="asterisk_calls_config_settings_menu"
+      name="Settings"
+      parent="asterisk_calls_conf_menu"
+      action="asterisk_calls_config_settings_action"
+      groups="asterisk_calls.group_asterisk_calls_admin"
+      sequence="1"/>
+
+</odoo>

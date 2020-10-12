@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <template id="portal_home_joborder" name="Portal My Home: joborder entries" inherit_id="portal.portal_my_home" priority="40">
+<!--        <xpath expr="//div[contains(@class,'o_portal_docs')]" position="inside">-->
+<!--            <li t-if="job_order_count" class="list-group-item" groups="base.group_user,base_start_stop_timer.group_portal_employee">-->
+<!--                <a href="/user/job_orders">Job Orders</a>-->
+<!--		        <span class="badge" t-esc="job_order_count"/>-->
+<!--            </li>-->
+<!--        </xpath>-->
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-if="job_order_count" t-call="portal.portal_docs_entry">
+                <t t-set="title">Job Orders</t>
+                <t t-set="url" t-value="'/user/job_orders'"/>
+                <t t-set="count" t-value="job_order_count"/>
+            </t>
+        </xpath>
+    </template>
+    
+    
+    <template id="portal_my_subcontractor_joborder" name="Portal My subcontractor job order: project entries" inherit_id="project.portal_my_task">
+        <xpath expr="//div[contains(@class,'row no-gutters')]" position="inside">
+            <t t-call="base_start_stop_timer.portal_time_recording">
+                <t t-set="record" t-value="task"/>
+                <t t-set="record_model" t-value="'project.task'"/>
+            </t>
+            
+        </xpath>
+        <xpath expr="//t[@t-set='card_body']" position="inside">
+            <t t-call="base_start_stop_timer.portal_customer_signature">
+                <t t-set="record" t-value="task"/>
+                <t t-set="record_model" t-value="'project.task'"/>
+            </t>
+         </xpath>
+    </template>
+    
+<!--    <template id="portal_layout_job_order" name="Portal layout: joborder menu entry" inherit_id="portal.portal_my_home" priority="40">-->
+<!--        <xpath expr="//div[contains(@class,'o_portal_my_home')]" position="inside">-->
+<!--            <xpath expr="//li[@t-if='page_name == 'task' or task']" position="replace">-->
+<!--                <t t-if="is_job_order">-->
+<!--                <li t-if="page_name == 'job_order' or job_order" groups="base.group_user,base_start_stop_timer.group_portal_employee">-->
+<!--                    <a t-if="is_job_order" t-attf-href="/my/job_order?{{ keep_query() }}">Job Order</a>-->
+<!--                    <t t-else="">Job Order</t>-->
+<!--                </li>-->
+<!--                <li t-if="page_name == 'task' or task">-->
+<!--                    <a t-if="task" t-attf-href="/my/tasks?{{ keep_query() }}">Tasks</a>-->
+<!--                    <t t-else="">Tasks</t>-->
+<!--                </li>-->
+<!--            </xpath>-->
+<!--            <li t-if="page_name == 'job_order' or job_order" groups="base.group_user,base_start_stop_timer.group_portal_employee">-->
+<!--                <a t-if="is_job_order" t-attf-href="/my/job_order?{{ keep_query() }}">Job Order</a>-->
+<!--                <t t-else="">Job Order</t>-->
+<!--            </li>-->
+<!--            <li t-if="job_order" groups="base.group_user,base_start_stop_timer.group_portal_employee">-->
+<!--                <span t-field="job_order.name"/>-->
+<!--            </li>-->
+<!--        </xpath>-->
+<!--    </template>-->
+
+
+    <template id="portal_my_tasks_job_order" name="Portal job order: joborder entries" inherit_id="project.portal_my_tasks" priority="40">
+<!--          <xpath expr="//table[hasclass('o_portal_my_doc_table')]/tbody/t/tr/td[1]/a" position="attributes"> -->
+        <xpath expr="//t[@t-as='task']/tr/td[1]/a" position="attributes">
+            <attribute name="t-if">not is_job_order</attribute>
+        </xpath>
+        <xpath expr="//t[@t-as='task']/tr/td[1]/a" position="after">
+            <a t-if="is_job_order" t-attf-href="/my/job_order/#{task.id}?{{ keep_query() }}"><span t-field="task.name"/></a>
+        </xpath>
+        <xpath expr="//t[@t-set='title']" position="attributes">
+            <attribute name="t-if">not is_job_order</attribute>
+        </xpath>
+<!--        <xpath expr="//t[@t-set='title']" position="replace">-->
+<!--            <t t-if="is_job_order">-->
+<!--                <h3>Job Orders-->
+<!--                    <t t-call="portal.portal_searchbar"/>-->
+<!--                </h3>-->
+<!--            </t>-->
+<!--            <t t-if="not is_job_order">-->
+<!--                <h3>Tasks-->
+<!--                    <t t-call="portal.portal_searchbar"/>-->
+<!--                </h3>-->
+<!--            </t>-->
+<!--        </xpath>-->
+    </template>
+</odoo>

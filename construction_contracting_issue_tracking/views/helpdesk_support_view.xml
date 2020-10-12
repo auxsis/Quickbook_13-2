@@ -1,0 +1,421 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="construction_ticket_form_view" model="ir.ui.view">
+            <field name="name">Project Issue form</field>
+            <field name="model">construction.ticket</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+<!--                        <field name="state" widget="statusbar" clickable="True"-->
+<!--                            options="{'fold_field': 'fold'}"/>-->
+                            <field name="stage_id" widget="statusbar" clickable="True"
+                            options="{'fold_field': 'fold'}"
+                            domain="['|', ('team_id', '=', team_id), ('team_id', '=', False)]"
+                            attrs="{'invisible': [('active', '=', False)]}"/>
+                            <field name="stage_type" invisible="1"/>
+<!--                            <button name="action_create_invoice" string="Create Invoice" groups="website_helpdesk_support_ticket.group_helpdesk_manager" type="object" class="oe_highlight" attrs="{'invisible': [('stage_type', '=','closed')]}"/>-->
+<!--                            <button name="action_create_task" string="Create Task" groups="website_helpdesk_support_ticket.group_helpdesk_manager" type="object" class="oe_highlight" attrs="{'invisible': [('stage_type', '=','closed')]}"/>-->
+                        <button name="set_to_close" string="Set To Close" attrs="{'invisible':[('is_close','=',True)]}" groups="construction_contracting_issue_tracking.group_construction_manager" type="object" class="oe_highlight"/>
+                        <button name="set_to_reopen" string="Re Open" attrs="{'invisible':[('is_close','=',False)]}" groups="construction_contracting_issue_tracking.group_construction_manager" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                        <button class="oe_stat_button"
+                                type="object" 
+                                name="action_create_invoice" 
+                                string="Create Invoice" 
+                                icon="fa-pencil-square-o" 
+                                groups="construction_contracting_issue_tracking.group_construction_manager"
+                        />
+<!--                        <button class="oe_stat_button"-->
+<!--                                 type="object" -->
+<!--                                 name="action_create_task" -->
+<!--                                 string="Create Task" -->
+<!--                                 icon="fa-pencil-square-o" -->
+<!--                                 groups="website_helpdesk_support_ticket.group_helpdesk_manager"/>-->
+                         <button class="oe_stat_button"
+                                 type="object" 
+                                 name="action_create_task" 
+                                 string="Create Task" 
+                                 icon="fa-pencil-square-o" 
+                                 groups="construction_contracting_issue_tracking.group_construction_manager" 
+                                 attrs="{'invisible': [('stage_type', '=','closed')]}"/>
+                        <button class="oe_stat_button" type="object"
+                                name="show_task" string="Task" icon="fa-pencil-square"
+                                attrs="{'invisible': [('is_task_created', '=',False)]}"/>
+                        <button class="oe_stat_button" type="object" name="show_invoice" 
+                                attrs="{'invisible':[('is_invoice_created','=',False)]}" string="Invoice"
+                                icon="fa-fa-briefcase"/>
+                        <button class="oe_stat_button" type="object"
+                                name="show_analytic_account" string="Analytic Account" icon="fa-book"
+                                attrs="{'invisible': [('analytic_account_id', '=',False)]}"/>
+                    </div>
+                    <div class="oe_title">
+                        <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/><br/>
+                            <field name="subject" readonly="0"  attrs="{'readonly': [('stage_type', '=', 'closed')]}"  placeholder="Construction Subject"/>
+                            <field name="is_invoice_created" invisible="1"/>
+                            <field name="is_task_created" invisible="1"/>
+                        </h1>
+                    </div>
+                    </div>
+                            <group>
+                                <group>
+                                    <field name="type_ticket_id"  attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                    <field name="subject_type_id"  attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                    <field name="user_id" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                    <field name="email" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                    <field name="company_id"/>
+                                </group>
+                                <group>
+                                    <field name="partner_id" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                    <field name="phone" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                    <field name="allow_user_ids" widget="many2many_tags" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                </group>
+                             </group>
+                        
+                        <group>
+<!--                            <group>-->
+<!--                                <field name="team_id"/>-->
+<!--                                <field name="project_id" filter_domain = "[('partner_id', 'child_of', [partner.commercial_partner_id.id])]"/>-->
+<!--                                <field name="department_id" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>-->
+<!--                            </group>-->
+                        
+                            <group>
+<!--                                <field name="team_leader_id"/>-->
+<!--                                <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>-->
+<!--                                <field name="priority" />-->
+                            
+                                <field name="team_id" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <field name="project_id" filter_domain = "[('partner_id', 'child_of', [partner.commercial_partner_id.id])]" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <field name="job_order_id" domain = "[('project_id', '=', project_id),('partner_id', '=', partner_id)]"/>
+                                <field name="jobcost_sheet_id" domain = "[('task_id', '=', job_order_id)]"/>
+                                <field name="jobcost_line_id" domain = "[('direct_id', '=', jobcost_sheet_id)]"/>
+                                <field name="department_id" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                            </group>
+                        
+                            <group>
+                                <field name="team_leader_id" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <field name="analytic_account_id" attrs="{'readonly': [('stage_type', '=', 'closed')]}" groups="analytic.group_analytic_accounting"/>
+                                <field name="priority" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <field name="category" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                            </group>
+                        </group>
+                    <group>
+                        <group>
+                            <field name="request_date" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                            <field name="is_close" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                        </group> 
+                        <group>
+<!--                            <field name="close_date"/>-->
+<!--                            <field name="total_spend_hours" widget="float_time"/>-->
+                                <field name="close_date" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <field name="total_spend_hours" widget="float_time" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <p style="color:grey;" colspan="3">To View Current Status of Customer Prepaid Support Hours.Please Click Analytic Account Button.</p>
+                                <field name="total_consumed_hours" widget="float_time" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <field name="total_purchase_hours" widget="float_time" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                                <field name="remaining_hours" widget="float_time" attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                         </group>
+                    </group>  
+                        <notebook>
+                        <page name="description" string="Description">
+                            <field name="description" placeholder="Add an internal note..." attrs="{'readonly': [('stage_type', '=', 'closed')]}"/>
+                        </page>
+                        <page name="timesheets" string="Timesheets" groups="base.group_user">
+                            <field name="timesheet_line_ids" context = "{'default_account_id' :analytic_account_id, 'default_project_id':project_id, 'default_job_cost_id':jobcost_sheet_id, 'default_job_cost_line_id':jobcost_line_id}" nolabel="1">
+                        
+<!--                            <field name="timesheet_line_ids" attrs="{'readonly': [('stage_type', '=', 'closed')]}" context = "{'default_account_id' :analytic_account_id}" nolabel="1"/>-->
+                                <tree editable="bottom">
+                                    <field name="date"/>
+                                    <field name="user_id" />
+                                    <field name="account_id" invisible="1"/>
+                                    <field name="project_id" required="1"/>
+<!--                                    <field name="support_request_id"/-->
+                                    <field name="name"/>
+                                    <field name="job_cost_id" domain="[('project_id', '=', project_id)]"/>
+                                    <field name="job_cost_line_id" domain="[('direct_id', '=', job_cost_id)]"/>
+                                    <field name="billable"/>
+                                    <field name="unit_amount" widget="float_time" string="Hours" sum="Hours"/>
+<!--                                    <field invisible="1" name="user_id" required="1"/-->
+                                </tree>
+                            </field>
+                        </page> 
+                        <page name="invoice_line" string="Add Invoice Lines" >
+                            <field name="invoice_line_ids" context = "{'default_analytic_account_id' :analytic_account_id}" nolabel="1" groups="construction_contracting_issue_tracking.group_construction_manager">
+                        
+                            <field name="invoice_line_ids" attrs="{'readonly': [('stage_type', '=', 'closed')]}" context = "{'default_analytic_account_id' :analytic_account_id}" nolabel="1" groups="construction_contracting_issue_tracking.group_construction_manager"/>
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                    <field name="product_uom"/>
+                                    <field name="analytic_account_id" options="{'no_open': True, 'no_create': True}" groups="analytic.group_analytic_accounting"/>
+                                    <field name="is_invoice"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="general_information" string="General Information">
+                            <group>
+                                <group>
+<!--                                    <field name="invoice_id" attrs="{'readonly': [('is_invoice_created', '=',True)]}"/>-->
+                                    <field name="invoice_id" attrs="{'readonly': ['|' ,('stage_type', '=', 'closed'),('is_invoice_created', '=',True)]}"/>
+<!--                                    <field name="journal_id" attrs="{'readonly': [('is_invoice_created', '=',True)]}"/>-->
+                                    
+                                    <field name="journal_id" attrs="{'readonly': ['|' ,('stage_type', '=', 'closed'), ('is_invoice_created', '=',True)]}"/>
+                                    <field name="task_id"/>
+                                </group>
+                             </group>
+                        </page>
+                        <page name="customer_rating" string="Customer Rating">
+                            <group>
+                                <group>
+                                    <field name="rating" widget="radio"/>
+                                    <field name="comment"/>
+                                </group>
+                             </group>
+                        </page>
+                    </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <record id="construction_ticket_tree_view" model="ir.ui.view">
+            <field name="name">Project Issue Tree</field>
+            <field name="model">construction.ticket</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="name"/>
+                     <field name="subject"/>
+                     <field name="type_ticket_id" />
+                     <field name="user_id"/>
+                     <field name="partner_id"/>
+                     <field name="email"/>
+                     <field name="phone"/>
+                     <field name="category"/>
+                     <field name="priority"/>
+                     <field name="stage_type"/>
+                     <field name="company_id"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="construction_ticket_search_view" model="ir.ui.view">
+            <field name="name">Issue search</field>
+            <field name="model">construction.ticket</field>
+            <field name="arch" type="xml">
+                <search>
+                     <field name="name"/>
+                     <field name="subject"/>
+                     <field name="partner_id"/>
+                     <field name="type_ticket_id" />
+                     <field name="email"/>
+                     <field name="phone"/>
+                     <field name="category"/>
+                     <field name="priority"/>
+                     <field name="remaining_hours"/>
+                     <field name="allow_user_ids"/>
+                     <filter string="Unread Messages" name="message_needaction" domain="[('message_needaction','=',True)]"/>
+                     <group expand="0" string="Group By">
+                        <filter string="Assigned To" name="assigned_to" context="{'group_by':'user_id'}"/>
+                        <filter string="Customer" name="customer" context="{'group_by':'partner_id'}"/>
+                        <filter string="Company" name="company" context="{'group_by':'company_id'}"/>
+                        <filter string="Category" name="category" context="{'group_by':'category'}"/>
+                        <filter string="Issue" name="issue" context="{'group_by':'name'}"/>
+                        <filter string="Type of Issue" name="type_of_issue" context="{'group_by':'type_ticket_id'}"/>
+                        <filter string="Subject" name="subject" context="{'group_by':'subject'}"/>
+                        <filter string="Construction Team" name="construction_team" context="{'group_by':'team_id'}"/>
+                        <filter string="Team Leader" name="team_leader" context="{'group_by':'team_leader_id'}"/>
+                        <filter string="State" name="state" context="{'group_by':'stage_type'}"/>
+                        <filter string="Create Date" name="create_date" context="{'group_by':'request_date'}"/>
+                        <filter string="Close Date" name="close_date" context="{'group_by':'close_date'}"/>
+                        <filter string="Project" name="project" context="{'group_by':'project_id'}"/>
+                        <filter string="Analytic Account" name="analytic_account" context="{'group_by':'analytic_account_id'}"/>
+                        <filter string="Priority" name="priority" context="{'group_by':'priority'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="view_create_construction_ticket_simplified" model="ir.ui.view">
+            <field name="name">construction.ticket.form.simple</field>
+            <field name="model">construction.ticket</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form string="Create an Opportunity">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="subject" required='True'/>
+                                <field name="user_id"/>
+                                <field name="project_id"/>
+                                <field name="priority" widget="priority"/>
+                            </group>
+                        </group>
+                        <footer>
+                            <button string="Create" name="close_dialog" type="object" class="btn-primary"/>
+                            <button string="Discard" class="btn-default" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        
+        <record id="create_construction_ticket_stage_simplified" model="ir.actions.act_window">
+            <field name="name">Create an Project Issue</field>
+            <field name="res_model">construction.ticket</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_create_construction_ticket_simplified"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="create_construction_ticket_stage_simplified_full" model="ir.actions.act_window">
+            <field name="name">Create an project issue</field>
+            <field name="res_model">construction.ticket</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="construction_ticket_form_view"/>
+            <field name="target">new</field>
+        </record>
+        
+        
+        <record id='construction_ticket_view_kanban' model='ir.ui.view'>
+            <field name="name">Project issue kanban</field>
+            <field name="model">construction.ticket</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="stage_id" class="o_kanban_small_column o_opportunity_kanban" on_create="quick_create" quick_create_view="construction_contracting_issue_tracking.construction_ticket_form_view">
+                    <field name="stage_id" options='{"group_by_tooltip": {"requirements": "Description", "legend_priority": "Use of stars"}}'/>
+                    <field name="color"/>
+                    <field name="priority"/>
+                    <field name="planned_revenue"/>
+                    <field name="kanban_state"/>
+                    <field name="date_action"/>
+                    <field name="name" />
+                    <field name="subject"/>
+                     <field name="partner_id"/>
+                     <field name="email"/>
+                     <field name="phone"/>
+                     <field name="active"/>
+                     <field name="category"/>
+                     <field name="message_needaction_counter"/>
+                     <field name="priority"/>
+                     <templates>
+                        <t t-name="kanban-box">
+                            <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
+                                <div class="o_dropdown_kanban dropdown">
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" >
+                                        <span class="fa fa-bars fa-lg"/>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        <t t-if="widget.editable"><li><a type="edit">Edit</a></li></t>
+                                        <t t-if="widget.deletable"><li><a type="delete">Delete</a></li></t>
+                                        <li t-if="! record.active.value"><a name="action_set_active" type="object">Unarchive</a></li>
+                                        <li t-if="record.active.value"><a name="action_set_unactive" type="object">Archive</a></li>
+                                        <li><ul class="oe_kanban_colorpicker" data-field="color"/></li>
+                                    </ul>
+                                </div>
+                                <div class="oe_kanban_content">
+                                    <a>
+                                        <div class="o_kanban_tags_section">
+                                            <strong><field name="name"/></strong>
+                                        </div>
+                                        <div class="o_kanban_tags_section">
+                                            <field name="subject"/>
+                                        </div>
+                                        <div class="o_kanban_tags_section">
+                                            <field name="user_id"/>
+                                        </div>
+                                        <div class="o_kanban_tags_section">
+                                            <field name="request_date"/>
+                                        </div>
+                                        <div class="oe_kanban_details">
+                                            <strong>
+                                                <field name="stage_type"/> : <field name="priority"/>
+                                            </strong>
+                                        </div>
+                                   </a>
+                               
+                                    <div class="o_kanban_footer">
+                                        <field name="priority" widget="priority" groups="base.group_user"/>
+                                        <t t-if="record.message_needaction_counter.raw_value">
+                                            <span class='oe_kanban_mail_new' title='Unread Messages'><i class='fa fa-comments'/><t t-raw="record.message_needaction_counter.raw_value"/></span>
+                                        </t>
+                                        <div>
+                                            <img t-att-src="kanban_image('res.users', 'image_small', record.user_id.raw_value)" t-att-title="record.user_id.value" width="24" height="24" class="oe_kanban_avatar" alt="kanban kanban_image"/>
+                                        </div>
+                                    </div>
+                               </div>
+                              <div class="oe_clear"></div>     
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <record id="view_construction_ticket_pivot" model="ir.ui.view">
+            <field name="name">construction.ticket.pivot</field>
+            <field name="model">construction.ticket</field>
+            <field name="arch" type="xml">
+                <pivot string="Project Tasks">
+                    <field name="name" type="row"/>
+                    <field name="stage_type" type="col"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <record id="view_construction_ticket_graph" model="ir.ui.view">
+            <field name="name">construction.ticket.graph</field>
+            <field name="model">construction.ticket</field>
+            <field name="arch" type="xml">
+                <graph string="Project Tasks">
+                    <field name="name"/>
+                    <field name="stage_type"/>
+                </graph>
+            </field>
+        </record>
+        
+        <record id="construction_ticket_calendar" model="ir.ui.view">
+            <field name="name">Construction Calendar</field>
+            <field name="model">construction.ticket</field>
+            <field name="arch" type="xml">
+                <calendar string="construction" color="journal_id" date_start="request_date" date_stop="close_date">
+                    <field name="partner_id"/>
+                </calendar>
+            </field>
+        </record>
+        
+        <record id="action_construction_ticket" model="ir.actions.act_window">
+            <field name="name">Project Issues</field>
+            <field name="res_model">construction.ticket</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,calendar,form,pivot,graph</field>
+            <field name="help">Construction Issue Tree.</field>
+        </record>
+        
+<!--        <menuitem name="Helpdesk" web_icon="website_helpdesk_support_ticket,static/description/icon.png" id="main_helpdesk_support_ticket" groups="website_helpdesk_support_ticket.group_helpdesk_user"/>-->
+<!--        <menuitem name="Helpdesk" id="menu_helpdesk_support_ticket" parent="main_helpdesk_support_ticket" sequence="1"/>-->
+<!--        <menuitem name="Analytic Account" id="menu_helpdesk_ticket_account" parent="main_helpdesk_support_ticket" sequence="2"/>-->
+<!--        <menuitem name="Analytic Accounts" id="menu_item_helpdesk_anlytic_accounts" parent="menu_helpdesk_ticket_account" action="analytic.action_account_analytic_account_form"/>-->
+<!--        -->
+<!--        <menuitem name="Configuration" id="menu_helpdesk_ticket_configuration" parent="main_helpdesk_support_ticket" sequence="3" groups="website_helpdesk_support_ticket.group_helpdesk_manager"/>-->
+<!--        -->
+<!--        <menuitem name="Stages" id="menu_item_helpdesk_ticket_stage_config" parent="menu_helpdesk_ticket_configuration" action="helpdesk_stage_config_action"/>-->
+<!--        <menuitem name="Helpdesk Tickets" id="menu_item_helpdesk_support_ticket" parent="menu_helpdesk_support_ticket" action="action_helpdesk_support_ticket"/>-->
+<!--        <menuitem name="Reports" id="menu_helpdesk_ticket_report" parent="main_helpdesk_support_ticket" groups="website_helpdesk_support_ticket.group_helpdesk_manager"/>-->
+        
+    </data>
+</odoo>

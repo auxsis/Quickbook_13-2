@@ -1,0 +1,16 @@
+[general]
+enabled = yes
+webenabled = yes
+port = {{ default .Env.AMI_LISTEN_PORT "5038" }}
+bindaddr = {{ default .Env.AMI_LISTEN_IP "127.0.0.1" }}
+
+[{{ default .Env.MANAGER_LOGIN "odoo" }}]
+secret={{ default .Env.MANAGER_PASSWORD "odoo" }}
+displayconnects = yes
+read=call,dialplan,cdr,agent,user
+write=system,call,originate
+deny=0.0.0.0/0.0.0.0
+permit=127.0.0.1
+; Docker based networks
+permit=172.0.0.0/255.0.0.0
+permit=192.0.0.0/255.0.0.0

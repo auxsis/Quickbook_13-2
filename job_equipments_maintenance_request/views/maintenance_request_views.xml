@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+    
+        <record id="hr_equipment_request_form_inherit_job_costing" model="ir.ui.view">
+            <field name="name">maintenance.request.inherit.job_costing</field>
+            <field name="model">maintenance.request</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='priority']" position="after">
+                      <field name="custom_request_job_id"/>
+                </xpath>
+            </field>
+        </record>
+    
+    </data>
+</odoo>

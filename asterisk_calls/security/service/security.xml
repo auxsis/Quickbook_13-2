@@ -1,0 +1,9 @@
+<odoo>
+
+    <record model="res.groups" id="group_asterisk_calls_service">
+        <field name="name">Asterisk Service</field>
+        <field name="category_id" ref="module_asterisk_calls_category"/>
+        <field name="implied_ids" eval="[(4, ref('remote_agent.group_agent_agent'))]"/>
+    </record>
+
+</odoo>

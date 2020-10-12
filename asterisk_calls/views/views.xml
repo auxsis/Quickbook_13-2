@@ -1,0 +1,41 @@
+<odoo>
+    
+    <menuitem id="asterisk_calls_top_menu" name="Calls"
+        web_icon="asterisk_calls,static/description/icon.png"
+        groups="asterisk_calls.group_asterisk_calls_user"/>
+
+    <menuitem id="asterisk_calls_calls_menu" parent="asterisk_calls_top_menu"
+        sequence="10" name="Calls"/>
+
+    <menuitem id="asterisk_calls_lib_menu" parent="asterisk_calls_top_menu"
+        sequence="15" name="Library"/>
+
+    <menuitem id="asterisk_calls_statistics_menu" parent="asterisk_calls_top_menu"
+        sequence="17" name="Statistics"/>
+
+    <menuitem id="asterisk_calls_statistics_this_month_menu" 
+        parent="asterisk_calls_statistics_menu"
+        sequence="10" name="This Month"/>
+
+    <menuitem id="asterisk_calls_statistics_custom" 
+        parent="asterisk_calls_statistics_menu"
+        sequence="20" name="Custom"/>        
+
+    <menuitem id="asterisk_calls_statistics_outgoing_menu" 
+        parent="asterisk_calls_statistics_this_month_menu"
+        sequence="10" name="Outgoing"/>
+
+    <menuitem id="asterisk_calls_statistics_incoming_menu" 
+        parent="asterisk_calls_statistics_this_month_menu"
+        sequence="5" name="Incoming"/>
+
+    <menuitem id="asterisk_calls_conf_menu" parent="asterisk_calls_top_menu" 
+        sequence="20" name="Configuration"/>
+
+    <menuitem id='asterisk_calls_about_menu' name='About' 
+        parent='asterisk_calls_top_menu' sequence='100'/>
+
+    <menuitem id="calls_board" parent="base.menu_board_root" name="Calls"
+            groups="asterisk_calls.group_asterisk_calls_admin"
+            sequence="50"/>
+</odoo>

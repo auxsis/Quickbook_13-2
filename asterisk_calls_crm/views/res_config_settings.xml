@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="asterisk_calls_crm_settings_form" model="ir.ui.view">
+        <field name="name">Asterisk Calls CRM Configuration</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="asterisk_calls.asterisk_calls_settings_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='callerid_settings']" position="after">
+                <h2>CRM</h2>
+                <div class="row mt16 o_settings_container" id="crm_settings">
+                    <label string="CRM" for="auto_create_leads_from_calls"/>
+                    <div class="col-xs-12 col-md-12 o_setting_box row">
+                      <div class="col-md-6 col-xs-12">
+                        <label for="auto_create_leads_from_calls" string="Auto create leads from calls"
+                          class="col-xs-6 col-md-6 o_light_label"/>
+                        <field name="auto_create_leads_from_calls" class="oe_inline"/>
+                        <div class="text-muted">
+                          Create leads when unknown numbers are calling.
+                        </div>                        
+                      </div>
+                      <div class="col-md-6 col-xs-12"
+                            attrs="{'invisible': [('auto_create_leads_from_calls', '=', False)]}">
+                        <label for="auto_create_leads_sales_person" string="Sales person"
+                          class="col-xs-6 col-md-6 o_light_label"/>
+                        <field name="auto_create_leads_sales_person" class="oe_inline"/>
+                        <div class="text-muted">
+                          Assign this user as a sales person for such leads.
+                        </div>                                                
+                      </div>
+                    </div>
+                </div>                
+            </xpath>
+        </field>
+    </record>
+</odoo>

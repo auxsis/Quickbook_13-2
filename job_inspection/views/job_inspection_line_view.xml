@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="job_order_inspection_line_form_view">
+            <field name="name">job.order.inspection.line.form</field>
+            <field name="model">job.order.inspection.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="job_inspection_id" invisible="1"/>
+                                <field name="inspection_result"/>
+                            </group>
+                            <group>
+                                <field name="inspection_record"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page name="description" string="Description">
+                                <field name="description"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="job_order_inspection_line_tree_view">
+            <field name="name">job.order.inspection.line.tree.view</field>
+            <field name="model">job.order.inspection.line</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="job_inspection_id"/>
+                     <field name="inspection_record"/>
+                     <field name="inspection_result"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="job_order_inspection_line_search_view">
+            <field name="name">job.order.inspection.line.search</field>
+            <field name="model">job.order.inspection.line</field>
+            <field name="arch" type="xml">
+                <search>
+                     <field name="job_inspection_id"/>
+                     <field name="inspection_record"/>
+                     <field name="inspection_result"/>
+                     <group expand="0" string="Group By">
+                        <filter string="Job Inspection" name="job_inspection_id" context="{'group_by':'job_inspection_id'}"/>
+                        <filter string="Inspection Record" name="inspection_record" context="{'group_by':'inspection_record'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_job_order_inspection_line" model="ir.actions.act_window">
+            <field name="name">Inspection Line</field>
+            <field name="res_model">job.order.inspection.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Inspection Line Tree.</field>
+        </record>
+
+        <!--menuitem name="Inspection Line" id="sub_menu_inspection_line" parent="sub_main_menu_job_inspection" sequence="1" action="action_job_order_inspection_line"/-->
+    </data>
+</odoo>

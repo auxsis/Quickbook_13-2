@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <data>
+        <record id="construction_change_order_form_view" model="ir.ui.view">
+            <field name="name">construction.change.order.form.view</field>
+            <field name="model">construction.change.order</field>
+            <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Confirm" name="confirm_state" states="draft" type="object" class="oe_highlight" groups="project.group_project_user"/>
+                    <button string="Approve" name="approve_state" states="confirm" type="object"  class="oe_highlight" groups="project.group_project_manager"/>
+                   
+                   <button name="customer_approve_state" states="approved_hr_manager" string="Customer Approve" type="object"  class="oe_highlight o_expense_sheet_approve" groups="project.group_project_manager"/>
+                   
+                    <button string="Done" class="oe_highlight" name="done_state" states="customer_approved" type="object"/>
+                    <button string="Reject" name="reject_state" states="confirm,approved_hr_manager" type="object" groups="project.group_project_manager"/>
+                    <button string="Cancel" name="cancel_state" states="draft" type="object"/>
+                    <button string="Set To Draft" name="draft_state" states="cancel,reject" type="object"/>
+                    <button string="Create Quotation" name="create_saleorder" class="oe_highlight" type="object" attrs="{'invisible': ['|', ('is_saleorder', '!=', False), ('state', 'not in', ['done'])]}" groups="project.group_project_manager"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,approved_hr_manager,customer_approved,done" colspan="2"/>
+                </header>
+                <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="show_contract" type="object"  icon="fa-pencil-square-o" string="Contracts"/>
+                            <button name="show_saleorder" type="object"  icon="fa-pencil-square-o" string="Sale Orders"/>
+                    </div>
+                        <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="guarantor_1" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="guarantor_2" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="project_id" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="analytic_account_id" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="task_id" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="is_saleorder" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="date" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="company_id"/>
+                            <field name="currency_id"/>
+                            <field name="user_id" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                            <field name="pricelist_id"/>
+                        </group>
+                        <group>
+                            <field name="original_job_completion_date" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                        </group>
+                        
+                        <group>
+                            <field name="new_estimation_completion_date" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="change order line" string="Change Order Lines">
+                            <field name="order_line_ids" attrs="{'readonly': [['state', 'in', ['customer_approved', 'reject', 'done', 'cancel']]]}">
+                                <tree editable='bottom'>
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="uom_id" string="Unit of Measure"/>
+                                    <field name="currency_id" invisible="1"/>
+                                    <field name="sale_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="tax_ids" widget="many2many_tags"/>
+                                    <field name="subtotal"/>
+                                    <field name="price_total"/>
+                                </tree>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                            <field name="amount_untaxed" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_tax" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="original_contract_amount" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="amount_total" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                            <field name="total_contract_amount_all_change" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                        </group>
+                        </page>
+                        <page name="additional information" string="Additional Information">
+                            <group>
+                                <group>
+                                    <field name="confirm_by"/>
+                                    <field name="approve_by"/>
+                                    <field name="customer_approve"/>
+                                    <field name="done_by"/>
+                                </group>
+                                <group>
+                                    <field name="confirm_date"/>
+                                    <field name="approve_date"/>
+                                    <field name="customer_approve_date"/>
+                                    <field name="done_date"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <group string="Reason for Change">
+                         <field name="reason_note" attrs="{'readonly': [('state', '=', 'done')]}" nolabel="1" placeholder="Reason for Change"/>
+                    </group>
+                    <group string="Internal Notes">
+                         <field name="note"  nolabel="1" placeholder="Internal notes"  attrs="{'readonly': [['state', 'in', ['done', 'cancel']]]}"/>
+                    </group>
+                     <group string="Terms and Conditions">
+                         <field name="term"  nolabel="1" placeholder="Terms and Conditions"  attrs="{'readonly': [['state', 'in', ['done', 'cancel']]]}"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+            </field>
+        </record>
+
+        <record id="construction_change_order_tree_view" model="ir.ui.view">
+            <field name="name">construction.change.order.tree.view</field>
+            <field name="model">construction.change.order</field>
+            <field name="arch" type="xml">
+                 <tree>
+                    <field name="name" readonly="1"/>
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="project_id"/>
+                    <field name="task_id"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="original_contract_amount"     widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="total"   widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="total_contract_amount_all_change"  class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <field name="state"/>
+                    <field name="company_id"/>
+                 </tree>
+            </field>
+        </record>
+
+        <record id="construction_change_order_search_view" model="ir.ui.view">
+            <field name="name">construction.change.order.search.view</field>
+            <field name="model">construction.change.order</field>
+            <field name="arch" type="xml">
+                <search string="Construction order change searh">
+                    <field name="partner_id"/>
+                    <field name="date"/>
+                    <field name="project_id"/>
+                    <field name="company_id"/>
+                    <field name="task_id"/>
+                    <field name="state"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Customer" name="partner_id" context="{'group_by':'partner_id'}"/>
+                        <filter string="State" name="state" context="{'group_by':'state'}"/>
+                        <filter string="Company" name="company_id" context="{'group_by':'company_id'}"/>
+                        <filter string="Project" name="project_id" context="{'group_by':'project_id'}"/>
+                        <filter string="Job Order" name="task_id" context="{'group_by':'task_id'}"/>
+                        <filter string="Date" name="date" context="{'group_by':'date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_construction_contract_change_order">
+            <field name="name">Change Orders</field>
+            <field name="res_model">construction.change.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_type">form</field>
+        </record>
+
+        <menuitem id="menu_construction_contract_change_order" name="Change Orders" parent="odoo_job_costing_management.menu_job_managmt" sequence="5"/>
+        <menuitem id="menu_construction_contract_change_order_child" name="Change Orders" parent="menu_construction_contract_change_order"  action="action_construction_contract_change_order"/>
+
+    </data>
+</odoo>

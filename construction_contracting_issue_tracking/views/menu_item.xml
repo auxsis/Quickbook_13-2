@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <menuitem name="Issues" web_icon="construction_contracting_issue_tracking,static/description/icon.png" id="main_construction_ticket"/>
+        <menuitem name="Project Issues" id="menu_construction_ticket" parent="main_construction_ticket" sequence="1"/>
+        <menuitem name="Analytic Account" id="menu_construction_account" parent="main_construction_ticket" sequence="2"/>
+        <menuitem name="Analytic Accounts" id="menu_construction_anlytic_accounts" parent="menu_construction_account" action="analytic.action_account_analytic_account_form"/>
+        
+<!--        <menuitem name="Configuration" id="menu_construction_configuration" parent="main_construction_ticket" sequence="3" groups="website_helpdesk_support_ticket.group_helpdesk_manager"/>-->
+<!--        <menuitem name="Stages" id="menu_item_helpdesk_ticket_stage_config" parent="menu_construction_configuration" action="helpdesk_stage_config_action"/>-->
+        <menuitem name="Project Issues" id="menu_item_construction_ticket" parent="menu_construction_ticket" action="action_construction_ticket"/>
+
+        <menuitem name="Reports" id="menu_construction_ticket_report" parent="main_construction_ticket" groups="construction_contracting_issue_tracking.group_construction_manager" sequence="4"/>
+<!--        <menuitem id="menu_helpdesk_analysis" name="Helpdesk Analysis" action="action_helpdesk_user_tree" parent="menu_helpdesk_report"/>-->
+        <menuitem id="menu_construction_analysis" name="Issue Analysis" action="construction_contracting_issue_tracking.action_construction_user_tree" parent="menu_construction_ticket_report"/>
+
+<!--        <menuitem name="Invoicing" -->
+<!--                    id="menu_construction_support_ticket_invoice"-->
+<!--                    parent="website_construction_support_ticket.main_construction_support"-->
+<!--                    groups="website_construction_support_ticket.group_construction_manager"-->
+<!--          />-->
+        <menuitem name="Invoicing" 
+                    id="menu_construction_ticket_invoice"
+                    parent="construction_contracting_issue_tracking.main_construction_ticket"
+                    groups="construction_contracting_issue_tracking.group_construction_manager" sequence="3"/>
+<!--          <menuitem name="Timesheets to Invoice" -->
+<!--                    id="sub_menu_construction_support_ticket_invoice" -->
+<!--                    parent="menu_construction_support_ticket_invoice" -->
+<!--                    groups="website_construction_support_ticket.group_construction_manager" -->
+<!--                    action="action_construction_support_ticket_invoice"-->
+<!--          />-->
+        <menuitem name="Timesheets to Invoice" 
+                    id="sub_menu_construction_ticket_invoice" 
+                    parent="menu_construction_ticket_invoice" 
+                    action="construction_contracting_issue_tracking.action_construction_support_ticket_invoice"
+                    groups="construction_contracting_issue_tracking.group_construction_manager"/>
+        
+        <menuitem name="Invoicing" id="menu_timesheet_invoice_construction" groups="hr_timesheet.group_hr_timesheet_user" parent="hr_timesheet.timesheet_menu_root"/>
+        <menuitem name="Timesheet to Invoice" id="menu_construction_timesheet_invoice" parent="menu_timesheet_invoice_construction" action="construction_invoice_action_ts_1" groups="hr_timesheet.group_hr_timesheet_user"/>
+        
+        <menuitem name="Configuration" id="menu_construction_configuration" parent="main_construction_ticket" sequence="5" groups="construction_contracting_issue_tracking.group_construction_manager"/>
+
+        <menuitem name="Issue Teams" id="menu_construction_team" parent="construction_contracting_issue_tracking.menu_construction_configuration" action="construction_contracting_issue_tracking.action_construction_team"/>
+        <menuitem name="Type of Issue Subject" id="menu_type_of_subject" parent="construction_contracting_issue_tracking.menu_construction_configuration" action="construction_contracting_issue_tracking.action_construction_type_of_subject"/>
+        <menuitem name="Issue Types" id="menu_construction_ticket_type" parent="construction_contracting_issue_tracking.menu_construction_configuration" action="construction_contracting_issue_tracking.action_construction_type"/>
+        <menuitem name="Issue Stages" id="menu_construction_ticket_stage_config" parent="construction_contracting_issue_tracking.menu_construction_configuration" action="construction_contracting_issue_tracking.action_construction_stage_config"/>
+    </data>
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="book_slot" name="Book Slot">
+        <t t-call="website.layout">
+            <div id="wrap">
+            <div class="oe_structure"/>
+            <div class="container">
+                <h1>Sorry!</h1>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="alert alert-danger">
+                             <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                             <h2> Slot already book please choose another slot.<br/></h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+            </div>
+             <p class="container">
+                    <a class="btn btn-primary pull-left mb32" onclick="history.go(-1);" ><span class="hidden-xs">Go Back</span><span class="fa fa-long-arrow-left"/></a>
+                </p>      
+        </t>
+    </template>
+    
+</odoo>

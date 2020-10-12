@@ -1,0 +1,4 @@
+[general]
+; For docker test container
+rtpstart=10000
+rtpend=10010

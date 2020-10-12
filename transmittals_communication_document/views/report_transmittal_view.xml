@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="action_report_transmittal_doc"
+            model="transmittal.document"
+            string="Transmittal / Submittal Document" 
+            report_type="qweb-pdf"
+            name="transmittals_communication_document.report_transmittal_doc_view"
+            file="transmittals_communication_document.report_transmittal_doc_view" 
+            />
+        
+        <template id="report_transmittal_doc_view">
+            <t t-call="web.external_layout">
+             <t t-foreach="docs" t-as="doc">
+            <div class="page">
+                <h3 class="text-center"><span t-field="doc.number"/> - <span t-field="doc.name"/></h3>
+                <table class="table table-condensed">
+                    <tr>
+                        <td><strong>Project</strong></td>
+                        <td><p t-field="doc.project_id"/></td>
+                        <td><strong>Date of Sending</strong></td>
+                        <td><p t-field="doc.sending_date"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analytic Account</strong></td>
+                        <td><p t-field="doc.analytic_account_id"/></td>
+                        <td><strong>Deadline</strong></td>
+                        <td><p t-field="doc.deadline"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Job Order</strong></td>
+                        <td><p t-field="doc.job_order_id"/></td>
+                        <td><strong>Sender Company</strong></td>
+                        <td><p t-field="doc.sender_company_id"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Job Costsheet</strong></td>
+                        <td><p t-field="doc.job_costsheet_id"/></td>
+                        <td><strong>Receiver Company</strong></td>
+                        <td><p t-field="doc.receiver_company_id"/></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Company</strong></td>
+                        <td><p t-field="doc.company_id"/></td>
+                        <td><strong>Responsible User</strong></td>
+                        <td><p t-field="doc.user_id"/></td>
+                    </tr>
+                </table>
+                <h4 t-if="doc.transmittal_line_ids"><strong>Informations</strong></h4>
+                <table t-if="doc.transmittal_line_ids" class="table table-condensed">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Medium</th>
+                        <th>Description</th>
+                      </tr>
+                  </thead>
+                  <t t-foreach="doc.transmittal_line_ids" t-as="line">
+                      <tr>
+                        <td><span t-field="line.name"/></td>
+                        <td><span t-field="line.transmit_type_id"/></td>
+                        <td><span t-field="line.transmit_medium_id"/></td>
+                        <td><span t-field="line.description"/></td>
+                      </tr>
+                  </t>
+                </table>
+                <h4 t-if="doc.reason_for_send"><strong>Reason for Sending:</strong></h4>
+                <div class="row">
+                    <div class="col-12">
+                        <span t-field="doc.reason_for_send"/>
+                    </div>
+                </div>
+                <h4 t-if="doc.description"><strong>Description Taken by Recipient:</strong></h4>
+                <div class="row">
+                    <div class="col-12">
+                        <span t-field="doc.description"/>
+                    </div>
+                </div>
+                <br/><br/><br/>
+                <div class="row">
+                    <div class="col-6 text-left">
+                        <strong>Authorised Signature:_____________________</strong>
+                    </div>
+                    <div class="col-6 text-right">
+                        <strong>Receiver Signature:______________________</strong>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 text-left">
+                        <strong>Date:_______________________</strong>
+                    </div>
+                    <div class="col-6 text-right">
+                        <strong>Date:_______________________</strong>
+                    </div>
+                </div>
+            </div>
+         </t>
+         </t>
+       </template>
+    </data>
+</odoo>

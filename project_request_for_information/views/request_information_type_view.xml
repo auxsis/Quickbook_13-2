@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="request_information_type_form_view">
+            <field name="name">Request For Information Type</field>
+            <field name="model">request.information.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                     <group>
+                         <group>
+                                <field name="name"/>
+                         </group>
+                         <group>
+                         </group>
+                     </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="request_information_type_tree_view">
+            <field name="name">Request For Information Type</field>
+            <field name="model">request.information.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="request_information_type_view">
+            <field name="name">Request For Information Type</field>
+            <field name="model">request.information.type</field>
+            <field name="arch" type="xml">
+                <search>
+                     <field name="name"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_request_information_type" model="ir.actions.act_window">
+            <field name="name">RFI Type</field>
+            <field name="res_model">request.information.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

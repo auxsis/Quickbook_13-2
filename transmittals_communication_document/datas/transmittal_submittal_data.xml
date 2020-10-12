@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Transmittal / Submittal Medium -->
+
+        <record id="tramsittal_submittal_courrier_type" model="transmittal.medium">
+            <field name="name">Courrier</field>
+        </record>
+        <record id="tramsittal_submittal_email_type" model="transmittal.medium">
+            <field name="name">Email</field>
+        </record>
+         <record id="tramsittal_submittal_post_type" model="transmittal.medium">
+            <field name="name">Post</field>
+        </record>
+        <record id="tramsittal_submittal_transport_type" model="transmittal.medium">
+            <field name="name">Transport</field>
+        </record>
+        
+        <record id="tramsittal_submittal_bill_type" model="transmittal.type">
+            <field name="name">Bill</field>
+        </record>
+        <record id="tramsittal_submittal_contract_type" model="transmittal.type">
+            <field name="name">Contract</field>
+        </record>
+         <record id="tramsittal_submittal_agreement_type" model="transmittal.type">
+            <field name="name">Agreement</field>
+        </record>
+        <record id="tramsittal_submittal_sow_type" model="transmittal.type">
+            <field name="name">Statement of Work</field>
+        </record>
+     
+    </data>
+</odoo>

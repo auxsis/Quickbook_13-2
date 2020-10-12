@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="inspection_record_form_view">
+            <field name="name">inspection.record.form</field>
+            <field name="model">inspection.record</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="code"/>
+                            </group>
+                            <group>
+                                <field name="name"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="inspection_record_tree_view">
+            <field name="name">inspection.record.tree.view</field>
+            <field name="model">inspection.record</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="code"/>
+                     <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="inspection_record_search_view">
+            <field name="name">inspection.record.search</field>
+            <field name="model">inspection.record</field>
+            <field name="arch" type="xml">
+                <search>
+                     <field name="code"/>
+                     <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_inspection_record" model="ir.actions.act_window">
+            <field name="name">Inspection Values</field>
+            <field name="res_model">inspection.record</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help">Inspection Record Tree.</field>
+        </record>
+
+        <!--menuitem name="Configation" id="job_inspection_configation" parent="main_job_inspection" sequence="3"/-->
+        <menuitem name="Inspection Values" id="sub_menu_inspection_record" parent="odoo_job_costing_management.menu_job_cost_configuration"  action="action_inspection_record"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,6 @@
+# import product
+
+import meeting_slot
+import res_partner
+import calendar
+

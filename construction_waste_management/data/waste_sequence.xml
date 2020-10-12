@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data noupdate="1">
+        
+        <record id="construction_waste_seq" model="ir.sequence">
+            <field name="name">Construction Waste Management</field>
+            <field name="code">construction.waste.management</field>
+            <field name="prefix">CONSTRUCTION/WASTE/</field>
+            <field name="padding">5</field>
+        </record>
+        
+    </data>
+
+</odoo>

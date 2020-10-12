@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data noupdate="1">
+
+        <function id="patho_set_enable_notify_reminder" model="ir.default"
+            name="set" eval="('patho.config.settings', 'enable_notify_reminder', True)"/>
+
+        <function id="patho_set_notify_reminder_mail_template" model="ir.default"
+            name="set" eval="('patho.config.settings', 'notify_reminder_mail_template', False)"/>
+
+        <function id="patho_set_notify_customer_on_approve_appoint" model="ir.default"
+            name="set" eval="('patho.config.settings', 'notify_customer_on_approve_testreq', False)"/>
+
+        <function id="patho_set_enable_appoint_approve_mail" model="ir.default"
+            name="set" eval="('patho.config.settings', 'enable_notify_customer_on_approve_testreq', True)"/>
+
+      </data>
+</odoo>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="asterisk_user_action" model="ir.actions.act_window">
+        <field name="name">User</field>
+        <field name="res_model">asterisk_calls.user</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="asterisk_user_admin_menu" parent="asterisk_calls_conf_menu" 
+            sequence="10"
+            name="Users" action="asterisk_user_action"/>
+
+
+    <record id="asterisk_user_list" model="ir.ui.view">
+        <field name="name">asterisk_calls.user.list</field>
+        <field name="model">asterisk_calls.user</field>
+        <field name="type">tree</field>
+        <field name="arch" type="xml">
+            <tree>
+                <button name="call_user" icon="fa-phone"
+                    type="object" title="Dial" aria-label="Dial"/>
+                <field name="extension"/>
+                <field name="user" options="{'no_create': True}"/>
+                <field name="channel"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="asterisk_user_form" model="ir.ui.view">
+        <field name="name">asterisk_calls.user.form</field>
+        <field name="model">asterisk_calls.user</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form>
+              <sheet>
+                    <group>
+                        <group>
+                            <field name="is_own_record" invisible="1"/>
+                            <field name="is_asterisk_admin" invisible="1"/>
+                            <field name="id" invisible="1"/>
+                            <field name="extension" widget="originate_call"
+                                attrs="{'readonly': [('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                            <field name="user"
+                                attrs="{'readonly': [('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                            <field name="channel"
+                                attrs="{'readonly': [('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                            <field name="sip_alert_info"
+                                attrs="{'readonly': [('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="missed_calls_notify"
+                                attrs="{'invisible': [('is_own_record','=', False),
+                                                      ('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                            <field name="open_partner_form"
+                                attrs="{'invisible': [('is_own_record','=', False),
+                                                      ('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                            <field name="call_popup_is_enabled"
+                                attrs="{'invisible': [('is_own_record','=', False),
+                                                      ('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                            <field name="call_popup_is_sticky"
+                                attrs="{'invisible': ['|', ('call_popup_is_enabled', '=', False),
+                                                      '&amp;', '&amp;', '&amp;', ('is_own_record','=', False),
+                                                      ('is_asterisk_admin','=',False),('id','!=',False)]}"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="asterisk_user_search" model="ir.ui.view">
+        <field name="name">asterisk_calls.user.search</field>
+        <field name="model">asterisk_calls.user</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user"/>
+                <field name="extension"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        <record id="survey_form_inherit_rfi_request" model="ir.ui.view">
+            <field name="name">survey.survey.rfi.request.form</field>
+            <field name="model">survey.survey</field>
+            <field name="inherit_id" ref="survey.survey_form"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//div[hasclass('oe_title')]" position="after">
+                    <group name="request_information">
+                        <group>
+                            <field name="rfi_request_id"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+          </record>
+    </data>
+ </odoo>
+ 

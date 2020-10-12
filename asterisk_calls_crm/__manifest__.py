@@ -1,0 +1,26 @@
+# -*- encoding: utf-8 -*-
+{
+    'name': 'Asterisk Calls CRM',
+    'version': '1.2',
+    'author': 'Odooist',
+    'price': 100,
+    'currency': 'EUR',
+    'maintainer': 'Odooist',
+    'support': 'odooist@gmail.com',
+    'license': 'OPL-1',
+    'category': 'Phone',
+    'summary': 'Asterisk Calls CRM integration',
+    'description': "",
+    'depends': ['crm'],
+    'data': [
+        'views/crm_lead.xml',
+        'views/call.xml',
+        'views/channel.xml',
+        'views/res_config_settings.xml',
+        ],
+    'demo': [],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'images': ['static/description/history_graph_crm.png'],
+}

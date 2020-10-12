@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="mpr_custom_line_cost_sheet_line_view" model="ir.ui.view">
+            <field name="name">material.purchase.requisition.inherit.form</field>
+            <field name="model">material.purchase.requisition</field>
+            <field name="inherit_id" ref="material_purchase_requisitions.material_purchase_requisition_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//tree/field[@name='product_id']" position="after">
+                    <field name="custom_job_costing_id" domain="[('state','=','approve'),('analytic_id','=', parent.analytic_account_id)]"
+options="{'no_create': True, 'no_open': True}"/>
+                    <field name="custom_job_costing_line_id" domain="[('direct_id', '=', custom_job_costing_id)]"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <template id="actual_requisition_quantity_report" inherit_id = "odoo_job_costing_management.report_job_costing">
+            <xpath expr="//div[@t-if='doc.job_cost_line_ids']//tr[1]//th[7]" position="after">
+                <th class="text-right">Actual Requistion Quantity</th>
+            </xpath>
+            <xpath expr="//tr[@t-foreach='doc.job_cost_line_ids']//td[7]" position="after">
+                <td class="text-right">
+                    <span t-field="material_line.actual_requisition_qty"/>
+                </td>
+            </xpath>
+            <xpath expr="//div[@t-if='doc.job_labour_line_ids']//tr[1]//th[7]" position="after">
+                <th class="text-right">Actual Requistion Quantity</th>
+            </xpath>
+            <xpath expr="//tr[@t-foreach='doc.job_labour_line_ids']//td[7]" position="after">
+                <td class="text-right">
+                    <span t-field="labor_line.actual_requisition_qty"/>
+                </td>
+            </xpath>
+            <xpath expr="//div[@t-if='doc.job_overhead_line_ids']//tr[1]//th[8]" position="after">
+                <th class="text-right">Actual Requistion Quantity</th>
+            </xpath>
+            <xpath expr="//tr[@t-foreach='doc.job_overhead_line_ids']//td[8]" position="after">
+                <td class="text-right">
+                    <span t-field="overhead_line.actual_requisition_qty"/>
+                </td>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

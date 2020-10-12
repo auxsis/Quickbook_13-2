@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="inspection_button_costsheet_view" model="ir.ui.view">
+    <field name="name">job.costing.formview</field>
+    <field name="model">job.costing</field>
+    <field name="inherit_id" ref="odoo_job_costing_management.job_costing_form_view"/>
+    <field name="arch" type="xml">
+        <xpath expr="//div[@name = 'button_box']" position="inside">
+            <button class="oe_stat_button" type="object" string="Inspection" name="show_inspection"  icon="fa-tasks">
+                </button>
+        </xpath>
+    </field>
+    </record>
+
+</odoo>

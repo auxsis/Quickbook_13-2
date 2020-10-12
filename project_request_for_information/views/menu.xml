@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <menuitem name="Request for Information" id="menu_request_information" parent="odoo_job_costing_management.menu_job_managmt" sequence="2"/>
+    <menuitem name="Request for Informations" id="menu_item_request_information" parent="menu_request_information" action="project_request_for_information.action_request_information"/>
+
+    <menuitem name="RFI Configuration" id="menu_request_information_configuration" parent="odoo_job_costing_management.menu_job_cost_configuration" sequence="3" groups="project.group_project_manager"/>
+    <menuitem name="RFI Subject" id="menu_type_of_subject" parent="project_request_for_information.menu_request_information_configuration" action="project_request_for_information.action_request_information_subject"/>
+    <menuitem name="RFI Types" id="menu_request_ticket_type" parent="project_request_for_information.menu_request_information_configuration" action="project_request_for_information.action_request_information_type"/>
+    <menuitem name="RFI Teams" id="menu_item_support_team" parent="menu_request_information_configuration" action="project_request_for_information.action_request_information_team"/>
+    <menuitem name="RFI Stages" id="menu_item_request_stage_config" parent="menu_request_information_configuration" action="project_request_for_information.request_information_stage_config_action"/>
+
+    <menuitem name="Reports" id="menu_request_information_report" parent="odoo_job_costing_management.menu_job_managmt" groups="project.group_project_manager" sequence="5"/>
+    <menuitem id="menu_request_analysis" name="Request for Information" action="project_request_for_information.action_request_information_user_tree" parent="project_request_for_information.menu_request_information_report"/>
+
+</odoo>
+
+

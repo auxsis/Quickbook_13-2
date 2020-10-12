@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <report
+            id="construction_contract_change_report" 
+            model="construction.change.order"
+            report_type="qweb-pdf"
+            string="Print Change Order"
+            name="construction_contracting_change_order.change_order_print"
+            file="construction_contracting_change_order.change_order_print"
+         />
+
+        <template id="change_order_print">
+             <t t-foreach="docs" t-as="doc">
+               <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div>
+                        <div class="text-right">
+                            <div t-field="doc.partner_id"
+                                t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h3>
+                            <strong>Change Order <span t-field="doc.name"/></strong>
+                        </h3>
+                    </div>
+                    <table class="table table-condensed">
+                           <tr>
+                               <td><strong>Customer</strong></td><td> <span t-field="doc.partner_id.name"/></td>
+                               <td><strong>Create Date</strong></td><td> <span t-field="doc.date"/></td>
+                               <td></td><td></td>
+                           </tr>
+                           <tr>
+                                <td><strong>Guarantor One</strong></td><td> <span t-field="doc.guarantor_1.name"/></td>
+                                <td><strong>Company</strong></td><td> <span t-field="doc.company_id.name"/></td>
+                               <td></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Guarantor Two</strong> </td><td> <span t-field="doc.guarantor_2.name"/></td>
+                               <td><strong>Currency</strong> </td><td> <span t-field="doc.currency_id.name"/></td>
+                               <td></td>
+                           </tr>
+                           <tr>
+                                <td><strong>Project</strong></td><td> <span t-field="doc.project_id.name"/></td>
+                                <td><strong>Responsible User</strong> </td><td> <span t-field="doc.user_id.name"/></td>
+                                <td></td>
+                           </tr>
+                           <tr>
+                                <td><strong>Contract/Analytic Account</strong></td><td> <span t-field="doc.analytic_account_id.name"/></td>
+                               <td></td><td></td>
+                           </tr>
+                           <tr>
+                               <td><strong>Job Order</strong></td><td><span t-field="doc.task_id.name"/></td>
+                               <td></td><td></td>
+                           </tr>
+                            <tr>
+                                <td><strong>Original Job Completion Date</strong></td><td> <span t-field="doc.original_job_completion_date"/></td><td><strong>New Estimation Completion Date</strong> </td><td> <span t-field="doc.new_estimation_completion_date"/></td>
+                           </tr>
+                    </table>
+                    <h3>Change Order Lines</h3>
+                        <table class="table table-condensed">
+                                <tr>
+                                   <td><strong>Product</strong></td>
+                                   <td><strong>Description</strong></td>
+                                   <td><strong>Quantity</strong></td>
+                                    <td><strong>Uom</strong></td>
+                                   <td><strong>Sale Price</strong> </td>
+                                   <td><strong>Sub Total</strong></td>
+                                   <td><strong>Total</strong></td>
+                               </tr>
+                            <t t-foreach="doc.order_line_ids" t-as="line">
+                               <tr>
+                                  <td> <span t-field="line.product_id.name"/></td>
+                                   <td> <span t-field="line.description"/></td>
+                                   <td> <span t-field="line.quantity"/></td>
+                                    <td> <span t-field="line.uom_id"/></td>
+                                   <td> <span t-field="line.sale_price" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                                   <td> <span t-field="line.subtotal" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                                   <td> <span t-field="line.price_total" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                               </tr>
+                           </t>
+                           <tr>
+                                <td colspan="6" class="text-right"><strong>Untaxed Amount</strong> </td><td><span t-field="doc.amount_untaxed" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                           </tr>
+                           <tr>
+                                <td colspan="6" class="text-right"><strong>Taxes</strong> </td><td><span t-field="doc.amount_tax" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                           </tr>
+                           <tr>
+                                <td colspan="6" class="text-right"><strong>Original Contract Amount</strong> </td><td><span t-field="doc.original_contract_amount" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                           </tr>
+                           <tr>
+                               <td colspan="6" class="text-right"><strong>Total</strong> </td><td><span t-field="doc.total" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                               </tr>
+                           <tr>
+                               <td colspan="6" class="text-right"><strong>Total Contract Amount All Change</strong> </td><td><span t-field="doc.total_contract_amount_all_change" t-field-options='{"widget": "monetary", "display_currency": "doc.currency_id"}'/></td>
+                           </tr>
+                        </table>
+                        
+                        <h3>Additional Information</h3>
+                        <table class="table table-condensed">
+                           <tr>
+                                <t t-if="doc.confirm_by">
+                                   <td><strong>Confirmed By</strong></td><td> <span t-field="doc.confirm_by.name"/></td>
+                                   <td><strong>Confirmed Date</strong></td><td> <span t-field="doc.confirm_date"/></td>
+                                   <td></td><td></td>
+                               </t>
+                           </tr>
+                           <tr>
+                                <t t-if="doc.approve_by">
+                                   <td><strong>Approved By</strong></td><td> <span t-field="doc.approve_by.name"/></td>
+                                   <td><strong>Approved Date</strong> </td><td> <span t-field="doc.approve_date"/></td>
+                                   <td></td>
+                               </t>
+                           </tr>
+                           <tr>
+                                <t t-if="doc.customer_approve">
+                                    <td><strong>Customer Approved</strong></td><td> <span t-field="doc.customer_approve.name"/></td>
+                                   <td><strong>Customer Approved Date</strong> </td><td> <span t-field="doc.customer_approve_date"/></td>
+                                   <td></td>
+                               </t>
+                           </tr>
+                           <tr>
+                                <t t-if="doc.done_by">
+                                   <td><strong>Closed By</strong></td><td> <span t-field="doc.done_by.name"/></td>
+                                   <td><strong>Closed Date</strong> </td><td> <span t-field="doc.done_date"/></td>
+                                   <td></td>
+                               </t>
+                           </tr>
+                    </table>
+                <t t-if="doc.reason_note">
+                     <h3>Reason for Change</h3>
+                        <table class="table table-condensed">
+                           <tr>
+                               <td> <span t-field="doc.reason_note"/></td>
+                           </tr>
+                    </table>
+                </t>
+                <t t-if="doc.term">
+                    <h3>Terms and Conditions</h3>
+                        <table class="table table-condensed">
+                           <tr>
+                               <td><span t-field="doc.term"/></td>
+                           </tr>
+                    </table>
+                </t>
+                    </div>
+                    <table class="table">
+                     <tr>
+                         <td style="border:none;">
+                            <p>
+                                <strong>Customer Signature</strong>
+                            </p>
+                         </td>
+                         <td  style="border:none;height: 1in;" class="text-right">
+                            <p>
+                                <strong>Authorised Signature</strong>
+                            </p>
+                         </td>
+                     </tr>
+                     <tr>
+                         <td style="border:none;">
+                            <strong>____________________</strong><br/>
+                            <t t-if="doc.partner_id">
+                                <span t-field="doc.partner_id.name"/>
+                            </t>
+                         </td>
+                         <td style="border:none;" class="text-right">
+                             <strong>________________________</strong><br/>
+                            <t>
+                                <span  t-field="doc.company_id.name"/><br/>
+                            </t>
+                            <t t-if="doc.user_id">
+                                <span t-field="doc.user_id.name"/><br/>
+                                <span t-field="doc.user_id.email"/><br/>
+                                <span t-field="doc.user_id.phone"/>
+                            </t>
+                         </td>
+                     </tr>
+                 </table>
+              </t>
+            </t>
+        </template>
+
+    </data>
+</odoo>

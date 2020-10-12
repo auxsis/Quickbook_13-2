@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="request_information_team_stage_search" model="ir.ui.view">
+        <field name="name">Stage - Search</field>
+        <field name="model">request.information.stage.config</field>
+        <field name="arch" type="xml">
+            <search string="Stage Search">
+                <field name="name"/>
+                <field name="sequence"/>
+                <field name="team_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="request_information_team_stage_tree" model="ir.ui.view">
+        <field name="name">request_information.stage.config.tree</field>
+        <field name="model">request.information.stage.config</field>
+        <field name="arch" type="xml">
+            <tree string="Stages">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="team_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="request_information_team_stage_form" model="ir.ui.view">
+        <field name="name">request.information.stage.config.form</field>
+        <field name="model">request.information.stage.config</field>
+        <field name="priority" eval="1"/>
+        <field name="arch" type="xml">
+            <form string="Stage">
+                <group>
+                    <group>
+                        <field name="name"/>
+                        <field name="stage_type"/>
+                        <field name="team_id"/>
+                        <field name="fold"/>
+                    </group>
+                </group>
+                <separator string="Requirements"/>
+                <field name="requirements" nolabel="1"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="request_information_stage_config_action" model="ir.actions.act_window">
+        <field name="name">RFI Stages</field>
+        <field name="res_model">request.information.stage.config</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="project_request_for_information.request_information_team_stage_tree"/>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to set a new stage in your Request For INformation.
+          </p>
+        </field>
+    </record>
+
+</odoo>

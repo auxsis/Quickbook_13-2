@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+    
+        <record id="job_costing_form_view_inherit_construction" model="ir.ui.view">
+            <field name="name">job.costing.form.inherit.construction.ticket</field>
+            <field name="model">job.costing</field>
+            <field name="inherit_id" ref="odoo_job_costing_management.job_costing_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                    <button class="oe_stat_button" icon="fa-ticket" type="object" name="action_open_construction_task_ticket" string="Issues"/>
+                </xpath>
+            </field>
+          </record>
+          
+    </data>
+ </odoo>
+ 

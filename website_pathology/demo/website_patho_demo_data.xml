@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data noupdate="1">
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~ Test Categories ~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <record id="patho_test_catory_demo1" model="product.public.category">
+            <field name="name">Cancer </field>
+            <field name="pathology">True</field>
+        </record>
+
+        <record id="patho_test_catory_demo2" model="product.public.category">
+            <field name="name">Thyroid </field>
+            <field name="pathology">True</field>
+        </record>
+
+        <record id="patho_test_catory_demo3" model="product.public.category">
+            <field name="name">Diabetes </field>
+            <field name="pathology">True</field>
+        </record>
+
+        <record id="patho_test_catory_demo4" model="product.public.category">
+            <field name="name">Allergy </field>
+            <field name="pathology">True</field>
+        </record>
+
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~ Lab Tests ~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <record id="dcred_wk_pathology_management.patho_lab_test_tmpl_demo3" model="product.template">
+            <field name="public_categ_ids" eval="[( 6, 0, [ref('patho_test_catory_demo1'),
+                ref('patho_test_catory_demo3'),])]"/>
+            <field name="website_published">True</field>
+            <field name="test_note"><![CDATA[
+                    <h3 class="style__sub-header___3I9FN" data-reactid="153">Interpretations</h3>
+                    <div class="style__text___VtmG1" data-reactid="154"><ul><li>Decreased level of
+                    hemoglobin is suggestive of anemia while increased levels are seen in polycythemia.
+                    Various causes of anemia are iron deficiency anemia, vitamin B 12 deficiency anemia,
+                    hemolytic anemia&nbsp;</li><li><span>High WBC count is associated with</span>&nbsp;infections,
+                    inflammatory disorders, leukemia, myeloproliferative disorders while low levels may be seen in
+                    aplastic anemia, bone marrow disorders, auto immune conditions&nbsp;</li><li>High neutrophil
+                    count (neutrophilia) can be seen in acute bacterial infections, inflammation, burns while
+                    lower values (neutropenia) may be seen in aplastic anemia, autoimmune disorders, drug reactions
+                    or chemotherapy&nbsp;</li><li>High lymphocyte count (lymphocytosis) may be seen in acute viral
+                    infections, tuberculosis, lymphocytic leukemia while lower values (lymphopenia) may be seen in
+                    bone marrow damage, aplastic anemia, autoimmune disorders&nbsp;</li><li>High monocyte count
+                    (monocytosis) may be seen in chronic infections like tuberculosis, bacterial endocarditis,
+                    collagen vascular disorders, inflammatory bowel diseases while lower values may be seen in
+                    bone marrow damage&nbsp;</li><li>High eosinophil count (eosinophilia) can be seen in asthma,
+                    allergies, drug reactions, parasitic infections, while lower levels are rare and medically
+                    insignificant&nbsp;</li><li>High basophil count (basophilia) may be seen in chronic myeloid
+                    leukemia (CML) while lower levels are medically insignificant&nbsp;</li><li>Low platelet counts
+                    also called as thrombocytopenia are associated with yiral infections like dengue fever, bleeding or
+                    platelet disorders <br><br><br><br></li></ul></div>
+                ]]>
+            </field>
+            <field name="description_sale">
+                It includes the evaluation of your Red blood cell, white blood cell and platelet count.
+                It is done as a part of your routine health check up, if you have symptoms of anemia, infection
+                or any kind of bleeding disorders, to monitor the effectiveness of treatment once the diagnosis
+                of anemia is established, and to monitor treatment that is known to affect blood cells.
+                Get your CBC test done before any surgery or procedure.
+            </field>
+        </record>
+
+        <record id="dcred_wk_pathology_management.patho_lab_test_tmpl_demo4" model="product.template">
+            <field name="public_categ_ids" eval="[( 6, 0, [ref('patho_test_catory_demo1'),
+                ref('patho_test_catory_demo2'),])]"/>
+            <field name="website_published">True</field>
+            <field name="test_note"><![CDATA[
+                    <h3 class="style__sub-header___JJKxB" data-reactid="133">Why Get Tested</h3>
+                    <div class="style__text___2xo0N" data-reactid="134"><ol><li>As a part of routine
+                    health check up or package&nbsp;</li><li>It is one of the preliminary tests done
+                    to screen for a wide range of diseases and conditions&nbsp;</li><li>Help diagnose
+                    various conditions like anemia, infection, bleeding disorders, inflammation, leukemia&nbsp;
+                </li><li>Monitor the effectiveness of treatment after a diagnosis is established&nbsp;</li><li>
+                Monitor treatment that is known to affect blood cells such as chemotherapy or radiotherapy <br><br></li></ol></div>
+                ]]>
+            </field>
+            <field name="description_sale">
+                It includes the evaluation of your Red blood cell, white blood cell and platelet count.
+                It is done as a part of your routine health check up, if you have symptoms of anemia, infection
+                or any kind of bleeding disorders, to monitor the effectiveness of treatment once the diagnosis
+                of anemia is established, and to monitor treatment that is known to affect blood cells.
+                Get your CBC test done before any surgery or procedure.
+            </field>
+        </record>
+
+        <record id="dcred_wk_pathology_management.patho_lab_test_tmpl_demo5" model="product.template">
+            <field name="public_categ_ids" eval="[( 6, 0, [ref('patho_test_catory_demo2'),
+                ref('patho_test_catory_demo3'),
+                ref('patho_test_catory_demo4'),])]"/>
+            <field name="website_published">True</field>
+            <field name="test_note"><![CDATA[
+                    <h3 class="style__sub-header___JJKxB" data-reactid="133">Why Get Tested</h3>
+                    <div class="style__text___2xo0N" data-reactid="134"><ol><li>As a part of routine
+                    health check up or package&nbsp;</li><li>It is one of the preliminary tests done
+                    to screen for a wide range of diseases and conditions&nbsp;</li><li>Help diagnose
+                    various conditions like anemia, infection, bleeding disorders, inflammation, leukemia&nbsp;
+                </li><li>Monitor the effectiveness of treatment after a diagnosis is established&nbsp;</li><li>
+                Monitor treatment that is known to affect blood cells such as chemotherapy or radiotherapy <br><br></li></ol></div>
+                ]]>
+            </field>
+            <field name="description_sale">
+                It includes the evaluation of your Red blood cell, white blood cell and platelet count.
+                It is done as a part of your routine health check up, if you have symptoms of anemia, infection
+                or any kind of bleeding disorders, to monitor the effectiveness of treatment once the diagnosis
+                of anemia is established, and to monitor treatment that is known to affect blood cells.
+                Get your CBC test done before any surgery or procedure.
+            </field>
+        </record>
+
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~ Test Packages ~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <record id="dcred_wk_pathology_management.patho_test_package_demo1" model="product.product">
+            <field name="public_categ_ids" eval="[( 6, 0, [ref('patho_test_catory_demo4'),
+                ref('patho_test_catory_demo1'),
+                ref('patho_test_catory_demo3'),])]"/>
+            <field name="website_published">True</field>
+            <field name="test_note"><![CDATA[
+                    <h3 class="style__sub-header___JJKxB" data-reactid="133">Why Get Tested</h3>
+                    <div class="style__text___2xo0N" data-reactid="134"><ol><li>As a part of routine
+                    health check up or package&nbsp;</li><li>It is one of the preliminary tests done
+                    to screen for a wide range of diseases and conditions&nbsp;</li><li>Help diagnose
+                    various conditions like anemia, infection, bleeding disorders, inflammation, leukemia&nbsp;
+                </li><li>Monitor the effectiveness of treatment after a diagnosis is established&nbsp;</li><li>
+                Monitor treatment that is known to affect blood cells such as chemotherapy or radiotherapy <br><br></li></ol></div>
+                ]]>
+            </field>
+            <field name="description_sale">
+                It includes the evaluation of your Red blood cell, white blood cell and platelet count.
+                It is done as a part of your routine health check up, if you have symptoms of anemia, infection
+                or any kind of bleeding disorders, to monitor the effectiveness of treatment once the diagnosis
+                of anemia is established, and to monitor treatment that is known to affect blood cells.
+                Get your CBC test done before any surgery or procedure.
+            </field>
+        </record>
+
+        <record id="dcred_wk_pathology_management.patho_test_package_demo2" model="product.product">
+            <field name="public_categ_ids" eval="[( 6, 0, [ref('patho_test_catory_demo1'),
+                ref('patho_test_catory_demo3'),])]"/>
+            <field name="website_published">True</field>
+            <field name="test_note"><![CDATA[
+                    <h3 class="style__sub-header___JJKxB" data-reactid="133">Why Get Tested</h3>
+                    <div class="style__text___2xo0N" data-reactid="134"><ol><li>As a part of routine
+                    health check up or package&nbsp;</li><li>It is one of the preliminary tests done
+                    to screen for a wide range of diseases and conditions&nbsp;</li><li>Help diagnose
+                    various conditions like anemia, infection, bleeding disorders, inflammation, leukemia&nbsp;
+                </li><li>Monitor the effectiveness of treatment after a diagnosis is established&nbsp;</li><li>
+                Monitor treatment that is known to affect blood cells such as chemotherapy or radiotherapy <br><br></li></ol></div>
+                ]]>
+            </field>
+            <field name="description_sale">
+                It includes the evaluation of your Red blood cell, white blood cell and platelet count.
+                It is done as a part of your routine health check up, if you have symptoms of anemia, infection
+                or any kind of bleeding disorders, to monitor the effectiveness of treatment once the diagnosis
+                of anemia is established, and to monitor treatment that is known to affect blood cells.
+                Get your CBC test done before any surgery or procedure.
+            </field>
+        </record>
+
+        <record id="dcred_wk_pathology_management.patho_test_package_demo3" model="product.product">
+            <field name="public_categ_ids" eval="[( 6, 0, [ref('patho_test_catory_demo1'),
+                ref('patho_test_catory_demo2'),
+                ref('patho_test_catory_demo3'),])]"/>
+            <field name="website_published">True</field>
+            <field name="test_note"><![CDATA[
+                    <h3 class="style__sub-header___JJKxB" data-reactid="133">Why Get Tested</h3>
+                    <div class="style__text___2xo0N" data-reactid="134"><ol><li>As a part of routine
+                    health check up or package&nbsp;</li><li>It is one of the preliminary tests done
+                    to screen for a wide range of diseases and conditions&nbsp;</li><li>Help diagnose
+                    various conditions like anemia, infection, bleeding disorders, inflammation, leukemia&nbsp;
+                </li><li>Monitor the effectiveness of treatment after a diagnosis is established&nbsp;</li><li>
+                Monitor treatment that is known to affect blood cells such as chemotherapy or radiotherapy <br><br></li></ol></div>
+                ]]>
+            </field>
+            <field name="description_sale">
+                It includes the evaluation of your Red blood cell, white blood cell and platelet count.
+                It is done as a part of your routine health check up, if you have symptoms of anemia, infection
+                or any kind of bleeding disorders, to monitor the effectiveness of treatment once the diagnosis
+                of anemia is established, and to monitor treatment that is known to affect blood cells.
+                Get your CBC test done before any surgery or procedure.
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+    
+        <!-- Sequence-->
+        <record id="seq_transmittal_comm_document" model="ir.sequence">
+            <field name="name">Transmittal Documents</field>
+            <field name="code">transmittal.documents</field>
+            <field name="prefix">TRANSMITTAL/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+        <record id="seq_submittal_comm_document" model="ir.sequence">
+            <field name="name">Submittal Documents</field>
+            <field name="code">submittal.documents</field>
+            <field name="prefix">SUBMITTAL/</field>
+            <field name="padding">5</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+    </data>
+</odoo>

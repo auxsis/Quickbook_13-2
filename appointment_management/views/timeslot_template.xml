@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <template id="time_slot" name="Time Slot" page="True">
+            <t t-call="website.layout">
+                 <t t-if ="day">
+                 <div class="col-sm-4" align="left">
+                 <h3 class="page-header"><span t-field="day.day"/> Available Slots</h3>
+                    <table class="table table-hover o_my_status_table" align="right">
+                        <thead align="center">
+                              <tr class="active" align="left">
+                                    <th>Time Slot</th>
+                              </tr>
+                        </thead>
+                        <t t-esc="slot_values">
+                            <span t-esc="dict_my"/>
+                            <t t-foreach="dict_my" t-as="slot">
+                                <tr align="center">
+                                     <td align="center">
+                                         <t t-if="dict_my[slot]">
+                                            <span t-esc="slot"/>
+                                         </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </t>
+                    </table>
+                </div>
+                </t>
+            </t>
+        </template>
+        
+</odoo>

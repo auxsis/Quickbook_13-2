@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+        
+        <template id="construction_ticket_template" name="Project Issue Genarate"
+            customize_show="True">
+            <t t-call="website.layout">
+                <form action="/construction_contracting/ticket_submitted" method="post" class="form-horizontal
+                    mt32" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <group>
+                        <div>
+                            <div class="container mb64">
+                                <div id="maindiv" class="col-md-9">
+                                    <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+                                        <label class="col-md-3 col-sm-4 control-label" for="name">Customer</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input type="text" class="form-control" name="customer_id" required="True" t-attf-value="#{user_id.partner_id.name}"/>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+                                        <label class="col-md-3 col-sm-4 control-label" for="name">Email</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input type="text" class="form-control" name="email" required="True" t-attf-value="#{user_id.partner_id.email}"/>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+                                        <label class="col-md-3 col-sm-4 control-label" for="name">Phone</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input type="text" class="form-control" name="phone" required="True" t-attf-value="#{user_id.partner_id.phone}"/>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+                                        <label class="col-md-3 col-sm-4 control-label" for="name">Category</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select class="form-control" name="category">
+                                                <option value="technical" selected="selected">Design Deficiencies</option>
+                                                <option value="functional">Material Deficiencies</option>
+                                                <option value="support">Construction Deficiencies</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+                                        <label class="col-md-3 col-sm-4 control-label" for="name">Subject</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input type="text" class="form-control" name="subject" required="True" t-attf-value="#{subject
+                                                or ''}"/>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+                                        <label class="col-md-3 col-sm-4 control-label" for="name">Description</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <textarea class="form-control" cols="60" name="description" required="True" rows="6">
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''}">
+                                        <label class="col-md-3 col-sm-4 control-label" for="name">Priority</label>
+                                        <div class="col-md-7 col-sm-8">
+                                            <select class="form-control" name="priority">
+                                                <option value="0" selected="selected">Low</option>
+                                                <option value="1">Middle</option>
+                                                <option value="2">High</option>
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+                                    <div t-attf-class="form-group form-field o_website_form_custom_attchments">
+                                        <div class="col-md-3 col-sm-4 text-right">
+                                            <label class="control-label" for="Attachments" >Attach Files</label>
+                                            
+                                        </div>
+                                        <div class="col-md-7 col-sm-8">
+                                            <input type="file" class="form-control o_website_form_input" name="attachment" multiple='multiple'/>
+                                        </div>
+                                        <div>
+                                            <label style="color:grey; font-size:12px;" >Multiple files can be attach</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                                            <button class="btn btn-success">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </group>
+                </form>
+            </t>
+        </template>
+        
+        <template id="thanks_mail_send" name="Thanks">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container">
+                        <h2>We have received your Issue request.</h2>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="alert alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                                    <h5>
+                                        Your Issue number is
+                                        <t t-esc="construction_id.name"/>
+                                        please note it for further communication and you will also receive email from our
+                                        support team shortly, Please reply to that email for feature conversation.
+                                        <br/>
+                                    </h5>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </template>
+        
+        <template id="construction_mail_invalid" name="Email Invalid">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="oe_structure"/>
+                    <div class="container">
+                        <h1>Sorry!</h1>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="alert alert-danger">
+                                    <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                                    <h2>
+                                        You have entered wrong Email ID, we request you to recheck.
+                                        <br/>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </template>
+        
+<!--        <record id="support_page" model="website.menu">-->
+<!--            <field name="name">Helpdesk</field>-->
+<!--            <field name="parent_id" ref="website.main_menu"/>-->
+<!--            <field name="url">/page/helpdesk_support_ticket</field>-->
+<!--            <field name="sequence" type="int">59</field>-->
+<!--        </record>-->
+<!--        -->
+<!--        <record id="ticket_page" model="website.page">-->
+<!--            <field name="url">/website.helpdesk_support_ticket</field>-->
+<!--            <field name="website_published">True</field>-->
+<!--            <field name="view_id" ref="website.helpdesk_support_ticket" />-->
+<!--        </record>-->
+<!--        -->
+<!--         <record id="support_page_add" model="website.menu">-->
+<!--            <field name="name">Create Ticket</field>-->
+<!--            <field name="url">/helpdesk_support_ticket</field>-->
+<!--            <field name="parent_id" ref="support_page"/>-->
+<!--            <field name="sequence" type="int">1</field>-->
+<!--            <field name="website_id" ref="website.default_website"/>-->
+<!--            <field name="page_id" ref="ticket_page" />-->
+<!--        </record>-->
+        <!-- 
+        <record id="construction_page" model="website.menu">
+            <field name="name">Project Issue</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="url">/page/construction_ticket</field>
+            <field name="sequence" type="int">59</field>
+        </record>
+        -->
+        
+        <record id="construction_ticket_page" model="website.page">
+            <field name="url">/construction_ticket_template</field>
+            <field name="website_published">True</field>
+            <field name="view_id" ref="construction_ticket_template" />
+        </record>
+        <!--
+         <record id="construction_support_page_add" model="website.menu">
+            <field name="name">Create Issue</field>
+            <field name="url">/construction_ticket_template</field>
+            <field name="parent_id" ref="construction_page"/>
+            <field name="sequence" type="int">1</field>
+            <field name="website_id" ref="website.default_website"/>
+            <field name="page_id" ref="construction_ticket_page" />
+        </record> -->
+        <!--
+        <record id="construction_support_page_add" model="website.menu">
+            <field name="name">Create Ticket</field>
+            <field name="url">/page/helpdesk_support_ticket</field>
+            <field name="parent_id" ref="support_page" />
+            <field name="sequence" type="int">1</field>
+        </record>
+        -->
+        
+        
+    </data>
+</odoo>

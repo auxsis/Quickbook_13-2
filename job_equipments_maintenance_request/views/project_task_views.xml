@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+    
+        <record id="job_costing_form_view_inherit_maintenance" model="ir.ui.view">
+            <field name="name">project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Maintenance Equipment" name="maintenance_equipment">
+                        <group>
+                            <group>
+                                <button name="%(maintenance_equipment_action)d" string="Create Maintenance Equipment" type="action"
+                                        class="oe_highlight">
+                                </button>
+                            </group>
+                            <group>
+<!--                                <field name="maintenance_equipment_id"/-->
+                            </group>
+                        </group>
+                        <group>
+                            <field name="custom_maintenance_equipment_ids" nolabel="1"/>
+                        </group>
+                    </page>
+                    <page string="Maintenance Requests" name="maintenance_request">
+                        <group>
+                            <group>
+                                <button name="%(maintenance_request_action)d" string="Create Maintenance Request" type="action" 
+                                        class="oe_highlight"/>
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="custom_maintenance_request_ids" nolabel="1"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//sheet/div[@class='oe_button_box']" position="inside">
+                    <button class="oe_stat_button" name="action_view_maintenance_equipment"
+                            attrs="{'invisible':[('maintenance_equipment_count','=',0)]}" type="object" icon="fa-wrench">
+                        <field string="Equipment" name="maintenance_equipment_count" widget="statinfo"/>
+                    </button>
+                    <button class="oe_stat_button" name="action_view_maintenance_request"
+                            attrs="{'invisible':[('maintenance_request_count','=',0)]}" type="object" icon="fa-ticket">
+                        <field string="Maintenance Request" name="maintenance_request_count" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    
+        <menuitem id="menu_job_maintenance" parent="odoo_job_costing_management.menu_job_managmt" name="Maintenance" sequence="4"/>
+        <menuitem id="menu_job_cost_maintenance_request" name="Maintenance Requests" 
+                  parent="menu_job_maintenance" 
+                  action="maintenance.hr_equipment_request_action" sequence="1"/>
+        
+        <menuitem id="menu_job_cost_maintenance_equipment" name="Maintenance Equipments"
+                  parent="menu_job_maintenance" 
+                  action="maintenance.hr_equipment_action" sequence="2"/>
+    </data>
+</odoo>

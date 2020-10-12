@@ -1,0 +1,55 @@
+version: '3'
+services:
+
+  db:
+    command: postgres -c 'log_min_duration_statement=0' 
+
+  agent:
+    volumes:
+      # DO NOT ENABLE WHEN BUILD AGENT
+      - ./agent:/asterisk_calls_agent
+      - recordings:/var/spool/asterisk/monitor/
+      - ../../../../amanita/nameko_apps:/nameko_apps/
+    command: ["sleep", "2000000"]
+    # network_mode: host
+    environment:
+      - DEBUG=1
+    ports:
+      - 40000:40000
+
+  nginx:
+    ports:
+      - 11080:80
+      - 11443:443
+
+  odoo:
+    ports:
+      - "8069:8069"
+      - "8072:8072"
+    #command: ["odoo", "-u", "asterisk_calls"]
+    #command: ["odoo"]
+    command: ["sleep", "200000"]
+    volumes:
+      # Remeber that build context is set to app root folder.
+      - ./odoo/odoo.conf:/etc/odoo/odoo.conf
+      - ../:/mnt/addons/asterisk_calls/
+      #- ../../phonebook:/mnt/addons/phonebook
+      - ../../asterisk_calls_crm/:/mnt/addons/asterisk_calls_crm/
+      # - ../../asterisk_calls_multi_pbx/:/mnt/addons/asterisk_calls_multi_pbx/
+      #- ../../asterisk_dialer/:/mnt/addons/asterisk_dialer/
+      #- ../../remote_agent:/mnt/addons/remote_agent
+
+  asterisk:    
+    volumes:
+      - recordings:/var/spool/asterisk/monitor/
+      - ./asterisk/etc/asterisk/sip.conf:/etc/asterisk/sip.conf
+      - ./asterisk/etc/asterisk/extensions.conf:/etc/asterisk/extensions.conf
+    ports:
+      - 25060:5060/udp
+      - 20000-20010:20000-20010/udp
+      - 5038:5038
+      - 8088:8088
+
+
+volumes:
+  recordings:  

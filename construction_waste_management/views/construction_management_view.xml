@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <!-- Form View -->
+        <record id="view_construction_management_form" model="ir.ui.view">
+            <field name="name">construction.waste.management.form</field>
+              <field name="model">construction.waste.management</field>
+              <field name="priority" eval="8" />
+              <field name="arch" type="xml">
+                  <form create="false" edit="false">
+                      <sheet>
+                          <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                          </div>
+                          <group>
+                              <group>
+                                <field name="project_id"/>
+                                <field name="type"/>
+                                <field name="location_id" />
+                                <field name="dest_location_id" />
+                                <field name="picking_type_id" />
+                                <field name="user_id" />
+                              </group>
+                              <group>
+                                <field name="task_id"/>
+                                <field name="product_id" />
+                                <field name="qty"/>
+                                <field name="uom_id"/>
+                                <field name="stock_scrap_id" readonly="1" attrs="{'invisible': [('type', '=', 'reused')]}"/>
+                                <field name="internal_picking_id" attrs="{'invisible': [('type', '=', 'scrap')]}"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
+                              </group>  
+                          </group>
+                      </sheet>
+                  </form>
+              </field>
+        </record>
+        
+        <!-- Tree View -->
+        <record id="view_construction_management_tree" model="ir.ui.view">
+            <field name="name">construction.waste.management.tree</field>
+            <field name="model">construction.waste.management</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree create="false" edit="false">
+                    <field name="name"/>
+                    <field name="project_id"/>
+                    <field name="task_id"/>
+                    <field name="product_id" />
+                    <field name="qty"/>
+                    <field name="uom_id" />
+                    <field name="location_id" />
+                    <field name="dest_location_id" />
+                    <field name="type"/>
+                    <field name="stock_scrap_id" />
+                    <field name="internal_picking_id" />
+                    <field name="user_id" />
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </tree>
+          </field>
+        </record>
+
+        <!-- Search View -->
+        <record id='view_construction_management_search' model='ir.ui.view'>
+            <field name="name">construction.waste.management.search</field>
+            <field name="model">construction.waste.management</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name" />
+                    <field name="type" />
+                    <field name="product_id" />
+                    <field name="project_id" />
+                    <field name="task_id" />
+                    <field name="location_id" />
+                    <field name="dest_location_id" />
+                    <field name="user_id" />
+                    <field name="company_id" />
+                    <group expand="1" string="Group By">
+                        <filter name="type" context="{'group_by': 'type'}" string="Waste Picking"/>
+                        <filter name="product_id" context="{'group_by': 'product_id'}" string="Product"/>
+                        <filter name="project_id" context="{'group_by': 'project_id'}" string="Project"/>
+                        <filter name="task_id" context="{'group_by': 'task_id'}" string="Task"/>
+                        <filter name="location_id" context="{'group_by': 'location_id'}" string="Location"/>
+                        <filter name="dest_location_id" context="{'group_by': 'dest_location_id'}" string="Destination Location"/>
+                        <filter name="user_id" context="{'group_by': 'user_id'}" string="User"/>
+                        <filter name="company_id" context="{'group_by': 'company_id'}" string="Company" groups="base.group_multi_company"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--Action-->
+        <record model="ir.actions.act_window" id="action_construction_waste_materials">
+              <field name="name">Material Wastes</field>
+              <field name="res_model">construction.waste.management</field>
+              <field name="view_type">form</field>
+              <field name="search_view_id" ref="view_construction_management_search"/>
+              <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu-->
+        <menuitem id="menu_waste_management" name="Waste Reporting"
+                  parent="odoo_job_costing_management.menu_job_managmt" 
+                  sequence="4"
+                  />
+        
+        <menuitem id="menu_construction_waste_management" name="Material Wastes" 
+                  parent="menu_waste_management"
+                  action="action_construction_waste_materials"/>
+    </data>
+</odoo>
+    

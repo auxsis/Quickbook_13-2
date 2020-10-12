@@ -1,0 +1,161 @@
+<odoo>
+    <record id='callback_action' model='ir.actions.act_window'>
+        <field name='name'>Callback</field>
+        <field name='res_model'>asterisk_calls.callback</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="context">{'search_default_progress': '1'}</field>
+    </record>
+
+    <record id='callback_calls_action' model='ir.actions.act_window'>
+        <field name='name'>Callback Calls</field>
+        <field name='res_model'>asterisk_calls.call</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('callback', '=', active_id)]</field>
+    </record>
+
+    <menuitem id="callback_menu" parent="asterisk_calls_calls_menu" 
+        groups="asterisk_calls.group_asterisk_calls_admin"
+        sequence="30" name="Callback" action="callback_action"/>
+
+    <record id='callback_list' model='ir.ui.view'>
+        <field name='name'>callback.list</field>
+        <field name='model'>asterisk_calls.callback</field>
+        <field name='type'>tree</field>
+        <field name='arch' type='xml'>
+            <tree>
+                <field name="phone"/>
+                <field name="queue"/>
+                <field name="status"/>
+                <field name="create_date" string="Created"/>
+                <field name="last_retry"/>
+                <field name="contact_name"/>
+                <field name="subject_short"/>                
+            </tree>
+        </field>
+    </record>
+
+    <record id='callback_form' model='ir.ui.view'>
+        <field name='name'>asterisk_calls.callback.form</field>
+        <field name='model'>asterisk_calls.callback</field>
+        <field name='type'>form</field>
+        <field name='arch' type='xml'>
+            <form>
+                <header>
+                    <field name="lead_id" invisible="1"/>
+                    <button string="Convert to Lead" name="convert_to_lead"
+                        attrs="{'invisible': [('lead_id','!=', 0)]}"
+                        type="object" icon="fa-gift" class="oe_highlight oe_read_only"/>
+                    <button string="Visit Lead" name="visit_lead"
+                        attrs="{'invisible': [('lead_id','=', 0)]}"
+                        type="object" icon="fa-gift" class="oe_highlight oe_read_only"/>                        
+                    <button string="Retry" name="retry" class="oe_read_only"
+                        type="object" icon="fa-phone"/>
+                    <button string="Refresh" name="refresh" class="oe_read_only"
+                        type="object" icon="fa-refresh"/>
+                    <field name="status" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box">
+                        <button class="oe_stat_button" type="action"
+                            icon="fa-phone" string="Callback Calls"
+                            name="%(callback_calls_action)d"/>
+                    </div>                    
+                    <div class="oe_title">
+                        <h1><field name="contact_name"/></h1>
+                    </div>
+                    <group attrs="{'invisible':[('status_description','=',False)]}">
+                        <field readonly="1" class="oe_read_only"
+                            name="status_description"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="phone" widget="originate_call"/>
+                            <field name="partner_name"/>
+                            <field name="subject"/>
+                            <field name="email" widget="email"/>
+                            <field name="call_time"
+                                attrs="{'invisible': [('call_time','=',False)]}"/>
+                        </group>
+                        <group>
+                            <field name="queue"/>
+                            <field name="queue_exten"
+                                attrs="{'invisible': [('queue_exten','=',False)]}"/>
+                            <field name="start_time"
+                                attrs="{'invisible': [('start_time','=',False)]}"/>
+                            <field name="last_retry"
+                                readonly="1" class="oe_read_only"/>                            
+                            <field name="create_date" string="Created" 
+                                readonly="1" class="oe_read_only"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="calls" readonly="1">
+                            <tree>
+                                <field name="channel_short"/>
+                                <field name="dst"/>
+                                <field name="dstchannel_short"/>
+                                <field name="clid"/>
+                                <field name="disposition"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="callback_graph" model="ir.ui.view">
+        <field name="name">asterisk_calls.callback.graph</field>
+        <field name="model">asterisk_calls.callback</field>
+        <field name="arch" type="xml">
+            <graph type="bar" string="Callback">
+                <field name='create_date' type='row'  interval="day"/>
+                <field name='status' type='row'/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="callback_pivot" model="ir.ui.view">
+        <field name="name">callback.pivot</field>
+        <field name="model">asterisk_calls.callback</field>
+        <field name="arch" type="xml">
+            <pivot display_quantity="true" string="Calls">
+                <field name='create_date' type='row'/>
+                <field name='status' type='row'/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id='callback_search' model='ir.ui.view'>
+        <field name='name'>asterisk_calls.callback.search</field>
+        <field name='model'>asterisk_calls.callback</field>
+        <field name='type'>search</field>
+        <field name='arch' type='xml'>
+            <search string="Callback">
+                <field name="phone"/>
+                <field name="queue"/>
+                <field name="queue_exten"/>
+                <field name="contact_name"/>
+                <field name="subject"/>                
+                <field name="email"/>
+                <field name="create_date" string="Created"/>
+                <filter name="progress" string="In Progress" domain="[('status','=', 'progress')]"/>
+                <filter name="done" string="Done" domain="[('status','=', 'done')]"/>
+                <filter name="failed" string="Failed" domain="[('status','=', 'failed')]"/>
+                <filter name="converted" string="Converted" domain="[('lead_id', '!=', 0)]"/>
+                <separator/>
+                <filter name="today" string="Today" domain="[
+                    ('started','&gt;', context_today().strftime('%Y-%m-%d 00:00:00'))]"/>
+                <filter name="week" string="This Week" domain="[
+                    ('started', '&gt;', (context_today() + relativedelta(weeks=-1, weekday=0)).strftime('%Y-%m-%d 00:00:00'))]"/>
+                <filter name="this_month" string="This month" domain="[
+                    ('started','&gt;=',(context_today()+relativedelta(day=1)).strftime('%Y-%m-%d 00:00:00'))]"/>
+                <filter name="prev_month" string="Previous month" domain="[
+                    ('started','&gt;=',(context_today()+relativedelta(months=-1, day=1)).strftime('%Y-%m-%d 00:00:00')),
+                    ('started','&lt;=',(context_today()+relativedelta(months=-1, day=31)).strftime('%Y-%m-%d 23:59:59'))]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

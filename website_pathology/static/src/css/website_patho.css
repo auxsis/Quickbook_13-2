@@ -1,0 +1,85 @@
+/* Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) */
+/* See LICENSE file for full copyright and licensing details. */
+/* License URL : https://store.webkul.com/license.html/ */
+
+.info_row{
+    background-color: #f0f9ff;
+    padding: 3px;
+    margin-bottom: 10px;
+}
+
+.info_icon{
+    margin:5px;
+    font-size: 18px;
+    color: #337ab7
+}
+
+.info_content{
+    font-family: ArialMT;
+    font-size: 15px;
+    color: #333333;
+    display:flex;
+}
+
+
+.invalid{
+    border: 2px solid #f44336;
+    border-radius: 6px;
+}
+
+.valid{
+    border: 2px solid #3CB371;
+    border-radius: 6px;
+}
+
+select.invalid{
+    border: 2px solid #f44336;
+}
+
+select.valid{
+    border: 2px solid #3CB371;
+}
+/* unvisited link */
+a:link {
+    text-decoration: none;
+}
+
+/* visited link */
+a:visited {
+    text-decoration: none;
+}
+
+/* mouse over link */
+a:hover {
+    text-decoration: none;
+}
+
+/* selected link */
+a:active {
+    text-decoration: none;
+}
+
+.lowertabs > li.active > a,
+.lowertabs > li.active > a:hover,
+.lowertabs > li.active > a:focus{
+    background-color: #65646470;
+    color: #387ab7;
+    font-size: 20px;
+    border-radius: 0px;
+}
+
+.uppertabs > li > a{
+    border-radius: 0px;
+}
+
+
+.patho_loader{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: url(/website_appointment/static/src/img/appoint_loader.gif) center no-repeat rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 1px white;
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <template id="work_type_hour_view" inherit_id="hr_payroll.report_payslip">
+            <xpath expr="//table[@class='table table-sm']" position="after">
+                <h3 t-if="o.work_type_ids">Timesheet Line Work Type Rates</h3>
+                    <table class="table table-condensed" t-if="o.work_type_ids">
+                        <thead>
+                            <tr>
+                                <th>Work Type</th>
+                                <th class="text-right">Total Hours</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total" t-value="0"/>
+                                <tr t-foreach="o.work_type_ids" t-as="line">
+                                    <td><span t-field="line.work_type_id.name"/></td>
+                                    <td class="text-right"><span t-field="line.total_hour" widget="float_time"/></td>
+                                    <t t-set="total" t-value="total+line.total_hour"/>
+                                </tr>
+                                <tr>
+                                    <td>Total (Hours)</td>
+                                    <td class="text-right"><span t-esc="total" widget="float_time"/></td>
+                                </tr>
+                        </tbody>
+                    </table>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

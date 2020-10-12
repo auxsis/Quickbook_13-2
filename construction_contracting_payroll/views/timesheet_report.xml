@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <template id="hr_timesheet_report_id" inherit_id="odoo_timesheet_sheet.hr_timesheet_report_id">
+                <xpath expr="//table/tr/td[3]" position="after">
+                    <td><strong>Task</strong></td>
+                    <td><strong>Work Type</strong></td>
+                    <td><strong>Start Time</strong></td>
+                    <td><strong>End Time</strong></td>
+                    <td><strong>Amount</strong></td>
+                    <td><strong>Quantity</strong></td>
+                    <td><strong>Is Billable</strong></td>
+                    <td><strong>Is Paid</strong></td>
+                </xpath>
+                <xpath expr="//table/t/tr/td/span[@t-field='time.name']" position="after">
+                    <td><span t-field="time.task_id.name"/></td>
+                    <td><span t-field="time.work_type_id.name"/></td>
+                    <td><span t-field="time.start_time" t-field-options='{"widget": "float_time"}'/></td>
+                    <td><span t-field="time.end_time" t-field-options='{"widget": "float_time"}'/></td>
+                    <td class="text-right"><span t-field="time.amount"/></td>
+                    <td class="text-right"><span t-field="time.unit_amount"/></td>
+                    <td><span t-field="time.is_billable"/></td>
+                    <td><span t-field="time.is_paid"/></td>
+                </xpath>
+                <xpath expr="//table/tr[2]/td[3]" position="after">
+                    <td colspan="8"></td>
+                </xpath>
+        </template>
+        
+    </data>
+</odoo>

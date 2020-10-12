@@ -1,0 +1,7 @@
+expiringdict
+gevent
+odoorpc
+pyst2
+requests
+sentry-sdk
+tinyrpc==0.9.4

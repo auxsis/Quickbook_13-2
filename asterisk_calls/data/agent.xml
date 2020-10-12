@@ -1,0 +1,12 @@
+<odoo>
+    <data noupdate="1">
+        <record model="remote_agent.agent" id="asterisk_calls_agent">
+            <field name="note">Asterisk Calls Agent Account</field>
+            <field name="agent_uid">asterisk_calls</field>
+            <field name="name">Asterisk Calls</field>
+            <field name="email">asterisk@calls.com</field>
+            <field name="login">asterisk_agent</field>
+            <field name="password">service</field>
+        </record>
+    </data>
+</odoo>

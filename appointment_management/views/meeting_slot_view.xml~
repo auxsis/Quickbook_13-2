@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+         <record model="ir.ui.view" id="meeting_slot_form_view">
+            <field name="name">meeting slot</field>
+            <field name="model">meeting.slot</field>
+            <field name="arch" type="xml">
+                <form string="repair form">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="day"/>
+<!--                                <field name="start_date"/>-->
+<!--                                <field name="end_date"/>-->
+                            </group>
+                            <group>
+                            </group>
+                        </group>
+                            <notebook>
+                                <page string="Slot Line">
+                                    <field name="slot_line_ids">
+                                        <tree editable='bottom'>
+                                            <field name="time"/>
+<!--                                            <field name="state"/-->
+                                        </tree>
+                                    </field>
+                                </page>
+                            </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+         <record model="ir.ui.view" id="meeting_slot_tree_view">
+            <field name="name">slot list</field>
+            <field name="model">meeting.slot</field>
+            <field name="arch" type="xml">
+                <tree string="Slot List">
+                    <field name="day"/>
+                   <!-- <field name="start_date"/>
+                    <field name="end_date"/>-->
+                </tree>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="meeting_slot_search">
+            <field name="name">meeting.slot</field>
+            <field name="model">meeting.slot</field>
+            <field name="arch" type="xml">
+                <search>
+                       <field name="day"/>
+                </search>
+            </field>
+        </record> 
+        
+        <record model="ir.actions.act_window" id="meeting_slot_action_id">
+            <field name="name">Meeting Slots</field>
+            <field name="res_model">meeting.slot</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem name="Meeting Slots" id="menu_meeting_slot" parent="sales_team.menu_sale_config" groups="sales_team.group_sale_manager" action="meeting_slot_action_id"/>
+
+    </data>
+</odoo>

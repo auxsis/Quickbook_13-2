@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="website_embed_view_tree" model="ir.ui.view">
+        <field name="name">website.embed</field>
+        <field name="model">website.embed</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="website_embed_view_form" model="ir.ui.view">
+        <field name="name">website.embed</field>
+        <field name="model">website.embed</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <form string="Embed HTML Templates">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <field name="html_text" widget="ace" nolabel="1"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="act_window_website_embed" model="ir.actions.act_window">
+        <field name="name">website.embed</field>
+        <field name="res_model">website.embed</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Click to create a new embed snippet.</p>
+        </field>
+    </record>
+
+    <menuitem id="menu_website_embed"
+              action="act_window_website_embed"
+              parent="website.menu_website_configuration"
+              name="Embed HTML Templates"
+              sequence="99"/>
+
+</odoo>

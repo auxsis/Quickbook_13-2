@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_inherit_register_rac" model="ir.ui.view">
+    <field name="name">project.task.formview</field>
+    <field name="model">project.task</field>
+    <field name="inherit_id" ref="project.view_task_form2"/>
+    <field name="arch" type="xml">
+        <xpath expr="//div[@name = 'button_box']" position="inside">
+            <button class="oe_stat_button" type="object" string="Inspection" name="show_inspection"  icon="fa-tasks">
+                </button>
+        </xpath>
+    </field>
+    </record>
+
+</odoo>

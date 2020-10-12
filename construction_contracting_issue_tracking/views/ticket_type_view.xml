@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <record id="construction_ticket_type_form_view" model="ir.ui.view">
+            <field name="name">Issue Type</field>
+            <field name="model">construction.ticket.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                     <group>
+                         <group>
+                                <field name="name"/>
+                         </group>
+                         <group>
+                         </group>
+                     </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="construction_ticket_type_tree_view" model="ir.ui.view">
+            <field name="name">Issue Type</field>
+            <field name="model">construction.ticket.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="construction_ticket_type_view" model="ir.ui.view">
+            <field name="name">Issue Type</field>
+            <field name="model">construction.ticket.type</field>
+            <field name="arch" type="xml">
+                <search>
+                     <field name="name"/>
+                </search>
+            </field>
+        </record>
+        
+        <record id="action_construction_type" model="ir.actions.act_window">
+            <field name="name">Issue Types</field>
+            <field name="res_model">construction.ticket.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+<!--        <menuitem name="Issue Types" id="menu_helpdesk_ticket_type" parent="website_helpdesk_support_ticket.menu_helpdesk_configuration" action="action_construction_type"/>-->
+        
+    </data>
+</odoo>

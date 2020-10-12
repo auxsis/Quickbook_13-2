@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="request_information_team_form_view">
+            <field name="name">Request Information Team</field>
+            <field name="model">request.information.team</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                 <field name="name"/>
+                                 <field name="is_team"/>
+                            </group>
+                            <group>
+                                 <field name="leader_id"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Team Members">
+                                <field name="team_ids" nolabel="1">
+                                </field>
+                            </page> 
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="request_information_team_tree_view">
+            <field name="name">Request Information Team</field>
+            <field name="model">request.information.team</field>
+            <field name="arch" type="xml">
+                <tree>
+                     <field name="name" />
+                     <field name="leader_id"/> 
+                     <field name="is_team"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_request_information_team" model="ir.actions.act_window">
+            <field name="name">RFI Team</field>
+            <field name="res_model">request.information.team</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

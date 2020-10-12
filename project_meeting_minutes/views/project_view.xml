@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+
+        <record id="job_cost_event_smart_button_view_project" model="ir.ui.view">
+            <field name="name">project.project.form.view</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//div[@name = 'button_box']" position="inside">
+                    <button class="oe_stat_button" type="object" name="show_jobcost_event"  icon="fa-tasks">
+                        <field name="meeting_count" string = "Meetings" widget="statinfo"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

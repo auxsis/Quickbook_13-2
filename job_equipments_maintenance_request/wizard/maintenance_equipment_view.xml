@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+   <data>
+       
+        <record id="maintenance_equipment_wizard_view" model="ir.ui.view">
+           <field name="name">maintenance.equipment.wizard.form</field>
+           <field name="model">maintenance.equipment.wizard</field>
+           <field name="arch" type="xml">
+               <form string="Maintenance Equipment Wizard">
+                <p>This wizard will create Maintenance Equipment.</p>
+                    <group>
+                        <group>
+                            <field name="equipment_name"/>
+                            <field name="equipment_category_id"/>
+                        </group>
+                        <group>
+                            <field name="equipment_model"/>
+                            <field name="equipment_serial_no"/>
+                            <field name="note"/>
+                        </group>
+                   </group>
+                   <footer>
+                       <button string="Create Equipment" name="create_maintenance_equipment" type="object" class="oe_highlight"/> or 
+                       <button string="Cancel" special="cancel" name="cancel" type="cancel"/>
+                   </footer>
+               </form>
+           </field>
+       </record>
+       
+       <record id="maintenance_equipment_action" model="ir.actions.act_window">
+            <field name="name">Maintenance Equipment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">maintenance.equipment.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+       
+   </data>
+</odoo>

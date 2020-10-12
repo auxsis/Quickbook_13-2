@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="is_payroll_paid_timesheet_sheet_view" model="ir.ui.view">
+            <field name="name">hr_timesheet_sheet.sheet.form</field>
+            <field name="model">hr_timesheet_sheet.sheet</field>
+            <field name="inherit_id" ref="odoo_timesheet_sheet.hr_timesheet_sheet_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="after">
+                        <field name="custom_payslip_id"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                        <attribute name="statusbar_visible">new,confirm,done,paid</attribute>
+                </xpath>
+                <xpath expr="//field[@name='employee_id']" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" string="Payslip" name="show_payslip"  icon="fa-tasks">
+                        </button>
+                    </div>
+                </xpath>
+                <xpath expr="//header" position="inside">
+                    <button string="Reset Timesheet" name="refund_sheet_payroll" states="confirm,done" type="object"/>
+                </xpath>
+                <xpath expr="//notebook/page/field/tree/field[@name='project_id']" position="after">
+                    <field name="task_id"/>
+                    <field name="work_type_id"/>
+                    <field name="start_time" widget="float_time"/>
+                    <field name="end_time" widget="float_time"/>
+                    <field name="amount"/>
+                    <field name="unit_amount"/>
+                    <field name="is_billable"/>
+                    <field name="is_paid"/>
+                </xpath>
+                <xpath expr="//notebook/page/field/form/group" position="after">
+                    <group>
+                        <field name="task_id"/>
+                        <field name="work_type_id"/>
+                        <field name="start_time" widget="float_time"/>
+                        <field name="end_time" widget="float_time"/>
+                        <field name="amount"/>
+                        <field name="unit_amount"/>
+                        <field name="is_billable"/>
+                        <field name="is_paid"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="is_payroll_paid_timesheet_sheet_search_view" model="ir.ui.view">
+            <field name="name">hr_timesheet_sheet.sheet.form</field>
+            <field name="model">hr_timesheet_sheet.sheet</field>
+            <field name="inherit_id" ref="odoo_timesheet_sheet.view_hr_timesheet_sheet_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                        <field name="custom_payslip_id"/>
+                        <filter name="custom_payslip_id" string="Employee Payslip" domain="[]" context="{'group_by':'custom_payslip_id'}"/>
+                        <filter name="Is Paid" string="Paid Payslip" domain="[('state', '=', 'paid')]" help="Paid Timesheet"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="is_payroll_paid_timesheet_sheet_tree_view" model="ir.ui.view">
+            <field name="name">hr_timesheet_sheet.sheet.form</field>
+            <field name="model">hr_timesheet_sheet.sheet</field>
+            <field name="inherit_id" ref="odoo_timesheet_sheet.hr_timesheet_sheet_tree_simplified"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                        <field name="custom_payslip_id"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <menuitem name="Timecards" id="menu_act_hr_timesheet_card" parent="hr_timesheet.timesheet_menu_root" sequence="8"/>
+        
+        <menuitem name="My Timecard Card" id="menu_act_hr_timesheet_card_form_my_current" parent="menu_act_hr_timesheet_card"
+                  action="odoo_timesheet_sheet.ir_actions_server_timesheet_sheet" sequence="2"/>
+        
+        <menuitem name="All Timecards" id="menu_act_hr_timesheet_allcard" parent="menu_act_hr_timesheet_card"
+                  action="hr_timesheet.timesheet_action_all" sequence="2"/>
+        
+        <menuitem name="My Timecards" id="menu_act_hr_timesheet_my_card" parent="menu_act_hr_timesheet_card"
+                  action="hr_timesheet.act_hr_timesheet_line" sequence="2"/>
+        
+        <menuitem id="menu_hr_to_approve_card" name="To Approve Timecards" parent="hr_timesheet.timesheet_menu_root"
+                  sequence="9" groups="hr_timesheet.group_timesheet_manager"/>
+        
+        <menuitem name="All Timecard Cards" id="menu_act_hr_timesheet_all_timecard" parent="menu_hr_to_approve_card"
+                  groups="hr_timesheet.group_hr_timesheet_user" 
+                  action="odoo_timesheet_sheet.act_hr_all_timesheetsheet_form" sequence="1"/>
+        
+        <menuitem name="Timecards Card Approve" id="menu_act_hr_timesheet_timecard_card_approve" parent="menu_hr_to_approve_card"
+                  groups="hr_timesheet.group_hr_timesheet_user"
+                  action="odoo_timesheet_sheet.act_hr_timesheet_sheet_form" sequence="2"/>
+                      
+                      
+    </data>
+</odoo>

@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="call_us_form" name="Call Us">
+        <t t-call="website.layout">
+          <div id="wrap">
+            <div class="oe_structure"/>
+            <div class="container">
+                <h1>Let us call you by phone</h1>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="oe_structure">
+                            <div>
+                                <p>We can contact you regarding anything related to our company or services.</p>
+                                <p>Please enter your phone number and wait for a call.</p>
+                            </div>
+                        </div>
+                        <div class="text-center mt64" name="call_form">
+                            <script type="text/javascript" src='https://www.google.com/recaptcha/api.js'></script>
+                            <script type="text/javascript" src="/asterisk_calls/static/src/js/clockpicker.min.js"/>
+                            <link rel="stylesheet" href="/asterisk_calls/static/src/css/clockpicker.min.css"/>
+                            <form action="/contact_call" method="POST"
+                                    class="s_website_form form-horizontal container-fluid mt32" 
+                                    enctype="multipart/form-data" >
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="form-group form-field o_website_form_required">
+                                    <label class="col-md-3 col-sm-4 control-label" for="subject">Subject</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control o_website_form_input" name="subject" 
+                                            required="1" t-att-value="request.params.get('subject', '')" />
+                                    </div>
+                                </div>                                    
+                                <div class="form-group form-field o_website_form_required_custom">
+                                    <label class="col-md-3 col-sm-4 control-label" for="contact_name">Your Name</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control o_website_form_input" 
+                                            name="contact_name"  required="1"
+                                            t-att-value="request.params.get('contact_name', '')"  />
+                                    </div>
+                                </div>
+                                <div class="form-group form-field">
+                                    <label class="col-md-3 col-sm-4 control-label" for="partner_name">Your Company</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control o_website_form_input"
+                                            name="partner_name" t-att-value="request.params.get('partner_name', '')" />
+                                    </div>
+                                </div>                                
+                                <div class="form-group form-field o_website_form_required_custom">
+                                    <label class="col-md-3 col-sm-4 control-label" for="phone">Your Phone Number</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="text" class="form-control o_website_form_input" required="1"
+                                            t-att-placeholder="phone_placeholder"
+                                            name="phone" t-att-value="request.params.get('phone', '')" />
+                                    </div>
+                                </div>
+                                <div class="form-group form-field">
+                                    <label class="col-md-3 col-sm-4 control-label" for="email">Email</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="email" class="form-control o_website_form_input"
+                                            placeholder="your@email.address.com"
+                                            name="email" t-att-value="request.params.get('email', '')" />
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="form-group form-field">
+                                    <label class="col-md-3 col-sm-4 control-label" for="call_time">Time of call</label>
+                                    <div class="col-md-7 col-sm-8">
+                                        <input type="call_time" class="form-control o_website_form_input"
+                                            id="clockpicker" value="" placeholder="Now" name="call_time"/>
+                                        <script type="text/javascript">
+                                        $('#clockpicker').clockpicker({
+                                            default: "now",
+                                            autoclose: true,
+                                            placement: "right",
+                                            align: "top",
+                                        });
+                                        </script>                                            
+                                    </div>
+                                </div>
+                                -->
+                                <t t-if="recaptcha_enabled">
+                                    <div class="form-group form-field">                                        
+                                        <div class="row">
+                                            <div class="col-sm-6 col-sm-offset-4">
+                                                <div class="g-recaptcha"
+                                                    t-att-data-sitekey="site_key">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-sm-offset-4 col-sm-8 col-md-7">
+                                        <button type="submit" class="btn btn-primary btn-lg o_website_form_send">Request a call</button>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb32">
+                        <t t-call="website.company_description"/>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+          </div>
+        </t>
+    </template>
+
+    <template id="call_us_thanks" name="Call Us Thanks">
+        <t t-call="website.layout">
+          <div id="wrap">
+            <div class="oe_structure"/>
+            <div class="container">
+                <h1>Thanks!</h1>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="alert alert-success">
+                            Your call request has been sent successfully.
+                            <button type="button" class="close" data-dismiss="alert">&amp;times;</button>
+                        </div>
+                        <p>
+                            We will call back to you shortly.
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <t t-call="website.company_description"/>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+          </div>
+       </t>    
+    </template>
+
+
+    <template id="call_us_error" name="Call Us Error">
+        <t t-call="website.layout">
+          <div id="wrap">
+            <div class="oe_structure"/>
+            <div class="container">
+                <div class="row">
+                    <h2 class="alert alert-danger">
+                        <p t-esc="error_message"/> 
+                    </h2>
+                    <p class="mt64">
+                        If you have an emergency, do not hesitate to contact us by phone:
+                    </p>
+                    <ul class="list-unstyled">
+                        <li><i class="fa fa-phone"></i> : <span t-field="res_company.phone"/></li>
+                    </ul>                    
+                </div>
+            </div>
+            <div class="oe_structure"/>
+          </div>
+        </t>    
+    </template>
+
+
+</odoo>

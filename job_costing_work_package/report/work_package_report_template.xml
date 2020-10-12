@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="report_project_work_template">
+          <t t-foreach="docs" t-as="o">
+               <t t-call="web.html_container">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h3 class="text-center"><span t-field="o.number"/></h3>
+                            <table class="table table-striped">
+                                <tr> 
+                                    <td><strong>Name</strong></td>
+                                    <td><span t-field="o.name"/></td>
+                                    <td><strong>Responsible User</strong></td>
+                                    <td><span t-field="o.user_id"/></td>
+                                </tr>
+                                <tr> 
+                                    <td><strong>Project</strong></td>
+                                    <td><span t-field="o.project_id"/></td>
+                                    <td><strong>Date</strong></td>
+                                    <td><span t-field="o.date"/></td>
+                                </tr>
+                                <tr> 
+                                    <td><strong>Customer</strong></td>
+                                    <td><span t-field="o.partner_id"/></td>
+                                    <td><strong>Company</strong></td>
+                                    <td><span t-field="o.company_id"/></td>
+                                </tr>
+                            </table>
+                            <h4>Work Package Lines</h4>
+                            <table class="table table-striped">
+                                    <tr>
+                                        <td>Number</td>
+                                        <td>Job</td>
+                                        <td>Planned Hours</td>
+                                        <td>Remaining Hours</td>
+                                        <td>Assigned To</td>
+                                        <td>Start Date</td>
+                                        <td>End Date</td>
+                                    </tr>
+                                <tbody class="project_work">
+                                    <tr t-foreach="o.task_ids" t-as="task">
+                                        <td>
+                                            <span t-field="task.job_number"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.name"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.planned_hours"/>
+                                        </td>
+                                        <td>
+                                            <span t-field="task.remaining_hours"/>
+                                         </td>
+                                         <td>
+                                            <span  t-field="task.user_id"/>
+                                        </td>
+                                        <td>
+                                            <span  t-field="task.date_start" t-field-options='{"format": "dd/MM/yyyy"}'/>
+                                        </td>
+                                        <td>
+                                            <span  t-field="task.date_end" t-field-options='{"format": "dd/MM/yyyy"}'/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                        </table>
+                        <br/><br/><br/>
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Customer Signature:</strong>
+                            </div>
+                            <div class="col-6">
+                                <strong>Authorized signature:</strong>
+                            </div>
+                        </div>
+                        <div class="row mt32 mb32">
+                            <div class="col-6">
+                                <strong>Date:</strong>
+                            </div>
+                            <div class="col-6">
+                                <strong>Date:</strong>
+                            </div>
+                        </div>
+                    </div>
+                   </t>
+            </t>
+        </t>
+    </template>
+    
+</odoo>

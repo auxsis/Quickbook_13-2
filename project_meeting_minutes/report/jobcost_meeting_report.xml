@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <template id="job_order_meeting_minutes_view" inherit_id = "print_meeting_minutes.meeting_minutes">
+            <xpath expr="//table[4]" position="after">
+                <table class="table col-12">
+                       <tr style="border: 2px solid black;">
+                           <td><strong>Project</strong></td><td></td> <td> <span t-field="doc.project_id.name"/></td><td><strong></strong></td>
+                       </tr>
+                       
+                        <tr style="border: 2px solid black;">
+                           <td><strong>Analytic Account</strong></td><td></td> <td> <span t-field="doc.analytic_id.name"/></td><td><strong></strong></td>
+                       </tr>
+                        <tr style="border: 2px solid black;">
+                           <td><strong>Job Order</strong></td><td></td> <td><span t-field="doc.task_id.name"/></td><td></td>
+                       </tr>
+                       
+                       <tr style="border: 2px solid black;">
+                           <td><strong>Job Cost Sheet</strong></td><td></td> <td> <span t-field="doc.costsheet_id.number"/></td><td><strong></strong></td>
+                       </tr>
+                       <tr style="border: 2px solid black;">
+                           <td><strong>Job Cost Sheet Line</strong></td><td></td> <td> <span t-field="doc.costsheet_line_id"/></td><td><strong></strong></td>
+                       </tr>
+                </table>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>

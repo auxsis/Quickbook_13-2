@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <template id="website_request_information_attachment" inherit_id="project_request_for_information.display_request_information">
+        <xpath expr="//div[@class='panel panel-default']" position="after">
+        <div data-role="header" data-theme="b">
+            <p align="left" style="color:#483D8B"><strong>Send Message and Attachments</strong></p>
+        </div>
+       <form  method="post" enctype="multipart/form-data" >
+           <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/><br/>
+           <textarea class="form-control mb6" name = "ticket_comment" value="" line="3" type="text" rows="4" cols="100" placeholder="Add a comment..."/>
+           <input type="file" class="oe_inline mb6"   multiple="multiple" name="attachment"/><span>
+           <input type="submit" value="Send Now" class="btn btn-info" name="send"/></span>
+        </form>
+       </xpath>
+   </template>
+
+</odoo>
+
+

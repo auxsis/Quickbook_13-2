@@ -1,0 +1,118 @@
+# ************************************************************************************************
+# KEEP THIS FILE UNCHANGED FOR SMOOTH UPGRADE. USE docker-compose.override.yml FOR YOUR CUSTOM ENV
+# ************************************************************************************************
+
+version: '3'
+
+services:
+
+  db:
+    image: postgres:10
+    environment:
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    restart: unless-stopped
+    volumes:
+      - db-data:/var/lib/postgresql/data/pgdata
+
+  odoo:
+    build:
+        dockerfile: deploy/odoo/Dockerfile
+        context: ../
+    depends_on:
+      - db
+    restart: unless-stopped
+    # ****************** copy if needed to docker-compose.override.yml ************
+    #ports:
+    #  - "127.0.0.1:8069:8069"
+    #  - "127.0.0.1:8072:8072"
+    volumes:
+      - odoo-data:/var/lib/odoo
+    # Remove -i asterisk_calls after first run otheriwise initial setting will be overwritten.
+    command: ["odoo", "-i", "asterisk_calls"]
+
+
+  nginx:
+    image: nginx
+    # Start odoo service first as nginx on start will try to resolve proxy_pass: http://odoo:8072.
+    depends_on:
+      - odoo
+    # ports:
+      # Open ports in docker-compose.override.yml. If you want you can uncomment 
+      # auth_basic in nginx.conf for better security (current login / password is pbx / open, see nginx/htpasswd).
+      # - 80:80
+      # - 443:443
+      # This is for production for asterisk agent(s) with limited access.
+      # - 44444:44444 # JSON-RPC for Agents
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/proxy_headers.conf:/etc/nginx/proxy_headers.conf
+      - ./nginx/certs/server.crt:/etc/nginx/server.crt
+      - ./nginx/certs/server.key:/etc/nginx/server.key
+      - ./nginx/htpasswd:/etc/nginx/htpasswd
+      - ./nginx/ssl.conf:/etc/nginx/ssl.conf
+
+
+  agent:
+    build: agent/
+    restart: unless-stopped    
+    # volumes:
+      # Make sure the Agent has access to the recordings.
+      # This volume is shared with asterisk service. Override it in docker-compose.override.yml
+      # - recordings:/var/spool/asterisk/monitor/
+    environment:
+      - DEBUG=0
+      # Uncomment to enable Agent HTTPS communication interface instead of Odoo bus.
+      #- DISABLE_ODOO_BUS_POLL=1
+      #- AGENT_ADDRESS=agent
+      #- AGENT_PORT=40000
+      #- AGENT_TIMEOUT=5
+      - AGENT_UID=asterisk_calls      
+      - ODOO_SCHEME=http
+      - ODOO_HOST=odoo
+      - ODOO_PORT=8069
+      - ODOO_POLLING_PORT=8072
+      - ODOO_DB=astcalls
+      - ODOO_LOGIN=asterisk_agent
+      - ODOO_PASSWORD=service
+      - VERIFY_CERT=0 # Set to 1 if nginx has a public certificate.
+      - ODOO_RECONNECT_TIMEOUT=1      
+      - RECORDING_KEEP_FAILED_UPLOAD=0 # Set to 1 if you want to keep recording failed to get uploaded
+      - RECORDING_KEEP_AFTER_UPLOAD=0
+      - RECORDING_UPLOAD_ENABLED=1
+      - RECORDING_UPLOAD_DELAY=5
+      - QOS_UPDATE_DELAY=4
+      - ASTERISK_HOST=asterisk
+      - MANAGER_LOGIN=odoo
+      - MANAGER_PASSWORD=odoo
+      - MANAGER_PORT=5038
+      - PING_EXPECT_TIMEOUT_MINUTES=2
+    # Override in docker-compose.override.yml if you enabled agent's HTTPS communication channel.
+    #ports:
+    #  - 40000:40000
+
+  asterisk:
+    build: asterisk/
+    restart: unless-stopped
+    # volumes:
+      # Call recordings are here in this Asterisk installation. See Agent service volumes.
+      # - recordings:/var/spool/asterisk/monitor/
+    environment:
+      - AMI_RECONNECT_TIMEOUT=1
+      - AMI_LISTEN_IP=0.0.0.0 # For production use set AMI_LISTEN_IP=127.0.0.1.
+      - AMI_LISTEN_PORT=5038
+    # **** Copy below to your docker-compose.override.yml for development and adjust rtp.conf for this port range ***
+    #ports:
+    #  - "5060:5060/udp"
+    #  - "10000-10010:10000-10010/udp"
+    # **** For production use host mode
+    #network_mode: host
+
+
+volumes:
+  odoo-data:
+  db-data:
+  # Add this in your override file
+  # recordings:
+

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record model="ir.ui.view" id="portal_user_view_task_form2">
+            <field name="name">project.inherited.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page[last()]" position="after">
+                    <page string="Timesheet Employee Users">
+                        <field name="portal_user_ids"/>
+<!--                        <group>-->
+<!--                            <group>-->
+<!--                                <field name="portal_user_ids" widget="many2many_tags"/>-->
+<!--                            </group>-->
+<!--                        </group>-->
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="portal_user_task_type_edit">
+            <field name="name">project.inherited.form</field>
+            <field name="model">project.task.type</field>
+            <field name="inherit_id" ref="project.task_type_edit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='mail_template_id']" position="after">
+                    <field name="is_close"/>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

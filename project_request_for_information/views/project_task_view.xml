@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+        <record id="request_information_view_task_form" model="ir.ui.view">
+            <field name="name">Project Task form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr = "//field[@name='partner_id']" position="after">
+                    <field name="rfi_price_rate"/>
+                    <field name="rfi_product_id"/>
+                </xpath>
+                <xpath expr = "//field[@name='date_last_stage_update']" position="after">
+                     <field name="rfi_request_id"/>
+                </xpath>
+                <xpath expr = "//div[hasclass('oe_button_box')]" position="inside">
+                    <button name="action_view_rfi_request" type="object" class="oe_stat_button" string="Request Information" icon="fa-pencil-square"/>
+                </xpath>
+            </field>
+          </record>
+
+    </data>
+ </odoo>
+ 

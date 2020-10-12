@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_project_task_id" model="ir.ui.view">
+            <field name="name">project.task</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//notebook/page[@name='description_page']" position="after">
+                        <page name="my_info" string="Waste Materials">
+                            <field name="waste_management_ids" mode="tree">
+                                <tree editable="bottom">
+                                    <field name="type"/>
+                                    <field name="task_id" invisible="1"/>
+                                    <field name="product_id" />
+                                    <field name="qty"/>
+                                    <field name="uom_id" />
+                                    <field name="location_id" />
+                                    <field name="dest_location_id" />
+                                    <field name="picking_type_id" />
+                                    <field name="is_waste_created" invisible="1"/>
+                                    <button string="Create" type = "object" class="btn-primary" name='create_stock_scrap' attrs="{'invisible': [('is_waste_created', '=', True)]}"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </xpath>
+                     <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                        <button class="oe_stat_button" icon="fa-tasks" type="object" name="action_open_scrap" string="Scraps"/>
+                        <button class="oe_stat_button" icon="fa-tasks" type="object" name="action_open_stock_picking" string="Internal Picking"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

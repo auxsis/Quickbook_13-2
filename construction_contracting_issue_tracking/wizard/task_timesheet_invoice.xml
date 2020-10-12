@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+
+        <!-- Create Invoice On Task Timesheets -->
+           <record id="construction_task_timesheet_invoice_wizard_view" model="ir.ui.view">
+               <field name="name">task.timesheet.invoice</field>
+               <field name="model">task.timesheet.invoice</field>
+               <field name="arch" type="xml">
+                    <form string="Task Timsheet Invoice">
+                        <group>
+                            <h1>
+                                <span class="o_form_label">This wizard will create customer invoice for selected timesheet lines...</span>
+                            </h1>
+                        </group>
+                        <footer>
+                            <button groups="project.group_project_manager" context="{'open_invoices': True}" string="Create
+                                Invoice" type="object" name="create_timesheet_invoice"
+                                class="btn-primary"/>
+                            or
+                            <button string="Cancel" class="btn-default" special="cancel"/>
+                        </footer>
+                    </form>
+               </field>
+           </record>
+
+       <!-- wizard action on account.analytic.line -->
+        <act_window id="construction_task_timsheet_wizard_action"
+            name="Make Invoice"
+            src_model="account.analytic.line"
+            res_model="task.timesheet.invoice"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" target="new"
+            groups="project.group_project_manager"
+            />
+
+    </data>
+</odoo>

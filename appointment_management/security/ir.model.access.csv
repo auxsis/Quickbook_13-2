@@ -1,0 +1,5 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_slot_sale_group,all_slot_sale,model_meeting_slot,sales_team.group_sale_manager,1,1,1,1
+access_slot_portal_group,portal_slot_group,model_meeting_slot,base.group_portal,1,0,0,0
+access_slot_line_sale_group,all_slot_line_sale,model_meeting_slot_line,sales_team.group_sale_manager,1,1,1,1
+access_slot_line_portal_group,all_slot_line_portal,model_meeting_slot_line,base.group_portal,1,0,0,0

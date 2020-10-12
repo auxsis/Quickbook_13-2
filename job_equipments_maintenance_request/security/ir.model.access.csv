@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_maintenance_equipment_project_user,maintenance_equipment_project_user,maintenance.model_maintenance_equipment,project.group_project_user,1,1,1,1
+access_maintenance_request_project_user,maintenance_request_project_user,maintenance.model_maintenance_request,project.group_project_user,1,1,1,1

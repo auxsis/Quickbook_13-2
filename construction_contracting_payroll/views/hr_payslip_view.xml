@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="timesheet_line_form_view" model="ir.ui.view">
+            <field name="name">hr.payslip.form</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[4]" position="after">
+                    <page name="timesheet line" string="Timesheet Line">
+                        <field name="timesheet_ids"/>
+                    </page>
+                    <page name="work type" string="Work Type Rates">
+                        <group>
+                            <field name="work_type_ids" nolabel="1">
+                                <tree editable='bottom'>
+                                    <field name="work_type_id"/>
+<!--                                    <field name="total_hour"/>-->
+                                    <field name="total_hour" widget="float_time"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//div[@name = 'button_box']" position="inside">
+                    <button class="oe_stat_button" type="object" name="show_paid_timesheetline"  icon="fa-tasks">
+                        <field name="timesheet_line_count" string="Timesheets" widget="statinfo"/>
+                    </button>
+                    <button class="oe_stat_button" type="object" name="show_timesheet" string="Sheets" icon="fa-tasks">
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
